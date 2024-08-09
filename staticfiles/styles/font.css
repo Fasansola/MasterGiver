@@ -1,0 +1,193 @@
+/* THIS IS WHERE ALL THE FONTS STYLES & CUSTOMIZATION ARE IMPLEMENTED FOR ALL VIEWPORTS */
+
+/* TEXTS SIZES, ALIGNMENTS & COLORS */
+
+/* DESTOP VIEWPORT */
+
+html {
+    font-family: poppins, 'san-serif';
+    font-size: 16px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+li,
+ul,
+label,
+.big-text,
+.small-text,
+.big-heading {
+    line-height: 180%;
+}
+
+
+/* TEXTS COLORS */
+
+.accent-text {
+    color: var(--secondary-purple);
+}
+
+/* TEXT ALIGNMENTS */
+
+.text-left {
+    text-align: left;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+/* Responsive text alignment */
+@media (max-width: 576px) {
+    .text-sm-left {
+        text-align: left;
+    }
+
+    .text-sm-center {
+        text-align: center;
+    }
+
+    .text-sm-right {
+        text-align: right;
+    }
+
+    .text-sm-justify {
+        text-align: justify;
+    }
+}
+
+@media (max-width: 768px) {
+    .text-md-left {
+        text-align: left;
+    }
+
+    .text-md-center {
+        text-align: center;
+    }
+
+    .text-md-right {
+        text-align: right;
+    }
+
+    .text-md-justify {
+        text-align: justify;
+    }
+}
+
+@media (max-width: 992px) {
+    .text-lg-left {
+        text-align: left;
+    }
+
+    .text-lg-center {
+        text-align: center;
+    }
+
+    .text-lg-right {
+        text-align: right;
+    }
+
+    .text-lg-justify {
+        text-align: justify;
+    }
+}
+
+@media (max-width: 1200px) {
+    .text-xl-left {
+        text-align: left;
+    }
+
+    .text-xl-center {
+        text-align: center;
+    }
+
+    .text-xl-right {
+        text-align: right;
+    }
+
+    .text-xl-justify {
+        text-align: justify;
+    }
+}
+
+
+
+
+
+
+/* CUSTOM CLASSES */
+
+.big-text {
+    font-size: 1.25rem;
+}
+
+.small-text {
+    font-size: 0.875rem;
+}
+
+.heading {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 150%;
+}
+
+.main-heading {
+    font-size: 82px;
+    font-weight: 800;
+    line-height: 100px;
+}
+
+.big-heading {
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.bold {
+    font-weight: 600;
+}
+
+
+@media only screen and (max-width: 1280px) {
+    .main-heading {
+        font-size: 64px;
+        line-height: 80px;
+    }
+}
+
+
+@media screen and (max-width: 992px) {
+    .big-heading {
+        font-size: 2.6rem;
+    }
+}
+
+
+@media only screen and (max-width: 576px) {
+    .main-heading {
+        font-size: 12vw;
+        line-height: 15vw;
+    }
+
+    .big-heading {
+        font-size: 9vw;
+        line-height: 13vw;
+    }
+
+    .heading {
+        font-size: 7vw;
+        line-height: 150%;
+    }
+}

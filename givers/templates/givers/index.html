@@ -1,0 +1,107 @@
+<!-- prettier-ignore -->
+
+{% extends "layout.html" %}
+
+{% load static %}
+
+{% block title %}
+  Show Off Your Good Side
+{% endblock title %}
+
+{% block body %}
+  {% include "header.html" %}
+<main class="d-flex flex-column align-items-center">
+  <!-- HERO -->
+  <section class="d-flex container hero align-items-center flex-lg-column">
+    <div
+      class="d-flex flex-column gap col-6 col-md-12 align-items-lg-center text-lg-center"
+    >
+      <h1 class="main-heading">
+        Show Off Your <br /><span class="accent-text">Good Side</span>.
+      </h1>
+      <p class="hero-text big-text">
+        Join the world’s largest community of intentional givers, showcase your
+        good works, and boost your online reputation.
+      </p>
+      <div class="button-div">
+        <a href="">
+          <div class="button dark-button big-text">Get Started</div>
+        </a>
+      </div>
+    </div>
+    <div class="col-6 col-md-12">
+      <img src="{% static "images/hero-image.png" %}" alt="Master Giver users
+      Dashboard on Desktop and Mobile" width="100%" />
+    </div>
+  </section>
+  <!-- FEATURED -->
+  <section class="d-flex flex-column align-items-center secondary-bg">
+    <h2 class="text-center big-heading">Why Become a MasterGiver?</h2>
+    <div
+      class="d-flex flex-column align-items-center container featured-sections text-sm-center"
+    >
+      <div class="d-flex align-items-center featured-item flex-sm-column">
+        <div
+          class="d-flex justify-content-end justify-content-sm-center col-6 col-xs-12 featured-section-img"
+        >
+          <img src="{% static 'images/featured-1.png' %}" alt="" />
+        </div>
+        <div class="featured-contents d-flex flex-column gap">
+          <h3 class="heading accent-text">Manage & Quantify Your Good Works</h3>
+          <p class="big-text">
+            MasterGiver is your centralized platform to manage all your
+            philanthropic activities, track and quantify your good works, and
+            build a strong online presence as a good person.
+          </p>
+        </div>
+      </div>
+      <div class="d-flex align-items-center featured-item flex-sm-column">
+        <div
+          class="d-flex justify-content-end justify-content-sm-center col-6 col-xs-12 featured-section-img"
+        >
+          <img src="{% static 'images/featured-2.png' %}" alt="" />
+        </div>
+        <div class="featured-contents d-flex flex-column gap">
+          <h3 class="heading accent-text">Advance Your Career</h3>
+          <p class="big-text">
+            Givers are known for their altruism and teamwork. Your MasterGiver
+            profile will attract more job opportunities and improve your career
+            advancement.
+          </p>
+        </div>
+      </div>
+      <div class="d-flex align-items-center featured-item flex-sm-column">
+        <div
+          class="d-flex justify-content-end justify-content-sm-center col-6 col-xs-12 featured-section-img"
+        >
+          <img src="{% static 'images/featured-3.png' %}" alt="" />
+        </div>
+        <div class="featured-contents d-flex flex-column gap">
+          <h3 class="heading accent-text">Enhance Your Online Reputation</h3>
+          <p class="big-text">
+            Showcase your dedication to helping others and demonstrate your
+            commitment to making a positive impact, thereby building a positive
+            image and standing out online.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- CTA SECTION -->
+  <section class="cta-section">
+    <div class="d-flex flex-column align-items-center gap">
+      <h4 class="bold text-center accent-text">JOIN OUR COMMUNITY</h4>
+      <h2 class="text-center big-heading">Become a MasterGiver.</h2>
+      <p class="cta-content text-center big-text">
+        Create your free profile and show the world just how important giving
+        back is to you.
+      </p>
+      <div class="button-div">
+        <a href="">
+          <div class="button dark-button big-text">Get Started</div>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+{% include "footer.html" %} {% endblock body %}

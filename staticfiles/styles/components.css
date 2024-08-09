@@ -1,0 +1,40 @@
+/* PRIMARY COMPONENTS */
+
+.button-div {
+    display: flex;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    padding: 16px 32px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+
+.dark-button {
+    background-color: var(--primary-purple);
+    color: var(--white);
+}
+
+.dark-button:hover {
+    background-color: var(--secondary-purple);
+}
+
+
+/* SECONDARY ACTIONS */
+
+.clickable {
+    cursor: pointer;
+}
+
+
+
+@media only screen and (max-width: 576px) {
+    .button {
+        width: 90vw;
+    }
+}

@@ -1,0 +1,358 @@
+/* GENERAL STYLE*/
+
+* {
+    box-sizing: border-box;
+}
+
+section {
+    max-width: 1512px;
+    padding: 100px 48px;
+}
+
+.no-padding {
+    padding: 0px;
+}
+
+
+
+
+/* TYPOGRAPHY */
+
+a {
+    color: inherit;
+    background-color: inherit;
+}
+
+
+h2 {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 60px;
+}
+
+h3 {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 32px;
+}
+
+.main-heading {
+    font-size: 84px;
+    font-weight: 800;
+    line-height: 100.8px;
+}
+
+
+
+.full-width {
+    width: 100%;
+}
+
+.half-width {
+    width: 50%;
+}
+
+
+/* DISPLAY */
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.grid {
+    display: grid;
+    gap: 32px;
+}
+
+.grid-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.gap {
+    gap: 32px;
+}
+
+
+.button {
+    padding: 12px 32px;
+    margin: 32px 0;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: 500;
+    border: none;
+}
+
+.button-div {
+    padding: 32px 0;
+}
+
+/* COLORS */
+
+.secondary-bg {
+    background-color: #F8F7FA;
+}
+
+
+.purple {
+    color: #5851BF;
+}
+
+.dark-btn {
+    background-color: #2F2B77;
+    color: white;
+}
+
+.light-btn {
+    background-color: white;
+    color: #2F2B77;
+}
+
+
+
+/* SECTIONS */
+
+.header {
+    height: 102px;
+    padding: 16px 48px;
+}
+
+
+.feature {
+    max-width: 100% !important;
+    text-align: center;
+    padding: 0px !important;
+}
+
+
+
+.feature-box {
+    padding: 48px 32px;
+    text-align: center;
+    background-color: white;
+    border-radius: 16px;
+    display: flex;
+    gap: 24px;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
+.feature-img {
+    width: 160px;
+    height: auto;
+}
+
+
+.cta-content {
+    max-width: 1020px;
+}
+
+.cta-small-header {
+    color: #2F2B77;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.footer {
+    padding: 48px;
+}
+
+.grid-footer {
+    grid-template-columns: 7fr 3fr 3fr 4fr;
+}
+
+.small-heading {
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.footer-credit {
+    padding: 32px 48px;
+    text-align: center;
+    border-top: solid 1px #D7D7DA;
+    max-width: 100%;
+}
+
+.list-gap {
+    gap: 10px;
+}
+
+
+@media only screen and (max-width: 1280px) {
+    section {
+        max-width: 1512px;
+        padding: 60px 48px;
+    }
+
+    /* TYPOGRAPHY */
+
+    p {
+        font-size: 18px;
+        line-height: 32px;
+    }
+
+    .main-heading {
+        font-size: 64px;
+        line-height: 80px;
+    }
+
+    h2 {
+        font-size: 36px;
+        line-height: 48px;
+    }
+
+    h3 {
+        font-size: 22px;
+        line-height: 28px;
+    }
+
+    .feature-img {
+        width: 80px;
+    }
+
+
+    .gap {
+        gap: 24px;
+    }
+
+    .feature-box {
+        padding: 32px 24px;
+        gap: 18px;
+    }
+
+
+    .cta-content {
+        max-width: 750px;
+    }
+
+}
+
+
+@media only screen and (max-width: 980px) {
+    section {
+        max-width: 1512px;
+        padding: 60px 48px;
+    }
+
+    .flex-col-md {
+        flex-direction: column;
+    }
+
+
+    .full-width-md {
+        width: 100%;
+    }
+
+    .text-center-md {
+        text-align: center;
+    }
+
+    .align-center-md {
+        align-items: center;
+    }
+
+    .grid-3-md {
+        grid-template-columns: 1fr;
+    }
+
+    .feature-box {
+        padding: 48px 48px;
+        gap: 18px;
+    }
+
+    /* FOOTER */
+
+    #footer-logo {
+        grid-area: logo;
+    }
+
+    #resources {
+        grid-area: resources;
+    }
+
+    #company {
+        grid-area: company;
+    }
+
+    #contact-info {
+        grid-area: contact;
+    }
+
+    .grid-footer {
+        grid-template-areas: "logo logo" "resources company" "contact contact";
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media only screen and (max-width: 578px) {
+    section {
+        padding: 60px 24px;
+    }
+
+    /* HEADER */
+
+    .header {
+        height: 102px;
+        padding: 16px 24px;
+    }
+
+
+    .logo {
+        width: 120px;
+    }
+
+    .no-padding-sm {
+        padding: 0px !important;
+    }
+
+    .button {
+        padding: 12px 24px;
+        font-size: 16px;
+    }
+
+    .main-heading {
+        font-size: 42px;
+        line-height: 60px;
+    }
+
+    .feature-box {
+        padding: 32px 20px;
+        gap: 18px;
+    }
+
+    .gap {
+        gap: 18px
+    }
+
+    /* FOOTER */
+
+    .footer {
+        padding: 48px 24px;
+    }
+
+    .grid-footer {
+        grid-template-columns: 1fr;
+        grid-template-areas: "footer" "resources" "company" "contact";
+    }
+}

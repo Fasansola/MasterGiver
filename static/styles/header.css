@@ -1,0 +1,29 @@
+.header {
+    height: 120px;
+    padding: 16px 48px;
+}
+
+.nav-menu {
+    width: -moz-fit-content;
+    width: fit-content;
+    gap: 32px;
+}
+
+@media (max-width: 991px) {
+    .header {
+        height: 102px;
+        padding: 16px 32px;
+    }
+}
+
+
+@media (max-width: 576px) {
+    .header {
+        height: 102px;
+        padding: 16px 5%;
+    }
+
+    .logo {
+        width: 150px;
+    }
+}

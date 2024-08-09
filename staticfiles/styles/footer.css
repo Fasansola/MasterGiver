@@ -1,0 +1,73 @@
+footer {
+    background-color: var(--secondary-bg);
+    border-top: solid 1px var(--brand-gray);
+}
+
+.footer {
+    padding: 48px;
+    grid-template-columns: 7fr 3fr 3fr 4fr;
+    grid-template-areas: "logo resources company contact";
+}
+
+
+/* FOOTER ITEMS */
+
+#footer-logo {
+    grid-area: logo;
+}
+
+#resources {
+    grid-area: resources;
+}
+
+#company {
+    grid-area: company;
+}
+
+#contact-info {
+    grid-area: contact;
+}
+
+/* -----*****----- */
+
+
+/* Footer quick links headings */
+.footer .bold {
+    padding-bottom: 12px;
+}
+
+.footer .list-gap {
+    gap: 10px;
+}
+
+.social-links {
+    gap: 18px;
+    margin-top: 18px;
+}
+
+.footer-credit {
+    padding: 32px 48px;
+    text-align: center;
+    border-top: solid 1px var(--brand-gray);
+    max-width: 100%;
+}
+
+
+@media only screen and (max-width: 991px) {
+    .footer {
+        grid-template-areas: "logo logo" "resources company" "contact contact";
+        grid-template-columns: 1fr 1fr;
+        row-gap: 32px;
+    }
+}
+
+@media only screen and (max-width: 578px) {
+    .footer {
+        padding: 48px 24px;
+    }
+
+    .footer {
+        grid-template-columns: 1fr;
+        grid-template-areas: "footer" "resources" "company" "contact";
+    }
+}
