@@ -1,0 +1,23 @@
+<!-- prettier-ignore -->
+
+{% extends 'layout.html' %}
+
+{% load static %}
+
+{% block title %}
+    {% block page_title %}
+    {% endblock %}
+{% endblock title %}
+
+{% block styles %}<link rel="stylesheet" href="{% static 'styles/template1.css' %}" />{% endblock %}
+
+{% block body %}
+    {% include "header.html" %}
+    <main>
+        <section class="d-flex flex-column align-items-center justify-content-center">
+            <div class="body-container d-flex flex-column">
+                {% block page_body %}{% endblock %}
+            </div>
+        </section>
+    </main>
+{% endblock %}

@@ -32,6 +32,14 @@ label,
     color: var(--secondary-purple);
 }
 
+.link {
+    color: var(--secondary-purple);
+}
+
+.link:hover {
+    color: var(--primary-purple);
+}
+
 /* TEXT ALIGNMENTS */
 
 .text-left {
@@ -152,6 +160,11 @@ label,
 
 .big-heading {
     font-size: 3rem;
+    font-weight: 700;
+}
+
+.small-heading {
+    font-size: 1.5rem;
     font-weight: 700;
 }
 

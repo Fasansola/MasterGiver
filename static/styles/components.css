@@ -1,5 +1,10 @@
+/* THIS IS WHERE ALL THE STYLES FOR THE FORMS, BUTTONS & .... ARE STORED */
+
+
 /* PRIMARY COMPONENTS */
 
+
+/* BUTTONS */
 .button-div {
     display: flex;
 }
@@ -32,9 +37,104 @@
 }
 
 
-
 @media only screen and (max-width: 576px) {
     .button {
         width: 90vw;
     }
+}
+
+
+/* This is for the button tag not class */
+
+button {
+    font-size: 1rem;
+    font-family: 'poppins', sans-serif;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+
+
+/* FORMS */
+
+.forms {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.forms div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.forms label {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.forms label.required::after {
+    content: " *";
+    color: #AF2A1A;
+}
+
+.forms input {
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--brand-gray);
+    width: 100%;
+    height: 53px;
+}
+
+input::placeholder {
+    color: #575C62;
+    font-size: 1rem;
+}
+
+
+/* SETUP CHECKBOX */
+.checkbox-div {
+    display: flex;
+    flex-direction: row !important;
+}
+
+.checkbox-div label {
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.checkbox-div input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--brand-gray);
+    padding: 0;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+}
+
+.checkbox-div input[type="checkbox"]:checked {
+    background-color: var(--primary-purple);
+    border-color: var(--primary-purple);
+    position: relative;
+}
+
+.checkbox-div input[type="checkbox"]:checked::before {
+    color: white;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+.forms .button {
+    margin-top: 24px;
 }

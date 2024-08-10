@@ -8,8 +8,10 @@
   Show Off Your Good Side
 {% endblock title %}
 
-{% block body %}
-  {% include "header.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'styles/index.css' %}" />
+{% endblock %} {% block body %} {% include "header.html" %}
 <main class="d-flex flex-column align-items-center">
   <!-- HERO -->
   <section class="d-flex container hero align-items-center flex-lg-column">
@@ -24,7 +26,7 @@
         good works, and boost your online reputation.
       </p>
       <div class="button-div">
-        <a href="">
+        <a href="{% url 'signup' %}">
           <div class="button dark-button big-text">Get Started</div>
         </a>
       </div>
@@ -97,7 +99,7 @@
         back is to you.
       </p>
       <div class="button-div">
-        <a href="">
+        <a href="{% url 'signup' %}">
           <div class="button dark-button big-text">Get Started</div>
         </a>
       </div>

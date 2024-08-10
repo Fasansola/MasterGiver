@@ -27,6 +27,7 @@
       <link href="{% static "styles/header.css" %}" rel="stylesheet" />
       <link href="{% static "styles/footer.css" %}" rel="stylesheet" />
       <link href="{% static "styles/components.css" %}" rel="stylesheet" />
+      {% block styles %}{% endblock %}
 
     <title>MasterGiver - {% block title %}{% endblock %}</title>
   </head>

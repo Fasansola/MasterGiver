@@ -5,6 +5,7 @@ from organizations.models import Charity
 
 # Create your models here.
 class User(AbstractUser):
+    email = models.EmailField(unique=True)
     groups = models.ManyToManyField(
         'auth.Group',
         related_name='givers_user_set',
@@ -20,6 +21,7 @@ class User(AbstractUser):
         help_text='Specific permissions for this user.',
     )
 
+    user_terms = models.BooleanField(default=True)
     state = models.CharField(max_length=128)
     city = models.CharField(max_length=128)
     profile_photo = models.ImageField(null=True, blank=True)

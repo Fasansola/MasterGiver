@@ -1,0 +1,82 @@
+<!-- prettier-ignore -->
+
+{% extends "template1.html" %}
+{% load static %}
+
+{% block page_title %}Create An Account{% endblock %}
+{% comment %} {% block styles %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}" />
+{% endblock %} {% block scripts %}
+<script src="{% static 'js/register.js' %}"></script>
+{% endblock %} {% endcomment %} {% block page_body %}
+<div class="form-header">
+  <h1 class="small-heading">Create An Account</h1>
+  <a href="" class="link bold">Login to MasterGiver</a>
+</div>
+<form
+  class="d-flex flex-column align-items-start forms"
+  action="{% url 'signup' %}"
+  method="POST"
+>
+  {% csrf_token %}
+  <div class="">
+    <label for="username" class="small-text required">Username</label>
+    <input
+      type="text"
+      id="username"
+      name="username"
+      placeholder="Username"
+      class="input"
+      required
+    />
+  </div>
+  <div class="">
+    <label for="email" class="small-text required">Email</label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      placeholder="Email"
+      class="input"
+      required
+    />
+  </div>
+  <div class="">
+    <label for="password" class="small-text required">Password</label>
+    <input
+      type="password"
+      id="password"
+      name="password"
+      placeholder="Password"
+      class="input"
+      required
+    />
+  </div>
+  <div class="">
+    <label for="confirm_password" class="small-text required"
+      >Confirm Password</label
+    >
+    <input
+      type="password"
+      id="confirm_password"
+      name="confirm_password"
+      placeholder="Confirm Password"
+      class="input"
+      required
+    />
+  </div>
+  <div class="checkbox-div align-items-center">
+    <style>
+      .checkbox-div input[type="checkbox"]:checked::before {
+        content: url("{% static 'images/check.svg' %}");
+      }
+    </style>
+    <input type="checkbox" name="terms" id="terms" required />
+    <label for="terms" class="small-text"
+      >I have read and agree to the
+      <a href="#" class="link">Terms of Use and Privacy Policy</a>.</label
+    >
+  </div>
+  <button type="submit" class="button dark-button">Create Account</button>
+</form>
+{% endblock %}
