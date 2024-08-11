@@ -32,6 +32,11 @@ label,
     color: var(--secondary-purple);
 }
 
+.danger-text {
+    color: var(--danger-red);
+}
+
+
 .link {
     color: var(--secondary-purple);
 }

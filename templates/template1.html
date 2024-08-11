@@ -14,10 +14,13 @@
 {% block body %}
     {% include "header.html" %}
     <main>
-        <section class="d-flex flex-column align-items-center justify-content-center">
-            <div class="body-container d-flex flex-column">
+        <section class="d-flex flex-column align-items-center body-container justify-content-center">
+            <div class="form-container d-flex flex-column">
                 {% block page_body %}{% endblock %}
             </div>
         </section>
     </main>
+{% endblock %}
+{% block scripts %}
+    {% block page_scripts %}{% endblock %}
 {% endblock %}
