@@ -16,3 +16,5 @@ sqlparse==0.5.1
 tomlkit==0.13.0
 whitenoise==6.7.0
 gunicorn
+dj-database-url
+mysqlclient
