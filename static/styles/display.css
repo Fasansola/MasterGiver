@@ -49,6 +49,11 @@
     align-items: flex-end;
 }
 
+/* Hide utilities */
+.d-none {
+    display: none;
+}
+
 
 /* RESPONSIVE STRUCTURE FOR FLEX DISPLAY */
 
@@ -96,6 +101,10 @@
     .align-items-sm-end {
         align-items: flex-end;
     }
+
+    .d-xs-none {
+        display: none !important;
+    }
 }
 
 @media (max-width: 768px) {
@@ -141,6 +150,10 @@
 
     .align-items-md-end {
         align-items: flex-end;
+    }
+
+    .d-sm-none {
+        display: none !important;
     }
 }
 
@@ -188,6 +201,10 @@
     .align-items-lg-end {
         align-items: flex-end;
     }
+
+    .d-md-none {
+        display: none !important;
+    }
 }
 
 @media (max-width: 1200px) {
@@ -234,39 +251,8 @@
     .align-items-xl-end {
         align-items: flex-end;
     }
-}
 
-/* Hide utilities */
-.d-none {
-    display: none;
-}
-
-@media (max-width: 575.98px) {
-    .d-xs-none {
-        display: none !important;
-    }
-}
-
-@media (min-width: 576px) and (max-width: 767.98px) {
-    .d-sm-none {
-        display: none !important;
-    }
-}
-
-@media (min-width: 768px) and (max-width: 991.98px) {
-    .d-md-none {
-        display: none !important;
-    }
-}
-
-@media (min-width: 992px) and (max-width: 1199.98px) {
     .d-lg-none {
-        display: none !important;
-    }
-}
-
-@media (min-width: 1200px) {
-    .d-xl-none {
         display: none !important;
     }
 }
@@ -380,4 +366,74 @@
     .col-xs-12 {
         width: 100%;
     }
+}
+
+
+/* POSITION */
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+
+
+
+/* DROPDOWN LIST CONTENTS */
+/* THIS FEILD IS TEMPORARY */
+
+.dropdown-list {
+    display: flex;
+    visibility: hidden;
+    width: 100%;
+    flex-direction: column;
+    gap: 12px;
+    background-color: var(--white);
+    padding-top: 12px;
+    top: 100%;
+    margin-top: 10px;
+    border: 1px solid var(--brand-gray);
+    border-radius: 8px;
+    z-index: 100;
+}
+
+
+
+.dropdown {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: visibility 0s, opacity 0.2s, transform 0.2s;
+}
+
+
+.dropdown-h {
+    padding: 0 24px;
+}
+
+.dropdown-ul {
+    display: flex;
+    flex-direction: column;
+    max-height: 240px;
+    overflow: hidden;
+    overflow-y: auto;
+
+}
+
+.dropdown-ul li {
+    padding: 12px 24px;
+    transition: all 0.2s;
+}
+
+.dropdown-ul li:last-child {
+    border-radius: 0 0 8px 8px;
+}
+
+
+.dropdown-ul li:hover {
+    background-color: var(--secondary-purple);
+    color: var(--white);
 }

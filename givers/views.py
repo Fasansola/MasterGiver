@@ -1,11 +1,12 @@
 import re
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.db import IntegrityError
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 from .models import User
 
@@ -60,8 +61,9 @@ def signup(request):
     # Save Data to the database
     try:
         user = User.objects.create_user(username, email, password)
-        login(request, user)
-        return JsonResponse({'success': 'Thanks for signing up!'}, status=201)
+        login(user)
+        # JsonResponse({'success': 'Thanks for signing up!'}, status=201)
+        return redirect('create_profile')
     except IntegrityError as e:
         error_message = str(e)
         if 'username' in error_message:
@@ -76,6 +78,12 @@ def signup(request):
             context = {
                 'error': 'An error occurred during registration. Please try again.'}
             return render(request, 'givers/register.html', context)
+
+
+@login_required
+def create_profile(request):
+    if request.method != 'POST':
+        return render(request, 'givers/create_profile.html')
 
 
 def login(request):

@@ -6,10 +6,6 @@
 
 /* FEATURED SECTION */
 
-.featured-sections {
-    margin-top: 12px;
-}
-
 .featured-sections>*:not(:last-child) {
     border-bottom: solid 1px var(--brand-gray);
 }
@@ -29,7 +25,7 @@
 }
 
 .featured-section-img img {
-    width: 100%;
+    width: 90%;
     max-width: 366px;
 }
 
@@ -92,5 +88,9 @@
     .cta-content {
         padding-bottom: 28px;
         max-width: 360px;
+    }
+
+    .cta-container {
+        gap: 16px;
     }
 }

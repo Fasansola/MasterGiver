@@ -24,6 +24,7 @@ class User(AbstractUser):
     user_terms = models.BooleanField(default=True)
     state = models.CharField(max_length=128)
     city = models.CharField(max_length=128)
+    country = models.CharField(max_length=128, default='United States')
     profile_photo = models.ImageField(null=True, blank=True)
     about_me = models.TextField(null=True, blank=True)
     giving_motivation = models.TextField(null=True, blank=True)

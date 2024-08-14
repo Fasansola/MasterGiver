@@ -1,0 +1,95 @@
+<!-- prettier-ignore -->
+
+{% extends "template1.html" %}
+{% load static %}
+
+{% block page_title %}Create An Account{% endblock %}
+{% block page_body %}
+<div class="form-header">
+  <h1 class="small-heading">Create MasterGiver Profile</h1>
+</div>
+<form
+  class="d-flex flex-column align-items-start forms"
+  action="{% url 'signup' %}"
+  method="POST"
+>
+  {% csrf_token %}
+  <div class="forms-split-div">
+    <div class="col-6 col-12-sm d-flex flex-column forms_div">
+      <label for="first_name" class="small-text required">First Name</label>
+      <input
+        type="text"
+        id="first_name"
+        name="first_name"
+        placeholder="John"
+        class="input"
+        required
+      />
+    </div>
+    <div class="col-6 col-12-sm d-flex flex-column forms_div">
+      <label for="last_name" class="small-text required">Last Name</label>
+      <input
+        type="text"
+        id="last_name"
+        name="last_name"
+        placeholder="Doe"
+        class="input"
+        required
+      />
+    </div>
+  </div>
+  <div class="forms-split-div">
+    <div class="col-6 col-12-sm flex-row-sm relative forms_div">
+      <label for="state" class="small-text required">State</label>
+      <input
+        type="text"
+        id="state"
+        name="state"
+        placeholder=""
+        class="input"
+        required
+      />
+      <div class="absolute dropdown-list" id="state-dropdown">
+        <h4 class="bold dropdown-h">States</h4>
+
+        <ul class="dropdown-ul" id="state-list"></ul>
+      </div>
+    </div>
+    <div class="col-6 col-12-sm relative forms_div">
+      <label for="city" class="small-text required">City</label>
+      <input
+        type="text"
+        id="city"
+        name="city"
+        placeholder=""
+        class="input"
+        disabled
+        required
+      />
+      <div class="absolute dropdown-list" id="city-dropdown">
+        <h4 class="bold dropdown-h">Cities</h4>
+
+        <ul class="dropdown-ul" id="city-list"></ul>
+      </div>
+    </div>
+  </div>
+  <div class="forms_div">
+    <label for="about_me" class="small-text required">About Me</label>
+    <textarea
+      class="input"
+      name="about_me"
+      id="about_me"
+      rows="4"
+      placeholder="Your Personal and Professional Bio here"
+    ></textarea>
+  </div>
+  {% if error %}
+  <div class="danger-text forms-warning">
+    <img src="{% static "icons/error.svg" %}" alt=""> {{ error }}
+  </div>
+  {% endif %}
+  <button type="submit" class="button dark-button">Next</button>
+</form>
+{% endblock %} {% block page_scripts %}
+<script src="{% static 'scripts/create-profile.js' %}"></script>
+{% endblock %}
