@@ -24,16 +24,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'your-default-secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
     'mastergiver-e5f12f89fc67.herokuapp.com',
     'www.mastergiver.com',
-    'mastergiver.com']
-
+    'mastergiver.com'
+]
 
 # Application definition
 INSTALLED_APPS = [
@@ -52,13 +51,13 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     # 'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'MasterGiver.urls'
@@ -84,12 +83,9 @@ WSGI_APPLICATION = 'MasterGiver.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 DATABASES = {
-    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
-}
-
-DATABASES = {
     'default': dj_database_url.config(
-        default='sqlite:////' + os.path.join(BASE_DIR, 'db.sqlite3')
+        default='sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3'),
+        conn_max_age=600
     )
 }
 
@@ -137,8 +133,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-# FORCE REDIREDT TO HTTPS
+# Production settings
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -147,3 +142,4 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+    X_FRAME_OPTIONS = 'DENY'
