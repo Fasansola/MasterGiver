@@ -6,15 +6,12 @@ django-debug-toolbar==4.4.6
 django-ratelimit==4.1.0
 isort==5.13.2
 mccabe==0.7.0
-mysqlclient==2.2.4
 pillow==10.4.0
 platformdirs==4.2.2
+psycopg2-binary==2.9.9
 pylint==3.2.6
 pylint-django==2.5.5
 pylint-plugin-utils==0.8.2
 sqlparse==0.5.1
 tomlkit==0.13.0
 whitenoise==6.7.0
-gunicorn
-dj-database-url
-mysqlclient
