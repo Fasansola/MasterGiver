@@ -1,0 +1,41 @@
+body {
+    background-color: var(--secondary-bg);
+}
+
+main {
+    border-top: 1px solid var(--brand-gray);
+}
+
+
+.body-container {
+    padding: 54px 48px;
+}
+
+.form-container {
+    background-color: var(--white);
+    max-width: 974px;
+    border-radius: 8px;
+    padding: 48px;
+    gap: 40px;
+    box-shadow: 0px 1px 2px 0px rgba(70, 70, 73, 0.06);
+    box-shadow: 0px 1px 3px 0px rgba(70, 70, 73, 0.04);
+}
+
+.form-header {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+
+/* MOBILE RESPONSIVE */
+
+@media screen and (max-width: 768px) {
+    .body-container {
+        padding: 32px 24px;
+    }
+
+    .form-container {
+        padding: 40px 32px;
+    }
+}
