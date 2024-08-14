@@ -26,10 +26,12 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'your-default-secret-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['mastergiver.com',
-                 'mastergiver-e5f12f89fc67.herokuapp.com',
-                 'localhost',
-                 '127.0.0.1']
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    'mastergiver-e5f12f89fc67.herokuapp.com',
+    'www.mastergiver.com',
+    'mastergiver.com']
 
 
 # Application definition
