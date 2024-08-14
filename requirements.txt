@@ -5,8 +5,10 @@ dj-database-url==2.2.0
 Django==5.0.7
 django-debug-toolbar==4.4.6
 django-ratelimit==4.1.0
+gunicorn==23.0.0
 isort==5.13.2
 mccabe==0.7.0
+packaging==24.1
 pillow==10.4.0
 platformdirs==4.2.2
 psycopg2-binary==2.9.9
