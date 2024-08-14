@@ -1,6 +1,7 @@
 asgiref==3.8.1
 astroid==3.2.4
 dill==0.3.8
+dj-database-url==2.2.0
 Django==5.0.7
 django-debug-toolbar==4.4.6
 django-ratelimit==4.1.0
@@ -14,4 +15,5 @@ pylint-django==2.5.5
 pylint-plugin-utils==0.8.2
 sqlparse==0.5.1
 tomlkit==0.13.0
+typing_extensions==4.12.2
 whitenoise==6.7.0
