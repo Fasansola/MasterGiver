@@ -1,0 +1,168 @@
+<!-- prettier-ignore -->
+
+{% extends "template1.html" %}
+{% load static %}
+
+{% block page_title %}Create An Account{% endblock %}
+{% block page_body %}
+<div class="form-header">
+  <h1 class="small-heading">Create MasterGiver Profile</h1>
+</div>
+<form
+  class="d-flex flex-column align-items-start forms"
+  enctype="multipart/form-data"
+  action="{% url 'create_profile' %}"
+  method="POST"
+>
+  {% csrf_token %}
+
+  <div class="forms-div">
+    <label for="why_i_give" class="small-text required">Why I Give</label>
+    <textarea
+      class="input"
+      name="why_i_give"
+      id="why_i_give"
+      rows="4"
+      placeholder="Provide details on why giving is important to you"
+    ></textarea>
+  </div>
+
+  <div class="forms-div relative">
+    <label for="what_i_care_about" class="small-text required"
+      >What I Care About</label
+    >
+    <input
+      type="text"
+      id="what_i_care_about"
+      name="what_i_care_about"
+      placeholder="Select one or more causes you care to support"
+      class="input"
+    />
+    <div class="absolute dropdown-list" id="causes-dropdown">
+      <h4 class="bold dropdown-h">What I Care About</h4>
+      <div>
+        <div class="dropdown-ul">
+          {% for cause in causes %}
+          <div class="checkbox-div justify-content-between align-items-center">
+            <style>
+              .checkbox-div input[type="checkbox"]:checked::before {
+                content: url("{% static 'images/check.svg' %}");
+              }
+            </style>
+            <label for="{{ cause.name }}" class="small-text icons-text">
+              <img src="{{ cause.icon.url }}" alt="{{ cause.name }} icon" />
+              {{ cause.name }}</label
+            >
+            <input
+              type="checkbox"
+              name="causes"
+              id="{{ cause.name }}"
+              class="causes-check skill-causes-items"
+              value="{{ cause.name }}"
+            />
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="dropdown-btn">
+        <div class="button dark-button" id="causes-btn">Save</div>
+      </div>
+    </div>
+  </div>
+  <div class="items-container">
+    {% for cause in causes %}
+    <div class="items-box causes-items">
+      <div class="icons-text">
+        <img src="{{ cause.icon.url }}" alt="{{ cause.name }} icon selected" />
+        <p>{{ cause.name }}</p>
+      </div>
+      <div>
+        <img src="{% static '/icons/x-close.svg' %}" alt="close-icon" />
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="forms-div relative">
+    <label for="giving_skills" class="small-text required">Giving Skills</label>
+    <input
+      type="text"
+      id="giving_skills"
+      name="giving_skills"
+      placeholder="Select one or more skill you have that you can offer for a cause"
+      class="input"
+    />
+
+    <div class="absolute dropdown-list" id="skills-dropdown">
+      <h4 class="bold dropdown-h">Giving Skills</h4>
+      <div>
+        <div class="dropdown-ul">
+          {% for skill in skills %}
+          <div class="checkbox-div justify-content-between align-items-center">
+            <style>
+              .checkbox-div input[type="checkbox"]:checked::before {
+                content: url("{% static 'images/check.svg' %}");
+              }
+            </style>
+
+            <label for="{{ skill.name }}" class="small-text icons-text">
+              {{ skill.name }}</label
+            >
+            <input
+              type="checkbox"
+              name="skills"
+              id="{{ skill.name }}"
+              value="{{ skill.name }}"
+              class="skills-check skill-causes-items"
+            />
+          </div>
+          {% endfor %}
+        </div>
+        <div class="dropdown-btn">
+          <div type="submit" class="button dark-button" id="skills-btn">
+            Save
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="items-container">
+    {% for skill in skills %}
+    <div class="items-box skills-items">
+      <div class="icons-text">
+        <p>{{ skill.name }}</p>
+      </div>
+      <div>
+        <img src="{% static '/icons/x-close.svg' %}" alt="close-icon" />
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <hr class="line" />
+
+  <div class="forms-div">
+    <label for="">My Organizations and Causes</label>
+    <h3 class="heading">Find Your Charity or Cause</h3>
+    <div class="input organizations-search">
+      <img src="{% static 'icons/search.svg' %}" alt="search-icon" />
+      <input
+        type="text"
+        id="search"
+        name="search"
+        placeholder="Find Your Charity or Cause"
+        class="organizations-search-input"
+      />
+    </div>
+  </div>
+  {% if error %}
+  <div class="danger-text forms-warning">
+    <img src="{% static "icons/error.svg" %}" alt=""> {{ error }}
+  </div>
+  {% endif %}
+  <button type="submit" class="button dark-button">Next</button>
+</form>
+{% endblock %} {% block page_scripts %}
+<script src="{% static 'scripts/what_care_about.js' %}"></script>
+<script src="{% static 'scripts/organization-search.js' %}"></script>
+{% endblock %}

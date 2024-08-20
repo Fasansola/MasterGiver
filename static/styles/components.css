@@ -52,7 +52,6 @@
 
 button {
     font-size: 1rem;
-    font-family: 'poppins', sans-serif;
     border: none;
     background: none;
     cursor: pointer;
@@ -68,7 +67,7 @@ button {
     gap: 16px;
 }
 
-.forms_div {
+.forms-div {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -98,7 +97,6 @@ button {
 .forms .input {
     padding: 14px;
     font-size: 1rem;
-    font-family: 'poppins', sans-serif;
     border-radius: 8px;
     border: 1px solid var(--brand-gray);
     width: 100%;
@@ -110,7 +108,7 @@ button {
 }
 
 
-.input::placeholder {
+*::placeholder {
     color: #575C62;
     font-size: 1rem;
 }
@@ -137,6 +135,7 @@ button {
 .checkbox-div {
     margin-top: 8px;
     display: flex;
+    width: 100%;
     flex-direction: row !important;
     gap: 10px !important;
 }
@@ -144,6 +143,10 @@ button {
 .checkbox-div label {
     font-size: 0.875rem;
     font-weight: 400;
+}
+
+.policy-text {
+    flex: 1;
 }
 
 .checkbox-div input[type="checkbox"] {
@@ -191,14 +194,178 @@ button {
 }
 
 
+
+
+/* FORMS DROPDOWN LIST */
+
+.dropdown-list {
+    display: flex;
+    visibility: hidden;
+    width: 100%;
+    flex-direction: column;
+    gap: 12px;
+    background-color: var(--white);
+    padding-top: 12px;
+    top: 100%;
+    margin-top: 10px;
+    border: 1px solid var(--brand-gray);
+    border-radius: 8px;
+    z-index: 100;
+}
+
+
+.dropdown {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: visibility 0s, opacity 0.2s, transform 0.2s;
+}
+
+
+.dropdown-h {
+    padding: 0 24px;
+}
+
+.dropdown-ul {
+    display: flex;
+    flex-direction: column;
+    max-height: 240px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.dropdown-ul>* {
+    padding: 12px 24px;
+    transition: all 0.2s;
+}
+
+.dropdown-ul>*:last-child {
+    border-radius: 0 0 8px 8px;
+}
+
+
+.dropdown-ul li:hover {
+    background-color: var(--secondary-purple);
+    color: var(--white);
+}
+
+
+.dropdown-btn {
+    display: flex;
+    padding: 0 24px;
+}
+
+.dropdown-btn .button {
+    margin: 6px 0 24px 0;
+}
+
+/* UPLOAD IMAGES BUTTONS */
+
+.upload-form {
+    gap: 32px;
+}
+
+
+.upload-form>div {
+    gap: 24px;
+}
+
+.upload-form>div>div {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.upload-form>div>div>div {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+}
+
+.upload-image-icon {
+    width: 136px;
+    height: 136px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.upload-image-button {
+    padding: 8px 20px;
+    border: 1px solid var(--brand-gray);
+    background-color: var(--light-hue);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+
+.icons-text {
+    gap: 12px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+
+
 /* FORMS RESPONSIVE */
 
 @media only screen and (max-width: 576px) {
     .forms-split-div {
         flex-direction: column;
     }
+}
 
-    .checkbox-div input[type="checkbox"] {
-        width: 30px;
-    }
+
+/* STRAIGHT LINE */
+
+.line {
+    width: 100%;
+    border: 1px solid var(--brand-gray);
+    margin: 32px 0;
+}
+
+
+
+
+/* ELEMENTS YET TO BE DECIDED */
+
+/* WHAT I CARE ABOUT PAGE */
+
+.items-box {
+    display: none;
+    align-items: center;
+    gap: 16px;
+    border: 1px solid var(--brand-gray);
+    padding: 8px 12px;
+    border-radius: 12px;
+}
+
+
+.items-container {
+    display: none;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 12px 0 16px 0;
+}
+
+
+
+/* ORGANIZATION SEARCH */
+
+.organizations-search {
+    display: flex;
+    gap: 8px;
+    height: 56px !important;
+    border-radius: 4px !important;
+}
+
+.organizations-search-input {
+    font-size: 1rem;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.organizations-search-input:focus {
+    outline: none;
 }

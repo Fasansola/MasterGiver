@@ -1,3 +1,26 @@
+// USER UPLOAD PROFILE IMAGE
+
+// update text
+const fileInput = document.getElementById('upload-image');
+const profilePic = document.getElementById('profile-picture');
+const fileChosen = document.getElementById('file-chosen');
+
+fileInput.addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        profilePic.src = URL.createObjectURL(file);
+    }
+
+    if (this.files && this.files.length > 0) {
+        fileChosen.textContent = this.files[0].name;
+    } else {
+        fileChosen.textContent = 'No file chosen';
+    }
+});
+
+
+// GET STATES & CITIES
+
 const stateField = document.getElementById('state');
 const stateDropdown = document.getElementById('state-dropdown');
 const stateList = document.getElementById('state-list');

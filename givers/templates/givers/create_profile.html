@@ -10,12 +10,48 @@
 </div>
 <form
   class="d-flex flex-column align-items-start forms"
-  action="{% url 'signup' %}"
+  enctype="multipart/form-data"
+  action="{% url 'create_profile' %}"
   method="POST"
 >
   {% csrf_token %}
+
+  <div class="forms-div upload-form">
+    <h3 class="big-text bold">Add Profile Picture</h3>
+    <div class="d-flex align-items-center">
+      <div>
+        <img
+          src="{% static 'icons/upload.svg' %}"
+          alt="upload"
+          class="upload-image-icon"
+          id="profile-picture"
+          width="136px"
+        />
+      </div>
+      <div>
+        <div>
+          <input
+            id="upload-image"
+            type="file"
+            name="profile_photo"
+            accept="image/*"
+            class="d-none"
+          />
+          <label class="upload-image-button" for="upload-image"
+            >Choose File</label
+          >
+          <p id="file-chosen">No file Selected</p>
+        </div>
+        <p>
+          The profile picture must be in GIF, JPG, and PNG formats, with a
+          maximum file size of 2MB.
+        </p>
+      </div>
+    </div>
+  </div>
+  <hr class="line" />
   <div class="forms-split-div">
-    <div class="col-6 col-12-sm d-flex flex-column forms_div">
+    <div class="col-6 col-12-sm d-flex flex-column forms-div">
       <label for="first_name" class="small-text required">First Name</label>
       <input
         type="text"
@@ -26,7 +62,7 @@
         required
       />
     </div>
-    <div class="col-6 col-12-sm d-flex flex-column forms_div">
+    <div class="col-6 col-12-sm d-flex flex-column forms-div">
       <label for="last_name" class="small-text required">Last Name</label>
       <input
         type="text"
@@ -39,13 +75,7 @@
     </div>
   </div>
   <div class="forms-split-div">
-    <div>
-      <div></div>
-      <div>
-        <input type="file" name="profile-image" accept="image/*" />
-      </div>
-    </div>
-    <div class="col-6 col-12-sm flex-row-sm relative forms_div">
+    <div class="col-6 col-12-sm flex-row-sm relative forms-div">
       <label for="state" class="small-text required">State</label>
       <input
         type="text"
@@ -61,7 +91,7 @@
         <ul class="dropdown-ul" id="state-list"></ul>
       </div>
     </div>
-    <div class="col-6 col-12-sm relative forms_div">
+    <div class="col-6 col-12-sm relative forms-div">
       <label for="city" class="small-text required">City</label>
       <input
         type="text"
@@ -79,7 +109,7 @@
       </div>
     </div>
   </div>
-  <div class="forms_div">
+  <div class="forms-div">
     <label for="about_me" class="small-text required">About Me</label>
     <textarea
       class="input"

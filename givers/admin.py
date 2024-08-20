@@ -6,7 +6,8 @@ from .models import User, UserCharitySupport, UserSkills, Skill
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'profile_photo']
+    list_display = ['username', 'email',
+                    'is_staff', 'is_active', 'date_joined']
 
 
 @admin.register(Skill)
