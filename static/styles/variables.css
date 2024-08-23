@@ -1,9 +1,11 @@
 :root {
     --white: #FFFFFF;
+    --text-black: #212325;
     --secondary-purple: #5851BF;
     --primary-purple: #2F2B77;
     --secondary-bg: #F7F8FA;
     --brand-gray: #D2D2D8;
     --danger-red: #FF4D4F;
     --light-hue: #ECEBF8;
+    --light-hue-secondary: #F7F8FA;
 }

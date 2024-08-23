@@ -167,6 +167,27 @@ def what_care_about(request):
     # return redirect('dashboard')
 
 
+@login_required
+def preview_profile(request):
+    user = request.user
+    userInfo = User.objects.get(username=user.username)
+    causes = UserCauses.objects.get(user=userInfo).cause.all()
+    skills = UserSkills.objects.get(user=userInfo).skill.all()
+    pledge_organizations = UsersPledgeOrganizations.objects.get(
+        user=userInfo).pledge_organization.all()
+    user_organizations = UsersCharityOwnEvent.objects.filter(user=userInfo)
+
+    context = {
+        'user': userInfo,
+        'causes': causes,
+        'skills': skills,
+        'pledge_organizations': pledge_organizations,
+        'user_organizations': user_organizations
+    }
+
+    return render(request, 'givers/preview_profile.html', context)
+
+
 def fetch_organizations(request):
     if not settings.PLEDGE_API_TOKEN:
         logger.error("PLEDGE_API_TOKEN is not set")

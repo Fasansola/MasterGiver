@@ -30,6 +30,14 @@
     background-color: var(--secondary-purple);
 }
 
+.light-button {
+    background-color: var(--light-hue);
+}
+
+.light-button:hover {
+    background-color: var(--light-hue-secondary);
+}
+
 
 /* SECONDARY ACTIONS */
 
@@ -177,7 +185,7 @@ button {
 }
 
 
-.forms .button {
+.forms-submit-button {
     margin-top: 24px;
 }
 

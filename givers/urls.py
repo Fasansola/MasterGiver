@@ -9,4 +9,5 @@ urlpatterns = [
     path('what-care-about/', views.what_care_about, name='what_care_about'),
     path('api/organizations', views.fetch_organizations,
          name='fetch_organizations'),
+    path('preview-profile/', views.preview_profile, name='preview_profile'),
 ]

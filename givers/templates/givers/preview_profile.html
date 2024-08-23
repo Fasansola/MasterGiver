@@ -1,12 +1,12 @@
 {% extends "template1.html" %}
 {% load static %}
 
-{% block page_title %}Create An Account{% endblock %}
+{% block page_title %}Profile Preview{% endblock %}
 
 {% block page_body %}
 <!-- Main form container -->
 <div class="form-header">
-  <h1 class="small-heading">Create MasterGiver Profile</h1>
+  <h1 class="small-heading">Account Preview</h1>
 </div>
 
 <form class="d-flex flex-column align-items-start forms" enctype="multipart/form-data" action="{% url 'create_profile' %}" method="POST">
@@ -14,17 +14,22 @@
 
   <!-- Profile picture upload section -->
   <div class="forms-div upload-form">
-    <h3 class="big-text bold">Add Profile Picture</h3>
+    <h3 class="big-text bold">Profile Picture</h3>
     <div class="d-flex align-items-center align-items-sm-start flex-sm-column">
       <div>
         <label for="upload-image">
-          <img src="{% static 'icons/upload.svg' %}" alt="Upload profile picture" class="upload-image-icon" id="profile-picture" width="136">
+            {% if user.profile_photo %}
+                <img src="{{ user.profile_photo.url }}" alt="profile picture" class="upload-image-icon" id="profile-picture" width="136">
+            {% else %}
+                <img src="{% static 'icons/upload.svg' %}" alt="upload-profile picture" class="upload-image-icon" id="profile-picture" width="136">
+            {% endif %}
         </label>
       </div>
       <div>
         <div>
           <input id="upload-image" type="file" name="profile_photo" accept="image/*" class="d-none">
-          <label class="upload-image-button" for="upload-image">Choose File</label>
+          <label class="dark-button button" for="upload-image">Upload</label>
+          <div class="light-button button">Choose File</div>
           <p id="file-chosen" class="small-text">No file selected</p>
         </div>
         <p class="small-text">
