@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, UserCharitySupport, UserSkills, Skill
+from .models import *
 
 # Register your models here.
 
@@ -20,6 +20,21 @@ class UserSkillAdmin(admin.ModelAdmin):
     list_display = ['user']
 
 
+@admin.register(UserCauses)
+class UserCausesAdmin(admin.ModelAdmin):
+    list_display = ['user']
+
+
 @admin.register(UserCharitySupport)
 class UserCharitySupportAdmin(admin.ModelAdmin):
     list_display = ['user', 'charity']
+
+
+@admin.register(UsersCharityOwnEvent)
+class UsersCharityOwnEventAdmin(admin.ModelAdmin):
+    list_display = ['user', 'name']
+
+
+@admin.register(UsersPledgeOrganizations)
+class UserPledgeOrganizationsAdmin(admin.ModelAdmin):
+    list_display = ['user']

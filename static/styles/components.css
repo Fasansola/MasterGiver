@@ -171,7 +171,7 @@ button {
 .checkbox-div input[type="checkbox"]:checked::before {
     color: white;
     position: absolute;
-    top: 45%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -229,7 +229,7 @@ button {
 .dropdown-ul {
     display: flex;
     flex-direction: column;
-    max-height: 240px;
+    max-height: 340px;
     overflow: hidden;
     overflow-y: auto;
 }
@@ -291,6 +291,7 @@ button {
 
 .upload-image-button {
     padding: 8px 20px;
+    min-width: 140px;
     border: 1px solid var(--brand-gray);
     background-color: var(--light-hue);
     border-radius: 8px;
@@ -331,15 +332,6 @@ button {
 
 /* WHAT I CARE ABOUT PAGE */
 
-.items-box {
-    display: none;
-    align-items: center;
-    gap: 16px;
-    border: 1px solid var(--brand-gray);
-    padding: 8px 12px;
-    border-radius: 12px;
-}
-
 
 .items-container {
     display: none;
@@ -349,6 +341,21 @@ button {
 }
 
 
+.items-box {
+    display: none;
+    align-items: center;
+    gap: 16px;
+    border: 1px solid var(--brand-gray);
+    padding: 8px 12px;
+    border-radius: 12px;
+    transition: all 0.3s;
+    background-color: var(--white);
+}
+
+.items-box:hover {
+    background-color: var(--light-hue);
+}
+
 
 /* ORGANIZATION SEARCH */
 
@@ -357,6 +364,7 @@ button {
     gap: 8px;
     height: 56px !important;
     border-radius: 4px !important;
+    margin-top: 18px;
 }
 
 .organizations-search-input {
@@ -368,4 +376,88 @@ button {
 
 .organizations-search-input:focus {
     outline: none;
+}
+
+
+.items-box.organization-items-box {
+    display: flex;
+    height: 64px;
+    border-radius: 4px;
+    gap: 32px;
+    padding: 12px;
+}
+
+.add-manual-element {
+    padding-left: 24px !important;
+}
+
+
+.organization-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px;
+    margin: 0 24px;
+    border-top: 1px solid var(--brand-gray);
+    border-radius: 0 !important;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.organization-item:hover {
+    background-color: var(--light-hue);
+}
+
+
+.organization-item>div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+
+.organization-logo {
+    width: 64px;
+}
+
+
+.organization-location {
+    display: flex;
+    gap: 4px;
+}
+
+.organization-info {
+    display: flex;
+    gap: 12px;
+}
+
+.organization-footer {
+    display: flex;
+    border-top: 1px solid var(--brand-gray);
+    justify-content: center;
+    padding: 16px 0;
+    color: var(--primary-purple);
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+
+.organization-footer:hover {
+    background-color: var(--light-hue);
+}
+
+
+#user-organization {
+    margin-top: 8px;
+}
+
+
+.add-manually {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+#add-user-organization {
+    display: none;
 }

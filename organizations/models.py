@@ -2,6 +2,8 @@ from django.db import models
 
 # Create your models here.
 
+# FOR MASTER GIVERS OWN CHARITY ORGANIZATIONS - CURRENTLY NOT IN USE
+
 
 class Charity(models.Model):
     name = models.CharField(max_length=255, db_index=True)
@@ -18,3 +20,8 @@ class Charity(models.Model):
         ordering = ['name']
         verbose_name = 'Charity'
         verbose_name_plural = 'Charities'
+
+
+#
+class PledgeOrganizations(models.Model):
+    id = models.CharField(primary_key=True, max_length=255)

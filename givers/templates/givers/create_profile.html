@@ -18,17 +18,18 @@
 
   <div class="forms-div upload-form">
     <h3 class="big-text bold">Add Profile Picture</h3>
-    <div class="d-flex align-items-center">
+    <div class="d-flex align-items-center align-items-sm-start flex-sm-column">
       <div>
-        <img
-          src="{% static 'icons/upload.svg' %}"
-          alt="upload"
-          class="upload-image-icon"
-          id="profile-picture"
-          width="136px"
-        />
+        <label for="upload-image">
+          <img
+            src="{% static 'icons/upload.svg' %}"
+            alt="upload"
+            class="upload-image-icon"
+            id="profile-picture"
+            width="136px"
+        /></label>
       </div>
-      <div>
+      <div class="">
         <div>
           <input
             id="upload-image"
@@ -40,9 +41,9 @@
           <label class="upload-image-button" for="upload-image"
             >Choose File</label
           >
-          <p id="file-chosen">No file Selected</p>
+          <p id="file-chosen" class="small-text">No file Selected</p>
         </div>
-        <p>
+        <p class="small-text">
           The profile picture must be in GIF, JPG, and PNG formats, with a
           maximum file size of 2MB.
         </p>

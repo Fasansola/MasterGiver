@@ -1,4 +1,6 @@
+from django.conf import settings
 import re
+import requests
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
@@ -9,9 +11,15 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+from django.contrib.contenttypes.models import ContentType
 
-from .models import User, Skill
+from .models import User, Skill, UserSkills, UserCauses, UsersPledgeOrganizations, UsersCharityOwnEvent
 from causes.models import Causes
+from organizations.models import PledgeOrganizations
+
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 # Create your views here.
@@ -119,20 +127,69 @@ def what_care_about(request):
         }
         return render(request, 'givers/what_care_about.html', context)
 
-    # userData = request.POST
-    # user = request.user
+    userData = request.POST
+    print(userData)
+    user = request.user
 
-    # skills = userData.getlist('skills', [])
-    # giving_motivation = userData.get('giving_motivation', '')
+    why_i_give = userData.get('why_i_give', '')
+    causes = userData.getlist('causes', [])
+    skills = userData.getlist('skills', [])
+    plegde_organizations = userData.getlist('plegde_organizations[]', [])
+    user_organizations = userData.getlist('user_organizations[]', [])
 
-    # userInfo = User.objects.get(username=user.username)
+    userInfo = User.objects.get(username=user.username)
+    userInfo.giving_motivation = why_i_give
+    userInfo.save()
 
-    # for skill in skills:
-    #     userInfo.skills.add(skill)
+    userCause = UserCauses.objects.create(user=userInfo)
+    for cause in causes:
+        cause = Causes.objects.get(id=cause)
+        userCause.cause.add(cause)
 
-    # userInfo.giving_motivation = giving_motivation
-    # userInfo.save()
+    userSkill = UserSkills.objects.create(user=userInfo)
+    for skill in skills:
+        skill = Skill.objects.get(id=skill)
+        userSkill.skill.add(skill)
+
+    userPledgeOrg = UsersPledgeOrganizations.objects.create(user=userInfo)
+    for organization in plegde_organizations:
+        if PledgeOrganizations.objects.filter(id=organization).exists():
+            org = PledgeOrganizations.objects.get(id=organization)
+        else:
+            org = PledgeOrganizations.objects.create(id=organization)
+        userPledgeOrg.pledge_organization.add(org)
+
+    for organization in user_organizations:
+        UsersCharityOwnEvent.objects.create(
+            user=userInfo, name=organization)
+
+    return HttpResponse('Data received')
     # return redirect('dashboard')
+
+
+def fetch_organizations(request):
+    if not settings.PLEDGE_API_TOKEN:
+        logger.error("PLEDGE_API_TOKEN is not set")
+        return JsonResponse({"error": "API token is not configured"}, status=500)
+
+    api_url = 'https://api.pledge.to/v1/organizations'
+    headers = {
+        "Authorization": f"Bearer {settings.PLEDGE_API_TOKEN}",
+        "Accept": "application/json"
+    }
+
+    # Get the query parameter from the request
+    query = request.GET.get('q', '')
+
+    # Add the query parameter to the API request if it's not empty
+    params = {'q': query} if query else {}
+
+    try:
+        response = requests.get(api_url, headers=headers, params=params)
+        response.raise_for_status()  # Raises an HTTPError for bad responses
+        return JsonResponse(response.json(), safe=False)
+    except requests.RequestException as e:
+        return JsonResponse({"error": str(e)}, status=500)
 
 
 def login_view(request):

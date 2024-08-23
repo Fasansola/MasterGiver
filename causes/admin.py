@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Causes, MemberCause
+from .models import Causes
 
 # Register your models here.
 
@@ -8,10 +8,11 @@ from .models import Causes, MemberCause
 class CausesAdmin(admin.ModelAdmin):
     list_display = ['name']
 
+# TOO COMPLEX OF A PROCESS FOR NOW
 
-@admin.register(MemberCause)
-class MemberCauseAdmin(admin.ModelAdmin):
-    list_display = ['cause', 'content_type', 'object_id']
+# @admin.register(MemberCause)
+# class MemberCauseAdmin(admin.ModelAdmin):
+#     list_display = ['cause', 'content_type', 'object_id']
 
 
 # admin.site.register(Causes)
