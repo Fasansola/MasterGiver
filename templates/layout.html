@@ -1,41 +1,42 @@
-<!-- prettier-ignore -->
-
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <!-- RESET STYLESHEET -->
-      <link href={% static "styles/reset.css" %} rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Reset stylesheet to normalize browser styles -->
+    <link href="{% static 'styles/reset.css' %}" rel="stylesheet" />
 
-      <!-- FONTS -->
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet"
-      />
+    <!-- Google Fonts: Poppins (various weights) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
 
-      <!-- FONTAWESOME -->
+    <!-- Custom stylesheets -->
+    <link href="{% static 'styles/variables.css' %}" rel="stylesheet" />
+    <link href="{% static 'styles/style.css' %}" rel="stylesheet" />
+    <link href="{% static 'styles/font.css' %}" rel="stylesheet" />
+    <link href="{% static 'styles/display.css' %}" rel="stylesheet" />
+    <link href="{% static 'styles/header.css' %}" rel="stylesheet" />
+    <link href="{% static 'styles/footer.css' %}" rel="stylesheet" />
+    <link href="{% static 'styles/components.css' %}" rel="stylesheet" />
+    
+    <!-- Placeholder for page-specific styles -->
+    {% block styles %}{% endblock %}
 
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-      <!-- CUSTOM STYLESHEET -->
-      <link href="{% static "styles/variables.css" %}" rel="stylesheet" />
-      <link href="{% static "styles/style.css" %}" rel="stylesheet" />
-      <link href="{% static "styles/font.css" %}" rel="stylesheet" />
-      <link href="{% static "styles/display.css" %}" rel="stylesheet" />
-      <link href="{% static "styles/header.css" %}" rel="stylesheet" />
-      <link href="{% static "styles/footer.css" %}" rel="stylesheet" />
-      <link href="{% static "styles/components.css" %}" rel="stylesheet" />
-      {% block styles %}{% endblock %}
-
+    <!-- Dynamic title: "MasterGiver - [Page Title]" -->
     <title>MasterGiver - {% block title %}{% endblock %}</title>
   </head>
   <body>
+    <!-- Main content block -->
     {% block body %}{% endblock %}
+    
+    <!-- Placeholder for page-specific scripts -->
     {% block scripts %}{% endblock %}
   </body>
 </html>

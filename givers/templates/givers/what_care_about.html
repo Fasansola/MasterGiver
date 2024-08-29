@@ -1,21 +1,23 @@
-{% extends "template1.html" %} {% load static %} {% block page_title %}Create An
-Account{% endblock %} {% block page_body %}
-<!-- Main form container -->
+{% extends "signup-flow.html" %}
+{% load static %}
 
+{% block page_title %}Create An Account{% endblock %}
+
+{% block page_body %}
+<!-- Main form container -->
 <form
   class="d-flex flex-column align-items-start forms"
   enctype="multipart/form-data"
   action="{% url 'what_care_about' %}"
   method="POST"
   aria-label="MasterGiver Profile Creation Form"
+  novalidate
 >
   {% csrf_token %}
 
   <!-- Why I Give section -->
   <div class="forms-div">
-    <label for="why_i_give" class="small-text required" id="why_i_give_label"
-      >Why I Give</label
-    >
+    <label for="why_i_give" class="small-text required" id="why_i_give_label">Why I Give</label>
     <textarea
       class="input"
       name="why_i_give"
@@ -24,18 +26,15 @@ Account{% endblock %} {% block page_body %}
       placeholder="Provide details on why giving is important to you"
       aria-labelledby="why_i_give_label"
       aria-required="true"
+      minlength="10"
+      maxlength="500"
     ></textarea>
+    <span id="why_i_give-error" class="error-message" aria-live="polite"></span>
   </div>
 
   <!-- What I Care About section -->
-
   <div class="forms-div relative">
-    <label
-      for="what_i_care_about"
-      class="small-text required"
-      id="what_i_care_about_label"
-      >What I Care About</label
-    >
+    <label for="what_i_care_about" class="small-text required" id="what_i_care_about_label">What I Care About</label>
     <input
       type="text"
       id="what_i_care_about"
@@ -46,6 +45,7 @@ Account{% endblock %} {% block page_body %}
       aria-haspopup="true"
       aria-expanded="false"
     />
+    <span id="what_i_care_about-error" class="error-message" aria-live="polite"></span>
 
     <!-- Dropdown for selecting causes -->
     <div
@@ -54,9 +54,7 @@ Account{% endblock %} {% block page_body %}
       role="listbox"
       aria-labelledby="what_i_care_about_label"
     >
-      <h4 class="bold dropdown-h" id="causes-dropdown-title">
-        What I Care About
-      </h4>
+      <h4 class="bold dropdown-h" id="causes-dropdown-title">What I Care About</h4>
       <div class="dropdown-ul">
         {% for cause in causes %}
         <div
@@ -94,12 +92,12 @@ Account{% endblock %} {% block page_body %}
 
   <!-- Container for displaying selected causes -->
   <div
-    class="items-container"
+    class="d-none items-container"
     aria-live="polite"
     aria-relevant="additions removals"
   >
     {% for cause in causes %}
-    <div class="items-box causes-items" role="listitem">
+    <div class="d-none items-box causes-items" role="listitem">
       <div class="icons-text">
         <img src="{{ cause.icon.url }}" alt="" aria-hidden="true" />
         <p>{{ cause.name }}</p>
@@ -119,22 +117,18 @@ Account{% endblock %} {% block page_body %}
 
   <!-- Giving Skills section -->
   <div class="forms-div relative">
-    <label
-      for="giving_skills"
-      class="small-text required"
-      id="giving_skills_label"
-      >Giving Skills</label
-    >
+    <label for="giving_skills" class="small-text required" id="giving_skills_label">Giving Skills</label>
     <input
       type="text"
       id="giving_skills"
-      placeholder="Select one or more skill you have that you can offer for a cause"
+      placeholder="Select one or more skills you have that you can offer for a cause"
       class="input"
       aria-labelledby="giving_skills_label"
       aria-required="true"
       aria-haspopup="true"
       aria-expanded="false"
     />
+    <span id="giving_skills-error" class="error-message" aria-live="polite"></span>
 
     <!-- Dropdown for selecting skills -->
     <div
@@ -151,9 +145,7 @@ Account{% endblock %} {% block page_body %}
           role="option"
           aria-selected="false"
         >
-          <label for="{{ skill.name }}" class="small-text icons-text"
-            >{{ skill.name }}</label
-          >
+          <label for="{{ skill.name }}" class="small-text icons-text">{{ skill.name }}</label>
           <input
             type="checkbox"
             name="skills"
@@ -167,7 +159,6 @@ Account{% endblock %} {% block page_body %}
       </div>
       <div class="dropdown-btn">
         <div
-          type="submit"
           class="button dark-button"
           id="skills-btn"
           role="button"
@@ -181,12 +172,12 @@ Account{% endblock %} {% block page_body %}
 
   <!-- Container for displaying selected skills -->
   <div
-    class="items-container"
+    class="d-none items-container"
     aria-live="polite"
     aria-relevant="additions removals"
   >
     {% for skill in skills %}
-    <div class="items-box skills-items" role="listitem">
+    <div class="d-none items-box skills-items" role="listitem">
       <div class="icons-text">
         <p>{{ skill.name }}</p>
       </div>
@@ -203,13 +194,11 @@ Account{% endblock %} {% block page_body %}
     {% endfor %}
   </div>
 
-  <hr class="line" aria-hidden="true" />
+  <hr class="line" aria-hidden="true">
 
   <!-- My Organizations and Causes section -->
   <div class="forms-div relative">
-    <label for="search-org" id="search-org-label"
-      >My Organizations and Causes</label
-    >
+    <label for="search-org" id="search-org-label">My Organizations and Causes</label>
     <h3 class="heading">Find Your Charity or Cause</h3>
     <div class="input organizations-search" role="search">
       <img src="{% static 'icons/search.svg' %}" alt="" aria-hidden="true" />
@@ -244,23 +233,17 @@ Account{% endblock %} {% block page_body %}
       aria-expanded="false"
       aria-controls="add-user-organization"
     >
-      <img
-        src="{% static 'icons/add-manually.svg' %}"
-        alt=""
-        aria-hidden="true"
-      />
+      <img src="{% static 'icons/add-manually.svg' %}" alt="" aria-hidden="true" />
       <p>Add Manually</p>
     </div>
-    <div class="" id="add-user-organization" aria-hidden="true">
-      <label for="user-organization" class="bold" id="user-organization-label"
-        >My Organizations or Event Name</label
-      >
+    <div class="d-none" id="add-user-organization">
+      <label for="user-organization" class="bold" id="user-organization-label">My Organizations or Event Name</label>
       <input
         type="text"
         class="input"
         id="user-organization"
         aria-labelledby="user-organization-label"
-        limit="40"
+        maxlength="40"
       />
       <button
         type="button"
@@ -275,7 +258,7 @@ Account{% endblock %} {% block page_body %}
 
   <!-- Container for displaying selected organizations -->
   <div
-    class="items-container"
+    class="d-none items-container"
     id="org-boxes"
     aria-live="polite"
     aria-relevant="additions removals"
@@ -286,14 +269,15 @@ Account{% endblock %} {% block page_body %}
   <!-- Error message display -->
   {% if error %}
   <div class="danger-text forms-warning" role="alert">
-    <img src="{% static "icons/error.svg" %}" alt="" aria-hidden="true"> {{
-    error }}
+    <img src="{% static "icons/error.svg" %}" alt="" aria-hidden="true"> {{ error }}
   </div>
   {% endif %}
 
   <button type="submit" class="forms-submit-button button dark-button">Next</button>
 </form>
-{% endblock %} {% block page_scripts %}
+{% endblock %}
+
+{% block page_scripts %}
 <script>
   // Define static URLs for use in JavaScript
   const STATIC_URLS = {

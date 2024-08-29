@@ -88,7 +88,7 @@ document.getElementById('search-org').addEventListener('input', debounce((event)
 
 document.addEventListener('click', (event) => {
     if (event.target.classList.contains('remove-parent')) {
-        event.target.closest('.items-box').style.display = '';
+        event.target.closest('.items-box').style.display = 'none';
         let index = event.target.closest('.items-box').dataset.id;
         if (event.target.closest('.items-box').classList.contains('causes-items')) {
             causesCheck[index].checked = false;

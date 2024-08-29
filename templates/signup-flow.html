@@ -1,5 +1,3 @@
-<!-- prettier-ignore -->
-
 {% extends 'layout.html' %}
 
 {% load static %}
@@ -9,16 +7,20 @@
     {% endblock %}
 {% endblock title %}
 
-{% block styles %}<link rel="stylesheet" href="{% static 'styles/template1.css' %}" />{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'styles/signup-flow.css' %}" />
+{% endblock %}
 
 {% block body %}
     {% include "header.html" %}
 
     <style>
+        /* Custom styling for checkbox */
         .checkbox-div input[type="checkbox"]:checked::before {
           content: url("{% static 'images/check.svg' %}");
         }
-      </style>
+    </style>
+
     <main>
         <section class="d-flex flex-column align-items-center body-container justify-content-center">
             <div class="form-container d-flex flex-column">
@@ -27,6 +29,7 @@
         </section>
     </main>
 {% endblock %}
+
 {% block scripts %}
     {% block page_scripts %}{% endblock %}
 {% endblock %}

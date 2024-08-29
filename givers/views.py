@@ -92,7 +92,6 @@ def create_profile(request):
     userData = request.POST
     user = request.user
 
-    # profile_photo = userData.get('profile_photo', '')
     profile_photo = request.FILES.get('profile_photo', '')
 
     if profile_photo:
@@ -107,7 +106,7 @@ def create_profile(request):
 
     userInfo = User.objects.get(username=user.username)
 
-    userInfo.profile_photo = path
+    # userInfo.profile_photo = path
     userInfo.first_name = first_name
     userInfo.last_name = last_name
     userInfo.state = state
@@ -171,17 +170,80 @@ def what_care_about(request):
 def preview_profile(request):
     user = request.user
     userInfo = User.objects.get(username=user.username)
-    causes = UserCauses.objects.get(user=userInfo).cause.all()
-    skills = UserSkills.objects.get(user=userInfo).skill.all()
+
+    if request.method == 'POST':
+        userData = request.POST
+        userFile = request.FILES
+
+        userInfo.profile_photo = userFile.get('profile_photo', '')
+        userInfo.first_name = userData.get('first_name', '')
+        userInfo.last_name = userData.get('last_name', '')
+        userInfo.state = userData.get('state', '')
+        userInfo.city = userData.get('city', '')
+        userInfo.about_me = userData.get('about_me', '')
+        userInfo.giving_motivation = userData.get('why_i_give', '')
+        userInfo.save()
+
+        causes = userData.getlist('causes', [])
+        skills = userData.getlist('skills', [])
+        plegde_organizations = userData.getlist('plegde_organizations[]', [])
+        user_organizations = userData.getlist('user_organizations[]', [])
+
+        new_causes = Causes.objects.filter(id__in=causes)
+        new_skills = Skill.objects.filter(id__in=skills)
+        new_pledge_orgs = PledgeOrganizations.objects.filter(
+            id__in=plegde_organizations)
+
+        user_causes = UserCauses.objects.get(user=userInfo)
+        user_skills = UserSkills.objects.get(user=userInfo)
+        user_pledge_orgs = UsersPledgeOrganizations.objects.get(user=userInfo)
+
+        user_skills.skill.set(new_skills)
+        user_causes.cause.set(new_causes)
+        user_pledge_orgs.pledge_organization.set(new_pledge_orgs)
+
+        print(userData)
+        print(userFile)
+
+        return HttpResponse('Data received and updated')
+
+    causes = Causes.objects.all()
+    user_causes = UserCauses.objects.get(user=userInfo).cause.all()
+    skills = Skill.objects.all()
+    user_skills = UserSkills.objects.get(user=userInfo).skill.all()
     pledge_organizations = UsersPledgeOrganizations.objects.get(
         user=userInfo).pledge_organization.all()
     user_organizations = UsersCharityOwnEvent.objects.filter(user=userInfo)
 
+    user_pledge_orgs = []
+
+    for org in pledge_organizations:
+        api_url = f'https://api.pledge.to/v1/organizations/{org.id}'
+        headers = {
+            "Authorization": f"Bearer {settings.PLEDGE_API_TOKEN}",
+            "Accept": "application/json"
+        }
+
+        try:
+            response = requests.get(api_url, headers=headers)
+            response.raise_for_status()  # Raises an HTTPError for bad responses
+            org_data = response.json()
+            org.name = org_data['name']
+            org.website = org_data['website_url']
+            org.logo = org_data['logo_url']
+            org.save()
+            user_pledge_orgs.append(org)
+        except requests.RequestException as e:
+            logger.error(
+                f"Failed to fetch organization data for {org.id}: {e}")
+
     context = {
         'user': userInfo,
         'causes': causes,
+        'user_causes': user_causes,
         'skills': skills,
-        'pledge_organizations': pledge_organizations,
+        'user_skills': user_skills,
+        'pledge_organizations': user_pledge_orgs,
         'user_organizations': user_organizations
     }
 

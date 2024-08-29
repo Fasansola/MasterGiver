@@ -1,4 +1,4 @@
-{% extends "template1.html" %}
+{% extends "signup-flow.html" %}
 {% load static %}
 
 {% block page_title %}Create An Account{% endblock %}
@@ -9,7 +9,7 @@
   <h1 class="small-heading">Create MasterGiver Profile</h1>
 </div>
 
-<form class="d-flex flex-column align-items-start forms" enctype="multipart/form-data" action="{% url 'create_profile' %}" method="POST">
+<form class="d-flex flex-column align-items-start forms" enctype="multipart/form-data" action="{% url 'create_profile' %}" method="POST" novalidate>
   {% csrf_token %}
 
   <!-- Profile picture upload section -->
@@ -23,11 +23,11 @@
       </div>
       <div>
         <div>
-          <input id="upload-image" type="file" name="profile_photo" accept="image/*" class="d-none">
+          <input id="upload-image" type="file" name="profile_photo" accept="image/gif,image/jpeg,image/png" class="d-none" aria-describedby="file-requirements">
           <label class="upload-image-button" for="upload-image">Choose File</label>
           <p id="file-chosen" class="small-text">No file selected</p>
         </div>
-        <p class="small-text">
+        <p id="file-requirements" class="small-text">
           The profile picture must be in GIF, JPG, or PNG format, with a maximum file size of 2MB.
         </p>
       </div>
@@ -40,11 +40,13 @@
   <div class="forms-split-div">
     <div class="col-6 col-12-sm d-flex flex-column forms-div">
       <label for="first_name" class="small-text required">First Name</label>
-      <input type="text" id="first_name" name="first_name" placeholder="John" class="input" required>
+      <input type="text" id="first_name" name="first_name" placeholder="John" class="input" required aria-required="true" minlength="2" maxlength="50">
+      <span id="first_name-error" class="error-message" aria-live="polite"></span>
     </div>
     <div class="col-6 col-12-sm d-flex flex-column forms-div">
       <label for="last_name" class="small-text required">Last Name</label>
-      <input type="text" id="last_name" name="last_name" placeholder="Doe" class="input" required>
+      <input type="text" id="last_name" name="last_name" placeholder="Doe" class="input" required aria-required="true" minlength="2" maxlength="50">
+      <span id="last_name-error" class="error-message" aria-live="polite"></span>
     </div>
   </div>
 
@@ -52,32 +54,35 @@
   <div class="forms-split-div">
     <div class="col-6 col-12-sm flex-row-sm relative forms-div">
       <label for="state" class="small-text required">State</label>
-      <input type="text" id="state" name="state" placeholder="" class="input" required>
+      <input type="text" id="state" name="state" placeholder="" class="input" required aria-required="true" aria-autocomplete="list" aria-controls="state-list">
       <div class="absolute dropdown-list" id="state-dropdown">
         <h4 class="bold dropdown-h">States</h4>
-        <ul class="dropdown-ul" id="state-list"></ul>
+        <ul class="dropdown-ul" id="state-list" role="listbox"></ul>
       </div>
+      <span id="state-error" class="error-message" aria-live="polite"></span>
     </div>
     <div class="col-6 col-12-sm relative forms-div">
       <label for="city" class="small-text required">City</label>
-      <input type="text" id="city" name="city" placeholder="" class="input" disabled required>
+      <input type="text" id="city" name="city" placeholder="" class="input" required aria-required="true" aria-autocomplete="list" aria-controls="city-list">
       <div class="absolute dropdown-list" id="city-dropdown">
         <h4 class="bold dropdown-h">Cities</h4>
-        <ul class="dropdown-ul" id="city-list"></ul>
+        <ul class="dropdown-ul" id="city-list" role="listbox"></ul>
       </div>
+      <span id="city-error" class="error-message" aria-live="polite"></span>
     </div>
   </div>
 
   <!-- About Me section -->
   <div class="forms-div">
     <label for="about_me" class="small-text required">About Me</label>
-    <textarea class="input" name="about_me" id="about_me" rows="4" placeholder="Your personal and professional bio here"></textarea>
+    <textarea class="input" name="about_me" id="about_me" rows="4" placeholder="Your personal and professional bio here" required aria-required="true" minlength="10" maxlength="500"></textarea>
+    <span id="about_me-error" class="error-message" aria-live="polite"></span>
   </div>
 
   <!-- Error message display -->
   {% if error %}
-  <div class="danger-text forms-warning">
-    <img src="{% static 'icons/error.svg' %}" alt="Error icon">
+  <div class="danger-text forms-warning" role="alert">
+    <img src="{% static 'icons/error.svg' %}" alt="" aria-hidden="true">
     {{ error }}
   </div>
   {% endif %}
@@ -89,4 +94,79 @@
 
 {% block page_scripts %}
 <script src="{% static 'scripts/create-profile.js' %}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const fileInput = document.getElementById('upload-image');
+    const fileChosen = document.getElementById('file-chosen');
+
+    // File upload handling
+    fileInput.addEventListener('change', function(e) {
+      if (e.target.files.length > 0) {
+        const file = e.target.files[0];
+        fileChosen.textContent = file.name;
+        
+        // File size validation
+        if (file.size > 5 * 1024 * 1024) {
+          showError(fileInput, 'File size must not exceed 2MB');
+        } else {
+          clearError(fileInput);
+        }
+      } else {
+        fileChosen.textContent = 'No file selected';
+      }
+    });
+
+    // Form submission handling
+    form.addEventListener('submit', function(e) {
+      let isValid = true;
+
+      // Validate all required fields
+      form.querySelectorAll('input[required], textarea[required]').forEach(field => {
+        if (!field.value.trim()) {
+          isValid = false;
+          showError(field, 'This field is required');
+        } else {
+          clearError(field);
+        }
+      });
+
+      // Additional validations
+      const firstName = document.getElementById('first_name');
+      const lastName = document.getElementById('last_name');
+      const aboutMe = document.getElementById('about_me');
+
+      if (firstName.value.length < 2 || firstName.value.length > 50) {
+        isValid = false;
+        showError(firstName, 'First name must be between 2 and 50 characters');
+      }
+
+      if (lastName.value.length < 2 || lastName.value.length > 50) {
+        isValid = false;
+        showError(lastName, 'Last name must be between 2 and 50 characters');
+      }
+
+      if (aboutMe.value.length < 10 || aboutMe.value.length > 500) {
+        isValid = false;
+        showError(aboutMe, 'About Me must be between 10 and 500 characters');
+      }
+
+      if (!isValid) {
+        e.preventDefault();
+      }
+    });
+
+    function showError(field, message) {
+      const errorSpan = document.getElementById(`${field.id}-error`);
+      errorSpan.textContent = message;
+      field.setAttribute('aria-invalid', 'true');
+    }
+
+    function clearError(field) {
+      const errorSpan = document.getElementById(`${field.id}-error`);
+      errorSpan.textContent = '';
+      field.removeAttribute('aria-invalid');
+    }
+  });
+</script>
 {% endblock %}

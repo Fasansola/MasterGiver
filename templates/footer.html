@@ -1,15 +1,16 @@
-<!-- prettier-ignore -->
-
 {% load static %}
 
 <footer class="d-flex flex-column align-items-center">
+  <!-- Main Footer Content -->
   <section class="d-grid footer container">
-    <div id="#footer-logo">
-      <a href="{% url 'home' %}" class="logo-container"
-        ><img class="logo" src="{% static "images/Master Giver Logo.svg" %}"
-        alt="Master Giver Logo" /></a
-      >
+    <!-- Logo -->
+    <div id="footer-logo">
+      <a href="{% url 'home' %}" class="logo-container">
+        <img class="logo" src="{% static "images/Master Giver Logo.svg" %}" alt="Master Giver Logo" />
+      </a>
     </div>
+
+    <!-- Resources Section -->
     <div class="d-flex flex-column" id="resources">
       <h3 class="bold">Resources</h3>
       <ul class="d-flex list-gap flex-column small-text">
@@ -18,6 +19,8 @@
         <li>Register Your Organisation</li>
       </ul>
     </div>
+
+    <!-- Company Section -->
     <div class="d-flex flex-column" id="company">
       <h3 class="bold">Company</h3>
       <ul class="d-flex list-gap flex-column small-text">
@@ -26,36 +29,25 @@
         <li>Legal</li>
       </ul>
     </div>
+
+    <!-- Contact Info Section -->
     <div class="d-flex flex-column" id="contact-info">
       <h3 class="bold">Contact Info</h3>
       <ul class="d-flex list-gap flex-column small-text">
         <li>support@mastergiver.org</li>
         <li>75 Fifth St, Suite 2200 Atlanta, GS 30308</li>
       </ul>
+      <!-- Social Media Links -->
       <div class="d-flex social-links">
-        <a href=""
-          ><img
-            src="{% static 'images/facebook.svg' %}"
-            alt="follow us on facebook"
-        /></a>
-        <a href=""
-          ><img
-            src="{% static 'images/linkedin.svg' %}"
-            alt="follow us on linkedin"
-        /></a>
-        <a href=""
-          ><img
-            src="{% static 'images/twitter.svg' %}"
-            alt="follow us on twitter"
-        /></a>
-        <a href=""
-          ><img
-            src="{% static 'images/instagram.svg' %}"
-            alt="follow us on instagram"
-        /></a>
+        <a href=""><img src="{% static 'images/facebook.svg' %}" alt="follow us on facebook" /></a>
+        <a href=""><img src="{% static 'images/linkedin.svg' %}" alt="follow us on linkedin" /></a>
+        <a href=""><img src="{% static 'images/twitter.svg' %}" alt="follow us on twitter" /></a>
+        <a href=""><img src="{% static 'images/instagram.svg' %}" alt="follow us on instagram" /></a>
       </div>
     </div>
   </section>
+
+  <!-- Copyright Section -->
   <section class="d-flex justify-content-center footer-credit">
     <p>MasterGiver &copy; 2024</p>
   </section>

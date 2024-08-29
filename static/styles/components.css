@@ -18,6 +18,7 @@
     cursor: pointer;
     transition: all 0.3s;
     min-width: 140px;
+    line-height: inherit;
 }
 
 
@@ -342,7 +343,6 @@ button {
 
 
 .items-container {
-    display: none;
     flex-wrap: wrap;
     gap: 16px;
     margin: 12px 0 16px 0;
@@ -350,7 +350,6 @@ button {
 
 
 .items-box {
-    display: none;
     align-items: center;
     gap: 16px;
     border: 1px solid var(--brand-gray);
@@ -470,4 +469,19 @@ button {
 
 #add-user-organization {
     display: none;
+}
+
+
+
+/* PREVIEW ELEMENTS PAGE */
+.element-form-field {
+    display: none;
+}
+
+
+.edit-icons-text {
+    gap: 4px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 }

@@ -51,7 +51,8 @@ class Skill(models.Model):
 
 
 class UserSkills(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user_skills')
     skill = models.ManyToManyField(Skill)
 
     def __str__(self):
@@ -64,7 +65,8 @@ class UserSkills(models.Model):
 
 
 class UserCauses(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user_causes')
     cause = models.ManyToManyField(Causes)
 
     def __str__(self):
@@ -74,20 +76,6 @@ class UserCauses(models.Model):
         ordering = ['user']
         verbose_name = 'User Cause'
         verbose_name_plural = 'User Causes'
-
-
-class UserCharitySupport(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    charity = models.ForeignKey(Charity, on_delete=models.CASCADE)
-    support_date = models.DateField(default=timezone.now)
-
-    def __str__(self):
-        return f"{self.user} supports {self.charity}"
-
-    class Meta:
-        ordering = ['user']
-        verbose_name = 'User Charity Support'
-        verbose_name_plural = 'Charities Users Supports'
 
 
 class UsersCharityOwnEvent(models.Model):
@@ -104,7 +92,8 @@ class UsersCharityOwnEvent(models.Model):
 
 
 class UsersPledgeOrganizations(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user_pledge_orgs')
     pledge_organization = models.ManyToManyField(PledgeOrganizations)
 
     def __str__(self):
@@ -114,3 +103,18 @@ class UsersPledgeOrganizations(models.Model):
         ordering = ['user']
         verbose_name = 'User Pledge.to Organization'
         verbose_name_plural = 'Pledge.to Organizations Users Supports'
+
+
+# NOT IN USE CURRENTLY
+class UserCharitySupport(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    charity = models.ForeignKey(Charity, on_delete=models.CASCADE)
+    support_date = models.DateField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.user} supports {self.charity}"
+
+    class Meta:
+        ordering = ['user']
+        verbose_name = 'User Charity Support'
+        verbose_name_plural = 'Charities Users Supports'

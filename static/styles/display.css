@@ -4,6 +4,10 @@
     width: 100%;
 }
 
+.flex {
+    display: flex;
+}
+
 .d-grid {
     display: grid;
     width: 100%;
@@ -53,6 +57,11 @@
 .d-none {
     display: none;
 }
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
 
 
 /* RESPONSIVE STRUCTURE FOR FLEX DISPLAY */
@@ -377,4 +386,10 @@
 
 .absolute {
     position: absolute;
+}
+
+
+
+.gap-16 {
+    gap: 16px;
 }
