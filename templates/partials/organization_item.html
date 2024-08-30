@@ -1,0 +1,26 @@
+{% comment %}
+Usage: {% include "partials/organization_item.html" with organization=organization is_pledge=True %}
+{% endcomment %}
+
+{% load static %}
+
+<div class="flex organization-items-box items-box clickable add-manual-element" role="listitem">
+    <div class="icons-text">
+      {% if is_pledge and organization.logo %}
+        <img src="{{ organization.logo }}" alt="" class="organization-logo" aria-hidden="true" />
+      {% endif %}
+      <p>{{ organization.name }}</p>
+      <input
+        type="hidden"
+        name="{% if is_pledge %}pledge_organizations{% else %}user_organizations{% endif %}[]"
+        value="{% if is_pledge %}{{ organization.id }}{% else %}{{ organization.name }}{% endif %}"
+      />
+    </div>
+    <img
+      src="{% static '/icons/x-close.svg' %}"
+      alt="Remove {{ organization.name }}"
+      class="remove-parent clickable"
+      role="button"
+      aria-label="Remove {{ organization.name }}"
+    />
+  </div>

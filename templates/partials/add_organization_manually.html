@@ -1,0 +1,32 @@
+{% load static %}
+
+<div class="d-flex flex-column">
+    <button
+      type="button"
+      class="add-manually"
+      id="organization-add-manually"
+      aria-expanded="false"
+      aria-controls="add-user-organization"
+    >
+      <img src="{% static 'icons/add-manually.svg' %}" alt="" aria-hidden="true" />
+      <span>Add Manually</span>
+    </button>
+    <div class="d-none" id="add-user-organization">
+      <label for="user-organization" class="bold" id="user-organization-label">My Organizations or Event Name</label>
+      <input
+        type="text"
+        class="input"
+        id="user-organization"
+        aria-labelledby="user-organization-label"
+        maxlength="40"
+      />
+      <button
+        type="button"
+        class="forms-submit-button button dark-button clickable"
+        id="custom-org-btn"
+        aria-label="Save custom organization"
+      >
+        Save
+      </button>
+    </div>
+  </div>

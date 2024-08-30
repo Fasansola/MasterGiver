@@ -1,0 +1,29 @@
+{% load static %}
+
+
+
+<div class="forms-div relative">
+    <label for="search-org" id="search-org-label">My Organizations and Causes</label>
+    <h3 class="heading">Find Your Charity or Cause</h3>
+    <div class="input organizations-search" role="search">
+      <img src="{% static 'icons/search.svg' %}" alt="" aria-hidden="true" />
+      <input
+        type="text"
+        id="search-org"
+        placeholder="Find Your Charity or Cause"
+        class="organizations-search-input"
+        aria-labelledby="search-org-label"
+      />
+    </div>
+  
+    <div
+      class="absolute dropdown-list"
+      id="organizations-dropdown"
+      role="listbox"
+      aria-labelledby="search-org-label"
+    >
+      <h4 class="bold dropdown-h">Charities</h4>
+      <div id="org-list"></div>
+      <div class="organization-footer bold">Show the world your good side</div>
+    </div>
+  </div>
