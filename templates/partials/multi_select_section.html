@@ -1,5 +1,5 @@
 {% comment %}
-Usage: {% include "partials/multi_select_section.html" with section_name="Section Name" items=items user_items=user_items %}
+Usage: {% include "partials/multi_select_section.html" with section_name="Section Name" data="data_type" items=items user_items=user_items %}
 {% endcomment %}
 
 {% load static %}
@@ -17,46 +17,48 @@ Usage: {% include "partials/multi_select_section.html" with section_name="Sectio
     </div>
   
     <div class="element-form-field flex-column" style="display: none;">
-      <div class="forms-div relative">
-        <label for="{{ section_name|slugify }}" class="small-text required" id="{{ section_name|slugify }}-label">{{ section_name }}</label>
-        <input
-          type="text"
-          id="{{ section_name|slugify }}"
-          placeholder="Select one or more {{ section_name|lower }}"
-          class="input"
-          aria-labelledby="{{ section_name|slugify }}-label"
-          aria-required="true"
-          aria-haspopup="true"
-          aria-expanded="false"
-        />
-  
-        <div class="absolute dropdown-list" id="{{ section_name|slugify }}-dropdown" role="listbox" aria-labelledby="{{ section_name|slugify }}-label">
-          <h4 class="bold dropdown-h" id="{{ section_name|slugify }}-dropdown-title">{{ section_name }}</h4>
-          <div class="dropdown-ul">
-            {% for item in items %}
-              <div class="checkbox-div justify-content-between align-items-center" role="option" aria-selected="false">
-                <label for="{{ item.name }}" class="small-text icons-text">
-                  {% if item.icon %}
-                    <img src="{{ item.icon.url }}" alt="" aria-hidden="true" />
-                  {% endif %}
-                  {{ item.name }}
-                </label>
-                <input
-                  type="checkbox"
-                  name="{{ section_name|slugify }}"
-                  id="{{ item.name }}"
-                  class="{{ section_name|slugify }}-check skill-causes-items"
-                  value="{{ item.id }}"
-                  aria-labelledby="{{ section_name|slugify }}-dropdown-title"
-                  {% if item in user_items %}checked{% endif %}
-                />
-              </div>
-            {% endfor %}
-          </div>
-          <div class="dropdown-btn">
-            <button type="button" class="button dark-button" id="{{ section_name|slugify }}-btn" aria-label="Save selected {{ section_name|lower }}">
-              Save
-            </button>
+      <div class="forms-div" id="{{ section_name|slugify }}_input">
+        <div class="forms-div relative">
+          <label for="{{ section_name|slugify }}" class="small-text required" id="{{ section_name|slugify }}-label">{{ section_name }}</label>
+          <input
+            type="text"
+            id="{{ section_name|slugify }}"
+            placeholder="Select one or more {{ section_name|lower }}"
+            class="input"
+            aria-labelledby="{{ section_name|slugify }}-label"
+            aria-required="true"
+            aria-haspopup="true"
+            aria-expanded="false"
+          />
+    
+          <div class="absolute dropdown-list" id="{{ data }}-dropdown" role="listbox" aria-labelledby="{{ data }}-label">
+            <h4 class="bold dropdown-h" id="{{ data }}-dropdown-title">{{ section_name }}</h4>
+            <div class="dropdown-ul">
+              {% for item in items %}
+                <div class="checkbox-div justify-content-between align-items-center" role="option" aria-selected="false">
+                  <label for="{{ item.name }}" class="small-text icons-text">
+                    {% if item.icon %}
+                      <img src="{{ item.icon.url }}" alt="" aria-hidden="true" />
+                    {% endif %}
+                    {{ item.name }}
+                  </label>
+                  <input
+                    type="checkbox"
+                    name="{{ data }}"
+                    id="{{ item.name }}"
+                    class="{{ data }}-check skill-causes-items"
+                    value="{{ item.id }}"
+                    aria-labelledby="{{ data }}-dropdown-title"
+                    {% if item in user_items %}checked{% endif %}
+                  />
+                </div>
+              {% endfor %}
+            </div>
+            <div class="dropdown-btn">
+              <button type="button" class="button dark-button" id="{{ data }}-btn" aria-label="Save selected {{ section_name|lower }}">
+                Save
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -71,7 +73,7 @@ Usage: {% include "partials/multi_select_section.html" with section_name="Sectio
   
   <div class="d-flex items-container" aria-live="polite" aria-relevant="additions removals">
     {% for item in items %}
-      <div class="{% if item in user_items %}flex{% else %}d-none{% endif %} items-box {{ section_name|slugify }}-items" role="listitem">
+      <div class="{% if item in user_items %}flex{% else %}d-none{% endif %} items-box {{ data }}-items" data-id={{ forloop.counter0 }} role="listitem">
         <div class="icons-text">
           {% if item.icon %}
             <img src="{{ item.icon.url }}" alt="" aria-hidden="true" />

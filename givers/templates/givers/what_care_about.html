@@ -34,25 +34,25 @@
 
   <!-- What I Care About section -->
   <div class="forms-div relative">
-    <label for="what_i_care_about" class="small-text required" id="what_i_care_about_label">What I Care About</label>
+    <label for="what-i-care-about" class="small-text required" id="what-i-care-about_label">What I Care About</label>
     <input
       type="text"
-      id="what_i_care_about"
+      id="what-i-care-about"
       placeholder="Select one or more causes you care to support"
       class="input"
-      aria-labelledby="what_i_care_about_label"
+      aria-labelledby="what-i-care-about_label"
       aria-required="true"
       aria-haspopup="true"
       aria-expanded="false"
     />
-    <span id="what_i_care_about-error" class="error-message" aria-live="polite"></span>
+    <span id="what-i-care-about-error" class="error-message" aria-live="polite"></span>
 
     <!-- Dropdown for selecting causes -->
     <div
       class="absolute dropdown-list"
       id="causes-dropdown"
       role="listbox"
-      aria-labelledby="what_i_care_about_label"
+      aria-labelledby="what-i-care-about_label"
     >
       <h4 class="bold dropdown-h" id="causes-dropdown-title">What I Care About</h4>
       <div class="dropdown-ul">
@@ -117,25 +117,25 @@
 
   <!-- Giving Skills section -->
   <div class="forms-div relative">
-    <label for="giving_skills" class="small-text required" id="giving_skills_label">Giving Skills</label>
+    <label for="giving-skills" class="small-text required" id="giving-skills_label">Giving Skills</label>
     <input
       type="text"
-      id="giving_skills"
+      id="giving-skills"
       placeholder="Select one or more skills you have that you can offer for a cause"
       class="input"
-      aria-labelledby="giving_skills_label"
+      aria-labelledby="giving-skills_label"
       aria-required="true"
       aria-haspopup="true"
       aria-expanded="false"
     />
-    <span id="giving_skills-error" class="error-message" aria-live="polite"></span>
+    <span id="giving-skills-error" class="error-message" aria-live="polite"></span>
 
     <!-- Dropdown for selecting skills -->
     <div
       class="absolute dropdown-list"
       id="skills-dropdown"
       role="listbox"
-      aria-labelledby="giving_skills_label"
+      aria-labelledby="giving-skills_label"
     >
       <h4 class="bold dropdown-h" id="skills-dropdown-title">Giving Skills</h4>
       <div class="dropdown-ul">
@@ -287,6 +287,5 @@
   };
 </script>
 <!-- Include custom JavaScript files -->
-<script src="{% static 'scripts/what_care_about.js' %}"></script>
-<script src="{% static 'scripts/organization-search.js' %}"></script>
+<script type="module" src="{% static 'scripts/what-care-about/main.js' %}"></script>
 {% endblock %}

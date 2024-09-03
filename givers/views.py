@@ -34,10 +34,10 @@ def signup(request):
         return render(request, 'givers/register.html')
 
     # Collect data from the form
-    username = request.POST.get('username', '').strip()
-    email = request.POST.get('email', '').strip()
-    password = request.POST.get('password', '')
-    confirm_password = request.POST.get('confirm_password', '')
+    username = request.POST.get('username').strip()
+    email = request.POST.get('email').strip()
+    password = request.POST.get('password')
+    confirm_password = request.POST.get('confirm_password')
 
     # Validate user data
     if not all([username, email, password, confirm_password]):
@@ -92,17 +92,17 @@ def create_profile(request):
     userData = request.POST
     user = request.user
 
-    profile_photo = request.FILES.get('profile_photo', '')
+    profile_photo = request.FILES.get('profile_photo')
 
     if profile_photo:
         path = default_storage.save(
             'images/' + profile_photo.name, ContentFile(profile_photo.read()))
         profile_photo = path
 
-    first_name = userData.get('first_name', '')
-    last_name = userData.get('last_name', '')
-    state = userData.get('state', '')
-    city = userData.get('city', '')
+    first_name = userData.get('first_name')
+    last_name = userData.get('last_name')
+    state = userData.get('state')
+    city = userData.get('city')
 
     userInfo = User.objects.get(username=user.username)
 
@@ -130,28 +130,29 @@ def what_care_about(request):
     print(userData)
     user = request.user
 
-    why_i_give = userData.get('why_i_give', '')
+    why_i_give = userData.get('why_i_give')
     causes = userData.getlist('causes', [])
     skills = userData.getlist('skills', [])
-    plegde_organizations = userData.getlist('plegde_organizations[]', [])
+    pledge_organizations = userData.getlist('pledge_organizations[]', [])
     user_organizations = userData.getlist('user_organizations[]', [])
 
     userInfo = User.objects.get(username=user.username)
     userInfo.giving_motivation = why_i_give
     userInfo.save()
 
-    userCause = UserCauses.objects.create(user=userInfo)
+    userCause = UserCauses.objects.get_or_create(user=userInfo)
     for cause in causes:
         cause = Causes.objects.get(id=cause)
         userCause.cause.add(cause)
 
-    userSkill = UserSkills.objects.create(user=userInfo)
+    userSkill = UserSkills.objects.get_or_create(user=userInfo)
     for skill in skills:
         skill = Skill.objects.get(id=skill)
         userSkill.skill.add(skill)
 
-    userPledgeOrg = UsersPledgeOrganizations.objects.create(user=userInfo)
-    for organization in plegde_organizations:
+    userPledgeOrg = UsersPledgeOrganizations.objects.get_or_create(
+        user=userInfo)
+    for organization in pledge_organizations:
         if PledgeOrganizations.objects.filter(id=organization).exists():
             org = PledgeOrganizations.objects.get(id=organization)
         else:
@@ -162,8 +163,7 @@ def what_care_about(request):
         UsersCharityOwnEvent.objects.create(
             user=userInfo, name=organization)
 
-    return HttpResponse('Data received')
-    # return redirect('dashboard')
+    return redirect('preview_profile')
 
 
 @login_required
@@ -175,24 +175,31 @@ def preview_profile(request):
         userData = request.POST
         userFile = request.FILES
 
-        userInfo.profile_photo = userFile.get('profile_photo', '')
-        userInfo.first_name = userData.get('first_name', '')
-        userInfo.last_name = userData.get('last_name', '')
-        userInfo.state = userData.get('state', '')
-        userInfo.city = userData.get('city', '')
-        userInfo.about_me = userData.get('about_me', '')
-        userInfo.giving_motivation = userData.get('why_i_give', '')
+        userInfo.profile_photo = userFile.get(
+            'profile_photo', userInfo.profile_photo)
+        fullName = userData.get('fullname').split(' ')
+        userInfo.first_name = fullName[0]
+        userInfo.last_name = fullName[1]
+        userInfo.state = userData.get('state')
+        userInfo.city = userData.get('city')
+        userInfo.about_me = userData.get('about_me', ' ')
+        userInfo.giving_motivation = userData.get('why_i_give', ' ')
         userInfo.save()
 
         causes = userData.getlist('causes', [])
         skills = userData.getlist('skills', [])
-        plegde_organizations = userData.getlist('plegde_organizations[]', [])
+        pledge_organizations = userData.getlist('pledge_organizations[]', [])
+
         user_organizations = userData.getlist('user_organizations[]', [])
+
+        for organization in pledge_organizations:
+            if not PledgeOrganizations.objects.filter(id=organization).exists():
+                PledgeOrganizations.objects.create(id=organization)
 
         new_causes = Causes.objects.filter(id__in=causes)
         new_skills = Skill.objects.filter(id__in=skills)
         new_pledge_orgs = PledgeOrganizations.objects.filter(
-            id__in=plegde_organizations)
+            id__in=pledge_organizations)
 
         user_causes = UserCauses.objects.get(user=userInfo)
         user_skills = UserSkills.objects.get(user=userInfo)
@@ -202,10 +209,7 @@ def preview_profile(request):
         user_causes.cause.set(new_causes)
         user_pledge_orgs.pledge_organization.set(new_pledge_orgs)
 
-        print(userData)
-        print(userFile)
-
-        return HttpResponse('Data received and updated')
+        return redirect('confirmation')
 
     causes = Causes.objects.all()
     user_causes = UserCauses.objects.get(user=userInfo).cause.all()
@@ -250,6 +254,57 @@ def preview_profile(request):
     return render(request, 'givers/preview_profile.html', context)
 
 
+def confirmation(request):
+    context = {
+        'login_flow': True,
+    }
+    return render(request, 'givers/confirmation.html', context)
+
+
+def login_view(request):
+    context = {
+        'login_flow': True,
+    }
+    if request.method != 'POST':
+        return render(request, 'givers/login.html', context)
+
+    userData = request.POST
+    username = userData.get('username')
+    password = userData.get('password')
+
+    if not all([username, password]):
+        context['error'] = 'All fields are required!'
+        return render(request, 'givers/login.html', context)
+
+    try:
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('dashboard')
+        else:
+            context['error'] = 'Invalid username or password!'
+            return render(request, 'givers/login.html', context)
+    except Exception as e:
+        context['error'] = str(e)
+        return render(request, 'givers/login.html', context)
+
+
+def dashboard(request):
+    
+    return HttpResponse('This is the fucking Dashboard')
+
+
+def profile(request):
+    context = {
+        'is_profile': True
+    }
+    return render(request, 'givers/profile.html', context)
+
+
+def edit_profile(request):
+    pass
+
+
 def fetch_organizations(request):
     if not settings.PLEDGE_API_TOKEN:
         logger.error("PLEDGE_API_TOKEN is not set")
@@ -262,7 +317,7 @@ def fetch_organizations(request):
     }
 
     # Get the query parameter from the request
-    query = request.GET.get('q', '')
+    query = request.GET.get('q')
 
     # Add the query parameter to the API request if it's not empty
     params = {'q': query} if query else {}
@@ -273,19 +328,3 @@ def fetch_organizations(request):
         return JsonResponse(response.json(), safe=False)
     except requests.RequestException as e:
         return JsonResponse({"error": str(e)}, status=500)
-
-
-def login_view(request):
-    pass
-
-
-def dashboard(request):
-    pass
-
-
-def profile(request):
-    pass
-
-
-def edit_profile(request):
-    pass

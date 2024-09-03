@@ -39,6 +39,16 @@
     background-color: var(--light-hue-secondary);
 }
 
+.green-button {
+    background-color: var(--brand-green);
+    color: var(--white);
+}
+
+.green-button:hover {
+    background-color: var(--success-green);
+    color: var(--white);
+}
+
 
 /* SECONDARY ACTIONS */
 

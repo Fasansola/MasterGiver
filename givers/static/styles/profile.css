@@ -1,0 +1,18 @@
+.profile-header-container {
+    height: 240px;
+    background: var(--purple-hue-background);
+}
+
+.profile-body {
+    height: 100vh; /* review this page height */
+}
+
+.profile-info {
+    width: 440px;
+    background-color: var(--white);
+}
+
+
+.profile-main {
+    width: 853px;
+}

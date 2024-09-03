@@ -21,6 +21,7 @@ ul,
 label,
 .big-text,
 .small-text,
+.mid-text,
 .big-heading {
     line-height: 180%;
 }
@@ -149,6 +150,10 @@ label,
 
 .small-text {
     font-size: 0.875rem;
+}
+
+.mid-text {
+    font-size: 18px;
 }
 
 .heading {

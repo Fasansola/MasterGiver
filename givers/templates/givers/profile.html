@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}Profile{% endblock %}
+
+{% block styles %}
+    <link href="{% static 'styles/profile.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <div class="d-flex align-items-center justify-content-center profile-header-container">
+        {% if is_profilge %}
+            <div>
+                Back to my Dashboard
+            </div>
+        {% endif %}
+        <img src="{% static "images/Master Giver Logo.svg" %}" alt="" width="300px">
+    </div>
+    <div class="d-flex flex-column align-items-center secondary-bg profile-body">
+        <div class="d-flex container">
+            <div class="profile-info">
+                <div>
+                    <img src="{{ user.profile_photo.url }}" alt="{{ user.first_name }} profile picture" width="198px">
+                    <div>
+                        <h1 class="heading">{{ user.first_name }} {{ user.last_name }}</h1>
+                        <p>{{ user.city }}, {{ user.state }}</p>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="big-text bold">About Me</h2>
+                    <p>{{ user.about_me }}</p>
+                </div>
+                <div>
+                    <h2 class="big-text bold">Why I Give</h2>
+                    <p>{{ user.giving_motivation }}</p>
+                </div>
+            </div>
+            <div class="profile-main">
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

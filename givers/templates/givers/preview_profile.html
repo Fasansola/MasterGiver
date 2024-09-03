@@ -69,18 +69,18 @@
   <hr class="line" aria-hidden="true" />
 
   <!-- 3. About Me Section -->
-  {% include "partials/editable_field.html" with field_name="about_me" label="About Me" value=user.about_me is_textarea=True %}
+  {% include "partials/editable_field.html" with field_name="about_me" label="About Me" value=user.about_me is_textarea=True is_long_text=True is_header=True %}
 
   <!-- 4. Why I Give Section -->
-  {% include "partials/editable_field.html" with field_name="why_i_give" label="Why I Give" value=user.why_i_give is_textarea=True %}
+  {% include "partials/editable_field.html" with field_name="why_i_give" label="Why I Give" value=user.giving_motivation is_textarea=True is_long_text=True is_header=True %}
 
   <hr class="line" aria-hidden="true" />
 
   <!-- 5. What I Care About Section -->
-  {% include "partials/multi_select_section.html" with section_name="What I Care About" items=causes user_items=user_causes %}
+  {% include "partials/multi_select_section.html" with section_name="What I Care About" data="causes" items=causes user_items=user_causes %}
 
   <!-- 6. Giving Skills Section -->
-  {% include "partials/multi_select_section.html" with section_name="Giving Skills" items=skills user_items=user_skills %}
+  {% include "partials/multi_select_section.html" with section_name="Giving Skills" data="skills" items=skills user_items=user_skills %}
 
   <hr class="line" aria-hidden="true" />
 
@@ -133,16 +133,15 @@
 {% endblock %}
 
 {% block page_scripts %}
-<script>
-  // Define static URLs for use in JavaScript
-  const STATIC_URLS = {
-    locationIcon: "{% static 'icons/location.svg' %}",
-    verticalLineIcon: "{% static 'icons/vertical-line.svg' %}",
-    closeIcon: "{% static 'icons/x-close.svg' %}",
-  };
-</script>
-<script src="{% static 'scripts/create-profile.js' %}"></script>
-<script src="{% static 'scripts/preview-profile.js' %}"></script>
-<script src="{% static 'scripts/what_care_about.js' %}"></script>
-<script src="{% static 'scripts/organization-search.js' %}"></script>
+  <script>
+    // Define static URLs for use in JavaScript
+    const STATIC_URLS = {
+      locationIcon: "{% static 'icons/location.svg' %}",
+      verticalLineIcon: "{% static 'icons/vertical-line.svg' %}",
+      closeIcon: "{% static 'icons/x-close.svg' %}",
+    };
+  </script>
+  <script src="{% static 'scripts/create-profile/main.js' %}"  type="module"></script>
+  <script src="{% static 'scripts/preview-profile.js' %}"></script>
+  <script src="{% static 'scripts/what-care-about/main.js' %}"  type="module"></script>
 {% endblock %}

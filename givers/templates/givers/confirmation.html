@@ -1,0 +1,41 @@
+{% extends "signup-flow.html" %}
+{% load static %}
+
+{% block page_title %}Profile Preview{% endblock %}
+{% block page_styles %}
+    <link rel="stylesheet" href="{% static 'styles/confirmation.css' %}" />
+{% endblock %}
+
+{% block page_body %}
+
+<!-- Main container -->
+ <div class="d-flex flex-column gap-48">
+    <div class="d-flex flex-column align-items-center gap-32">
+        <img src="{% static 'images/confirmation-icon.svg' %}" alt="" width="106px" height="106px">
+        <h2 class="small-heading text-center bold">Congratulations, your account has been successfully created.</h2>
+    </div>
+    <div class="d-flex flex-column gap-16">
+        <div class="d-flex gap-20 content-bordered-box">
+            <img src="{% static 'images/user-dashboard.svg' %}" alt="" width="80px" height="80px">
+            <div class="d-flex flex-column gap-24">
+                <p class="mid-size">Go to your Dashboard to explore your new profile.</p>
+                <a href="{% url 'dashboard' %}">
+                    <button class="button dark-button">Go to Dashboard</button>
+                </a>
+            </div>
+        </div>
+        <div class="d-flex gap-20 content-bordered-box">
+            <img src="{% static 'images/refer-friend.svg' %}" alt="" width="80px" height="80px">
+            <div class="d-flex flex-column gap-24">
+                <p class="mid-size">Refer a friend to join Mastergiver and expand your network.</p>
+                <a href="{% url 'dashboard' %}">
+                    <button class="button green-button">Refer a Friend</button>
+                </a>
+            </div>
+        </div>
+    </div>
+ </div>
+
+{% endblock %}
+
+{% block page_scripts %}{% endblock %}

@@ -7,8 +7,8 @@ Usage: {% include "partials/editable_field.html" with field_name="name" label="L
 <div class="forms-div">
     <div class="d-flex element-content-field">
       <div class="forms-div">
-        <p>{{ label }}</p>
-        <p class="bold" id="{{ field_name }}">{{ value }}</p>
+        <p class="{% if is_header %} bold mid-text {% endif %}">{{ label }}</p>
+        <p class="{% if is_long_text %} small-text {% else %} bold mid-text {% endif %}" id="{{ field_name }}">{{ value }}</p>
       </div>
       <button type="button" class="accent-text bold small-text clickable" id="edit-{{ field_name }}-btn" aria-label="Edit {{ label }}">
         Edit

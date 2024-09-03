@@ -93,7 +93,7 @@
 {% endblock %}
 
 {% block page_scripts %}
-<script src="{% static 'scripts/create-profile.js' %}"></script>
+<script type="module" src="{% static 'scripts/create-profile/main.js' %}"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');

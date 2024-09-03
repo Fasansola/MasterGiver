@@ -9,6 +9,7 @@
 
 {% block styles %}
     <link rel="stylesheet" href="{% static 'styles/signup-flow.css' %}" />
+    {% block page_styles %}{% endblock %}
 {% endblock %}
 
 {% block body %}
@@ -23,7 +24,7 @@
 
     <main>
         <section class="d-flex flex-column align-items-center body-container justify-content-center">
-            <div class="form-container d-flex flex-column">
+            <div class="form-container {% if login_flow %} login-container {% endif %} d-flex flex-column">
                 {% block page_body %}{% endblock %}
             </div>
         </section>

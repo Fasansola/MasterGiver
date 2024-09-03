@@ -1,16 +1,16 @@
 {% extends "signup-flow.html" %}
 {% load static %}
 
-{% block page_title %}Create An Account{% endblock %}
+{% block page_title %}Login{% endblock %}
 {% block page_body %}
 <!-- Main container for the signup form -->
 <div class="form-header">
-  <h1 class="small-heading">Create An Account</h1>
-  <a href="" class="link bold" aria-label="Login to MasterGiver">Login to MasterGiver</a>
+  <h1 class="small-heading">Login</h1>
+  <p>You don't have an account? <a href="" class="link bold" aria-label="Login to MasterGiver">Create an account</a></p>
 </div>
 <form
   class="d-flex flex-column align-items-start forms"
-  action="{% url 'signup' %}"
+  action="{% url 'login' %}"
   method="POST"
   aria-label="Signup form"
 >
@@ -28,19 +28,7 @@
       aria-required="true"
     />
   </div>
-  <!-- Email input field -->
-  <div class="forms-div">
-    <label for="email" class="small-text required">Email</label>
-    <input
-      type="email"
-      id="email"
-      name="email"
-      placeholder="Email"
-      class="input"
-      required
-      aria-required="true"
-    />
-  </div>
+
   <!-- Password input field with toggle visibility -->
   <div class="forms-div password-container">
     <label for="password" class="small-text required">Password</label>
@@ -75,28 +63,6 @@
       />
     </svg>
   </div>
-  <!-- Confirm password input field -->
-  <div class="forms-div password-container">
-    <label for="confirm_password" class="small-text required">Confirm Password</label>
-    <input
-      type="password"
-      id="confirm_password"
-      name="confirm_password"
-      placeholder="Confirm Password"
-      class="input password-field"
-      required
-      aria-required="true"
-    />
-  </div>
-  <!-- Terms and conditions checkbox -->
-  <div class="checkbox-div align-items-center">
-    <input type="checkbox" name="terms" id="terms" required aria-required="true" />
-    <label for="terms" class="small-text policy-text">
-      I have read and agree to the
-      <a href="#" class="link" aria-label="Read Terms of Use">Terms of Use</a> and
-      <a href="#" class="link" aria-label="Read Privacy Policy">Privacy Policy</a>.
-    </label>
-  </div>
   <!-- Error message display -->
   {% if error %}
   <div class="danger-text forms-warning" role="alert" aria-live="assertive">
@@ -104,8 +70,9 @@
   </div>
   {% endif %}
   <!-- Submit button -->
-  <button type="submit" class="forms-submit-button button dark-button">Create Account</button>
+  <button type="submit" class="forms-submit-button button dark-button">Login</button>
 </form>
+<a href="" class="link bold" aria-label="reset password">Do You Want to Reset Password?</a>
 {% endblock %}
 
 {% block page_scripts %}
