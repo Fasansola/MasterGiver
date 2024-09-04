@@ -140,17 +140,19 @@ def what_care_about(request):
     userInfo.giving_motivation = why_i_give
     userInfo.save()
 
-    userCause = UserCauses.objects.get_or_create(user=userInfo)
+    # For causes
+    userCause, created = UserCauses.objects.get_or_create(user=userInfo)
     for cause in causes:
-        cause = Causes.objects.get(id=cause)
-        userCause.cause.add(cause)
+        cause_obj = Causes.objects.get(id=cause)
+        userCause.cause.add(cause_obj)
 
-    userSkill = UserSkills.objects.get_or_create(user=userInfo)
+    # For skills
+    userSkill, created = UserSkills.objects.get_or_create(user=userInfo)
     for skill in skills:
-        skill = Skill.objects.get(id=skill)
-        userSkill.skill.add(skill)
+        skill_obj = Skill.objects.get(id=skill)
+        userSkill.skill.add(skill_obj)
 
-    userPledgeOrg = UsersPledgeOrganizations.objects.get_or_create(
+    userPledgeOrg, created = UsersPledgeOrganizations.objects.get_or_create(
         user=userInfo)
     for organization in pledge_organizations:
         if PledgeOrganizations.objects.filter(id=organization).exists():
