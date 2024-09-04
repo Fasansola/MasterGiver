@@ -197,3 +197,6 @@ env_path = BASE_DIR / 'apis.env'
 load_dotenv(env_path)
 
 PLEDGE_API_TOKEN = os.getenv('PLEDGE_API_TOKEN')
+
+LOGIN_URL = '/login/'  # Adjust this to match your login URL
+LOGIN_REDIRECT_URL = '/'  # Where to redirect after successful login

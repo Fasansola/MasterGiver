@@ -290,10 +290,11 @@ def login_view(request):
 
 
 def dashboard(request):
-    
+
     return HttpResponse('This is the fucking Dashboard')
 
 
+@login_required
 def profile(request):
     context = {
         'is_profile': True
