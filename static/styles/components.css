@@ -83,7 +83,6 @@ button {
 .forms {
     display: flex;
     flex-direction: column;
-    gap: 16px;
 }
 
 .forms-div {
@@ -147,6 +146,10 @@ button {
     background: none;
     cursor: pointer;
     width: 20px;
+}
+
+.eye:focus {
+    outline: none;
 }
 
 
@@ -341,7 +344,6 @@ button {
 .line {
     width: 100%;
     border: 1px solid var(--brand-gray);
-    margin: 32px 0;
 }
 
 
@@ -355,7 +357,6 @@ button {
 .items-container {
     flex-wrap: wrap;
     gap: 16px;
-    margin: 12px 0 16px 0;
 }
 
 

@@ -1,0 +1,19 @@
+{% extends 'account-settings.html' %}
+{% load static %}
+
+
+{% block page_main_styles %}
+    <link href="{% static 'styles/preview_profile.css' %}" rel="stylesheet"  >
+{% endblock %}
+{% block main_content %}
+    {% comment %} Hello World {% endcomment %}
+    <div class='d-flex flex-column account-main-contents-div gap-32'>
+        {% include 'edit-user-info-form.html' with user=user causes=causes user_causes=user_causes pledge_organizations=pledge_organizations user_organizations=user_organizations %}
+        <!-- Error message display -->
+        {% if error %}
+        <div class="danger-text forms-warning" role="alert" aria-live="assertive">
+            <img src="{% static "icons/error.svg" %}" alt="Error icon"> {{ error }}
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}

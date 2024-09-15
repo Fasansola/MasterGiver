@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const target = event.target;
         const button = target.closest('[id^="edit-"][id$="-btn"]');
         if (button) {
-            console.log(button)
             const fieldName = button.id.replace('edit-', '').replace('-btn', '');
             const formDiv = document.querySelector(`#${fieldName}_input`).closest('.element-form-field');
             const contentDiv = event.target.closest('.element-content-field');

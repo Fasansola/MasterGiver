@@ -4,91 +4,106 @@ Usage: {% include "partials/multi_select_section.html" with section_name="Sectio
 
 {% load static %}
 
-
-<div class="forms-div">
-    <div class="flex element-content-field justify-content-between">
-      <div class="flex">
-        <h3 class="big-text bold">{{ section_name }}</h3>
+{% if not is_profile %}
+  <div class="forms-div">
+      <div class="flex element-content-field justify-content-between">
+        <div class="flex">
+          <h3 class="big-text bold">{{ section_name }}</h3>
+        </div>
+        <button type="button" class="clickable edit-icons-text" id="edit-{{ section_name|slugify }}-btn" aria-label="Add new {{ section_name }}">
+          <img src="{% static 'icons/add-element.svg' %}" alt="" aria-hidden="true" />
+          <span class="accent-text small-text">ADD NEW</span>
+        </button>
       </div>
-      <button type="button" class="clickable edit-icons-text" id="edit-{{ section_name|slugify }}-btn" aria-label="Add new {{ section_name }}">
-        <img src="{% static 'icons/add-element.svg' %}" alt="" aria-hidden="true" />
-        <span class="accent-text small-text">ADD NEW</span>
-      </button>
-    </div>
-  
-    <div class="element-form-field flex-column" style="display: none;">
-      <div class="forms-div" id="{{ section_name|slugify }}_input">
-        <div class="forms-div relative">
-          <label for="{{ section_name|slugify }}" class="small-text required" id="{{ section_name|slugify }}-label">{{ section_name }}</label>
-          <input
-            type="text"
-            id="{{ section_name|slugify }}"
-            placeholder="Select one or more {{ section_name|lower }}"
-            class="input"
-            aria-labelledby="{{ section_name|slugify }}-label"
-            aria-required="true"
-            aria-haspopup="true"
-            aria-expanded="false"
-          />
     
-          <div class="absolute dropdown-list" id="{{ data }}-dropdown" role="listbox" aria-labelledby="{{ data }}-label">
-            <h4 class="bold dropdown-h" id="{{ data }}-dropdown-title">{{ section_name }}</h4>
-            <div class="dropdown-ul">
-              {% for item in items %}
-                <div class="checkbox-div justify-content-between align-items-center" role="option" aria-selected="false">
-                  <label for="{{ item.name }}" class="small-text icons-text">
-                    {% if item.icon %}
-                      <img src="{{ item.icon.url }}" alt="" aria-hidden="true" />
-                    {% endif %}
-                    {{ item.name }}
-                  </label>
-                  <input
-                    type="checkbox"
-                    name="{{ data }}"
-                    id="{{ item.name }}"
-                    class="{{ data }}-check skill-causes-items"
-                    value="{{ item.id }}"
-                    aria-labelledby="{{ data }}-dropdown-title"
-                    {% if item in user_items %}checked{% endif %}
-                  />
-                </div>
-              {% endfor %}
-            </div>
-            <div class="dropdown-btn">
-              <button type="button" class="button dark-button" id="{{ data }}-btn" aria-label="Save selected {{ section_name|lower }}">
-                Save
-              </button>
+      <div class="element-form-field flex-column" style="display: none;">
+        <div class="forms-div" id="{{ section_name|slugify }}_input">
+          <div class="forms-div relative">
+            <label for="{{ section_name|slugify }}" class="small-text required" id="{{ section_name|slugify }}-label">{{ section_name }}</label>
+            <input
+              type="text"
+              id="{{ section_name|slugify }}"
+              placeholder="Select one or more {{ section_name|lower }}"
+              class="input"
+              aria-labelledby="{{ section_name|slugify }}-label"
+              aria-required="true"
+              aria-haspopup="true"
+              aria-expanded="false"
+            />
+      
+            <div class="absolute dropdown-list" id="{{ data }}-dropdown" role="listbox" aria-labelledby="{{ data }}-label">
+              <h4 class="bold dropdown-h" id="{{ data }}-dropdown-title">{{ section_name }}</h4>
+              <div class="dropdown-ul">
+                {% for item in items %}
+                  <div class="checkbox-div justify-content-between align-items-center" role="option" aria-selected="false">
+                    <label for="{{ item.name }}" class="small-text icons-text">
+                      {% if item.icon %}
+                        <img src="{{ item.icon.url }}" alt="" aria-hidden="true" />
+                      {% endif %}
+                      {{ item.name }}
+                    </label>
+                    <input
+                      type="checkbox"
+                      name="{{ data }}"
+                      id="{{ item.name }}"
+                      class="{{ data }}-check skill-causes-items"
+                      value="{{ item.id }}"
+                      aria-labelledby="{{ data }}-dropdown-title"
+                      {% if item in user_items %}checked{% endif %}
+                    />
+                  </div>
+                {% endfor %}
+              </div>
+              <div class="dropdown-btn">
+                <button type="button" class="button dark-button" id="{{ data }}-btn" aria-label="Save selected {{ section_name|lower }}">
+                  Save
+                </button>
+              </div>
             </div>
           </div>
         </div>
+    
+        <div class="d-flex">
+          <button type="button" class="forms-submit-button button dark-button" id="save-{{ section_name|slugify }}-btn">
+            Done
+          </button>
+        </div>
       </div>
-  
-      <div class="d-flex">
-        <button type="button" class="forms-submit-button button dark-button" id="save-{{ section_name|slugify }}-btn">
-          Done
-        </button>
-      </div>
-    </div>
   </div>
-  
+    
+    <div class="d-flex items-container" aria-live="polite" aria-relevant="additions removals">
+      {% for item in items %}
+        <div class="{% if item in user_items %}flex{% else %}d-none{% endif %} items-box {{ data }}-items" data-id={{ forloop.counter0 }} role="listitem">
+          <div class="icons-text">
+            {% if item.icon %}
+              <img src="{{ item.icon.url }}" alt="" aria-hidden="true" />
+            {% endif %}
+            <p>{{ item.name }}</p>
+          </div>
+          <div>
+            <img
+              src="{% static '/icons/x-close.svg' %}"
+              alt="Remove {{ item.name }}"
+              class="remove-parent clickable"
+              role="button"
+              aria-label="Remove {{ item.name }}"
+            />
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+{% else %}
   <div class="d-flex items-container" aria-live="polite" aria-relevant="additions removals">
     {% for item in items %}
-      <div class="{% if item in user_items %}flex{% else %}d-none{% endif %} items-box {{ data }}-items" data-id={{ forloop.counter0 }} role="listitem">
+      <div class="{% if item in user_items %}flex{% else %}d-none{% endif %} items-box {{ data }}-items" data-id={{ forloop.counter0 }} role="listitem" style="background-color:{{ item.color }}; padding-right:24px; border: none;">
         <div class="icons-text">
           {% if item.icon %}
             <img src="{{ item.icon.url }}" alt="" aria-hidden="true" />
           {% endif %}
-          <p>{{ item.name }}</p>
-        </div>
-        <div>
-          <img
-            src="{% static '/icons/x-close.svg' %}"
-            alt="Remove {{ item.name }}"
-            class="remove-parent clickable"
-            role="button"
-            aria-label="Remove {{ item.name }}"
-          />
+          <p style="color:white;">{{ item.name }}</p>
         </div>
       </div>
     {% endfor %}
   </div>
+  {% endif %}

@@ -9,7 +9,7 @@
   <h1 class="small-heading">Create MasterGiver Profile</h1>
 </div>
 
-<form class="d-flex flex-column align-items-start forms" enctype="multipart/form-data" action="{% url 'create_profile' %}" method="POST" novalidate>
+<form class="d-flex flex-column align-items-start forms gap-24" enctype="multipart/form-data" action="{% url 'create_profile' %}" method="POST" novalidate>
   {% csrf_token %}
 
   <!-- Profile picture upload section -->

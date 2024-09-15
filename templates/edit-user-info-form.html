@@ -1,0 +1,115 @@
+{% load static %}
+
+
+
+  <!-- 1. Profile Picture Section -->
+  <div class="forms-div upload-form">
+    <h3 class="big-text bold">Profile Picture</h3>
+    <div class="d-flex align-items-center align-items-sm-start flex-sm-column">
+      <!-- Profile picture display -->
+      <div>
+        <label for="upload-image">
+          {% if user.profile_photo %}
+            <img src="{{ user.profile_photo.url }}" alt="Current profile picture" class="upload-image-icon" id="profile-picture" width="136" />
+          {% else %}
+            <img src="{% static 'icons/upload.svg' %}" alt="Upload profile picture" class="upload-image-icon" id="profile-picture" width="136" />
+          {% endif %}
+        </label>
+      </div>
+      <!-- Upload and delete buttons -->
+      <div>
+        <div>
+          <input id="upload-image" type="file" name="profile_photo" accept="image/gif,image/jpeg,image/png" class="d-none" aria-label="Upload profile picture" />
+          <label class="dark-button button" for="upload-image">Upload New Picture</label>
+          <button type="button" class="light-button button delete-profile-pic-button" id="clear-profile-picture" aria-label="Delete profile picture">Delete</button>
+          {% if not user.profile_photo %}
+            <p id="file-chosen" class="small-text">No file selected</p>
+          {% endif %}
+        </div>
+        <p id="file-requirements" class="small-text">
+          The profile picture must be in GIF, JPG, or PNG format, with a maximum file size of 2MB.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="line" aria-hidden="true" />
+
+  <!-- 2. Account Details Section -->
+  <h3 class="big-text bold">Account Details</h3>
+
+  <!-- 2.1 Name -->
+  {% include "partials/editable_field.html" with field_name="fullname" label="Your Name" value=user.first_name|add:" "|add:user.last_name %}
+
+  <!-- 2.2 Email -->
+  {% include "partials/editable_field.html" with field_name="email" label="Your Email Address" value=user.email input_type="email" %}
+
+  <!-- 2.3 State -->
+  {% include "partials/editable_field.html" with field_name="state" label="State" value=user.state %}
+
+  <!-- 2.4 City -->
+  {% include "partials/editable_field.html" with field_name="city" label="City" value=user.city %}
+
+  <hr class="line" aria-hidden="true" />
+
+  <!-- 2. User Information Section -->
+  <h3 class="big-text bold">User Information</h3>
+
+  <!-- 3. About Me Section -->
+  {% include "partials/editable_field.html" with field_name="about_me" label="About Me" value=user.about_me is_textarea=True is_long_text=True is_header=True %}
+
+  <!-- 4. Why I Give Section -->
+  {% include "partials/editable_field.html" with field_name="why_i_give" label="Why I Give" value=user.giving_motivation is_textarea=True is_long_text=True is_header=True %}
+
+  <hr class="line" aria-hidden="true" />
+
+  <!-- 5. What I Care About Section -->
+  {% include "partials/multi_select_section.html" with section_name="What I Care About" data="causes" items=causes user_items=user_causes %}
+
+  <!-- 6. Giving Skills Section -->
+  {% include "partials/multi_select_section.html" with section_name="Giving Skills" data="skills" items=skills user_items=user_skills %}
+
+  <hr class="line" aria-hidden="true" />
+
+  <!-- 7. My Organizations and Causes Section -->
+  <div class="forms-div">
+    <div class="flex element-content-field justify-content-between">
+      <div class="flex">
+        <h3 class="big-text bold">My Organizations and Causes</h3>
+      </div>
+      <button type="button" class="clickable edit-icons-text" id="edit-organizations-btn" aria-label="Add new organization">
+        <img src="{% static 'icons/add-element.svg' %}" alt="" aria-hidden="true" />
+        <span class="accent-text small-text">ADD NEW</span>
+      </button>
+    </div>
+
+    <div class="element-form-field d-flex flex-column gap-16">
+      <!-- Organization search -->
+      {% include "partials/organization_search.html" %}
+
+      <!-- Add organization manually -->
+      {% include "partials/add_organization_manually.html" %}
+
+      <div class="d-flex">
+        <button type="button" class="forms-submit-button button dark-button" id="save-organizations-btn">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Container for displaying selected organizations -->
+  <div class="d-flex items-container" id="org-boxes" aria-live="polite" aria-relevant="additions removals">
+    {% for organization in pledge_organizations %}
+      {% include "partials/organization_item.html" with organization=organization is_pledge=True %}
+    {% endfor %}
+    {% for organization in user_organizations %}
+      {% include "partials/organization_item.html" with organization=organization is_pledge=False %}
+    {% endfor %}
+  </div>
+
+  <!-- Error message display -->
+  {% if error %}
+    <div class="danger-text forms-warning" role="alert">
+      <img src="{% static 'icons/error.svg' %}" alt="" aria-hidden="true" />
+      {{ error }}
+    </div>
+  {% endif %}

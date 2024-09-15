@@ -3,7 +3,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const passwords = document.querySelectorAll('.password-field');
     const eye = document.querySelector('.eye-path');
 
+    
     togglePassword.addEventListener('click', function (e) {
+        console.log(passwords)
         // toggle the type attribute
         passwords.forEach(password => {
             const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -15,10 +17,3 @@ document.addEventListener('DOMContentLoaded', function() {
             })
         })
     });
-
-
-fetch('/signup')
-.then(response => response.json())
-.then(data => {
-    console.log(data);
-})

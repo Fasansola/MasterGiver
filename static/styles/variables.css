@@ -4,11 +4,11 @@
     --secondary-purple: #5851BF;
     --primary-purple: #2F2B77;
     --secondary-bg: #F7F8FA;
-    --brand-gray: #E9EAED;
+    --brand-gray: #DCDFE3;
     --danger-red: #FF4D4F;
     --success-green: #00A86B;
     --brand-green: #22A06B;
     --light-hue: #ECEBF8;
     --light-hue-secondary: #F7F8FA;
-    --purple-hue-background: linear-gradient(91.55deg, #C6DBFB 0.1%, #C7DDFE 98.74%);    ;
+    --purple-hue-background: linear-gradient(91.55deg, #C6DBFB 0.1%, #C7DDFE 98.74%);
 }

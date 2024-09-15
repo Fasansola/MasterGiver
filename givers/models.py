@@ -14,8 +14,8 @@ class User(AbstractUser):
     state = models.CharField(max_length=128, null=True, blank=True)
     city = models.CharField(max_length=128, null=True, blank=True)
     country = models.CharField(max_length=128, default='United States')
-    profile_photo = models.ImageField(
-        null=True, blank=True, upload_to='images/')
+    profile_photo = models.FileField(
+        null=True, blank=True, upload_to='images/', default='images/upload.svg')
     about_me = models.TextField(null=True, blank=True)
     giving_motivation = models.TextField(null=True, blank=True)
     supported_charities = models.ManyToManyField(

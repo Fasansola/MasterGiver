@@ -9,7 +9,7 @@
   <a href="{% url 'login' %}" class="link bold" aria-label="Login to MasterGiver">Login to MasterGiver</a>
 </div>
 <form
-  class="d-flex flex-column align-items-start forms"
+  class="d-flex flex-column align-items-start forms gap-24"
   action="{% url 'signup' %}"
   method="POST"
   aria-label="Signup form"
@@ -109,6 +109,6 @@
 {% endblock %}
 
 {% block page_scripts %}
-<!-- Include the password toggle functionality script -->
-<script src="{% static 'scripts/password-toggle.js' %}"></script>
+  <!-- Include the password toggle functionality script -->
+  <script src="{% static 'scripts/password-toggle.js' %}"></script>
 {% endblock %}

@@ -1,0 +1,80 @@
+
+{% load static %}
+<div class="d-flex align-items-center justify-content-center profile-header-container">
+    {% if is_profilge %}
+        <div>
+            Back to my Dashboard
+        </div>
+    {% endif %}
+    <img src="{% static "images/Master Giver Logo.svg" %}" alt="" width="300px">
+</div>
+<div class="d-flex flex-column align-items-center secondary-bg">
+    <div class="d-flex container justify-content-between gap-32 profile-body">
+        <div class="d-flex flex-column profile-info gap-48">
+            <div class="d-flex flex-column align-items-center text-center gap-24">
+                {% if user.profile_photo %}
+                    <img src="{{ user.profile_photo.url }}" alt="{{ user.first_name }} profile picture" class="profile-picture" />
+                {% else %}
+                    <img src="{% static 'icons/upload.svg' %}" alt="{{ user.first_name }} profile picture" class="profile-picture" />
+                {% endif %}
+                <div class="gap-16">
+                    <h1 class="heading">{{ user.first_name }} {{ user.last_name }}</h1>
+                    <p>{{ user.city }}, {{ user.state }}</p>
+                </div>
+            </div>
+            <div class="d-flex flex-column gap-48">
+                <div class="d-flex flex-column gap-16">
+                    <h2 class="big-text bold">About Me</h2>
+                    <p>{{ user.about_me }}</p>
+                </div>
+                <hr class="line">
+                <div class="d-flex flex-column gap-16">
+                    <h2 class="big-text bold">Why I Give</h2>
+                    <p>{{ user.giving_motivation }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column profile-main gap-64">
+            <div class="d-flex flex-column gap-40">
+                <h2 class="heading">💕 My Organizations & Causes</h2>
+                <div>
+                    {% for organization in pledge_organizations %}
+                        <div class="d-flex align-items-center gap-24 profile-org-items">
+                            <div class="org-img-box">
+                                <img src="{{ organization.logo }}" alt="" class="org-img">
+                            </div>
+                            <p class="small-heading-slim">{{ organization.name }}</p>
+                        </div>
+                    {% endfor %}
+
+                    {% for organization in user_organizations %}
+                        <div class="d-flex align-items-center gap-24 profile-org-items">
+                            <div class="d-flex justify-content-center align-items-center org-h-box">
+                                <h3 class="small-heading-slim org-h">{{ organization.name|capfirst|first }}</h3>
+                            </div>
+                            <p class="small-heading-slim">{{ organization.name|capfirst }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="d-flex flex-column gap-40">
+                <div class="d-flex flex-column gap-20">
+                    <h2 class="heading">What I Care About</h2>
+                    <!-- 5. What I Care About Section -->
+                    {% include "partials/multi_select_section.html" with section_name="What I Care About" data="causes" items=causes user_items=user_causes %}
+                </div>
+                <hr class="line">
+                <div class="d-flex flex-column gap-32">
+                    <h2 class="heading">Giving Skills</h2>
+                    <div class="d-flex flex-column gap-16 profile-skills-items">
+                        {% for skill in user_skills %}
+                            <div class="profile-skills-item">
+                                <p class="big-text bold">{{ skill }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -178,8 +178,17 @@ label,
     font-weight: 700;
 }
 
+.small-heading-slim {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
 .bold {
     font-weight: 600;
+}
+
+.semi-bold {
+    font-weight: 500;
 }
 
 

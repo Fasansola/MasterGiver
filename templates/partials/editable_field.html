@@ -5,15 +5,18 @@ Usage: {% include "partials/editable_field.html" with field_name="name" label="L
 {% load static %}
 
 <div class="forms-div">
-    <div class="d-flex element-content-field">
-      <div class="forms-div">
-        <p class="{% if is_header %} bold mid-text {% endif %}">{{ label }}</p>
-        <p class="{% if is_long_text %} small-text {% else %} bold mid-text {% endif %}" id="{{ field_name }}">{{ value }}</p>
+    <div class="d-flex flex-column {% if is_long_text %} gap-16 {% else %} gap-8 {% endif %} element-content-field">
+      <div class="d-flex">
+        <div class="forms-div">
+          <p class="{% if is_header %} bold mid-text {% endif %}">{{ label }}</p>
+        </div>
+        <button type="button" class="accent-text bold small-text clickable" id="edit-{{ field_name }}-btn" aria-label="Edit {{ label }}">
+          Edit
+        </button>
       </div>
-      <button type="button" class="accent-text bold small-text clickable" id="edit-{{ field_name }}-btn" aria-label="Edit {{ label }}">
-        Edit
-      </button>
+      <p class="{% if is_long_text %} small-text user-info-text {% else %} bold mid-text {% endif %}" id="{{ field_name }}">{{ value }}</p>
     </div>
+
     <div class="element-form-field d-flex flex-column" style="display: none;">
       <div class="{% if not is_textarea %}col-6 col-12-sm{% endif %} forms-div">
         <label for="{{ field_name }}_input" class="small-text required">{{ label }}</label>
@@ -37,10 +40,12 @@ Usage: {% include "partials/editable_field.html" with field_name="name" label="L
           />
         {% endif %}
       </div>
+
       <div class="d-flex">
         <button type="button" class="forms-submit-button button dark-button" data-field="{{ field_name }}" id="save-{{ field_name }}-btn">
           Save
         </button>
       </div>
     </div>
+    
   </div>
