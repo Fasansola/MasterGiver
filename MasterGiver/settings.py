@@ -41,17 +41,17 @@ CORS_ALLOWED_ORIGINS = [
 
 # Application definition
 INSTALLED_APPS = [
+    'organizations',
+    'causes',
+    'debug_toolbar',
+    'corsheaders',
+    'givers',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'givers',
-    'organizations',
-    'causes',
-    'debug_toolbar',
-    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -104,13 +104,10 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'givers.validators.PasswordStrengthValidator',
     },
 ]
 
@@ -200,3 +197,21 @@ PLEDGE_API_TOKEN = os.getenv('PLEDGE_API_TOKEN')
 
 LOGIN_URL = '/login/'  # Adjust this to match your login URL
 LOGIN_REDIRECT_URL = '/'  # Where to redirect after successful login
+
+
+# For development (local server)
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    # For production (Heroku)
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.gmail.com'  # Or your email provider's SMTP server
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+    
+    
+# Common settings
+DEFAULT_FROM_EMAIL = 'noreply@mastergiver.com'
+

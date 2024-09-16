@@ -9,22 +9,24 @@
       </a>
     </div>
     
-    <!-- Navigation -->
-    <div>
-      <!-- Desktop Navigation -->
-      <nav class="d-flex align-items-center nav-menu d-xs-none">
-        <a href="{% url 'login' %}">
-          <div class="button light-btn">Login</div>
-        </a>
-        <a href="{% url 'signup' %}">
-          <div class="button dark-button">Sign Up</div>
-        </a>
-      </nav>
-      
-      <!-- Mobile Navigation (Hamburger Menu) -->
-      <div class="hamburger-menu d-none d-sm-flex">
-        <img src="{% static '/images/mobile-menu.svg' %}" alt="mobile-menu" />
+    {% if user.is_anonymous %}
+      <!-- Navigation -->
+      <div>
+        <!-- Desktop Navigation -->
+        <nav class="d-flex align-items-center nav-menu d-xs-none">
+          <a href="{% url 'login' %}">
+            <div class="button light-btn">Login</div>
+          </a>
+          <a href="{% url 'signup' %}">
+            <div class="button dark-button">Sign Up</div>
+          </a>
+        </nav>
+        
+        <!-- Mobile Navigation (Hamburger Menu) -->
+        <div class="hamburger-menu d-none d-sm-flex">
+          <img src="{% static '/images/mobile-menu.svg' %}" alt="mobile-menu" />
+        </div>
       </div>
-    </div>
+    {% endif %}
   </section>
 </header>

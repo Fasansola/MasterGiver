@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+
+{% block title %}
+    {% block page_title %}
+    {% endblock %}
+{% endblock title %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'styles/signup-flow.css' %}" />
+    {% block page_styles %}{% endblock %}
+{% endblock %}
+
+{% block body %}
+    {% include "header.html" %}
+
+    <style>
+        /* Custom styling for checkbox */
+        .checkbox-div input[type="checkbox"]:checked::before {
+          content: url("{% static 'images/check.svg' %}");
+        }
+    </style>
+
+    <main>
+        <section class="d-flex flex-column align-items-center body-container justify-content-center">
+            <div class="form-container login-container d-flex flex-column">
+                {% block page_body %}{% endblock %}
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+{% block scripts %}
+    {% block page_scripts %}{% endblock %}
+{% endblock %}

@@ -245,11 +245,9 @@ def login_view(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
 
-    context = {
-        'login_flow': True,
-    }
+    context = {}
     if request.method != 'POST':
-        return render(request, 'givers/login.html', context)
+        return render(request, 'givers/login.html')
 
     userData = request.POST
     username = userData.get('username')
@@ -300,9 +298,8 @@ def dashboard(request):
     return render(request, 'givers/dashboard.html', context)
 
 
-@login_required
-def profile(request):
-    userInfo = request.user
+def profile(request, username):
+    userInfo = User.objects.get(username=username)
     causes = Causes.objects.all()
     user_causes = UserCauses.objects.get(user=userInfo).cause.all()
     user_skills = UserSkills.objects.get(user=userInfo).skill.all()
@@ -313,6 +310,7 @@ def profile(request):
     user_pledge_orgs = fetch_user_organization(pledge_organizations)
 
     context = {
+        'user': userInfo,
         'causes': causes,
         'user_causes': user_causes,
         'user_skills': user_skills,
@@ -400,6 +398,22 @@ def change_password(request):
     }
 
     return render(request, 'givers/change_password.html', context)
+
+
+def forgot_password(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+
+    context = {}
+    if request.method != 'POST':
+        return render(request, 'givers/forgot_password.html', context)
+
+    userData = request.POST
+    email = userData.get('email')
+
+    if not email:
+        context['error'] = 'Input email so we can verify your email!'
+        return render(request, 'givers/forgot_password.html', context)
 
 
 @login_required
