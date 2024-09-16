@@ -68,6 +68,6 @@ footer {
 
     .footer {
         grid-template-columns: 1fr;
-        grid-template-areas: "footer" "resources" "company" "contact";
+        grid-template-areas: "logo" "resources" "company" "contact";
     }
 }
