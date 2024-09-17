@@ -22,16 +22,47 @@
                     <p>{{ user.city }}, {{ user.state }}</p>
                 </div>
             </div>
+
+
             <div class="d-flex flex-column gap-48">
-                <div class="d-flex flex-column gap-16">
-                    <h2 class="big-text bold">About Me</h2>
-                    <p>{{ user.about_me }}</p>
+                <div class="d-flex flex-column gap-32 expandable-box">
+                    <div class="d-flex flex-column gap-16">
+                        <h2 class="big-text bold">About Me</h2>
+                        <p class="truncated-text">{{ user.about_me|truncatechars:255 }}</p>
+                        {% if user.about_me|length > 255 %}
+                            <p class="d-none full-text">{{ user.about_me }}</p>
+                        {% endif %}
+                    </div>
+                    {% if user.about_me|length > 255 %}
+                        <div class="d-flex align-items-center gap-4 semi-bold clickable accent-text" id="read-more-btn">
+                            READ MORE <img src="{% static 'icons/chevron-right.svg' %}" alt="Read More" />
+                        </div>
+                        <div class="d-none align-items-center gap-4 semi-bold clickable accent-text" id="read-less-btn">
+                            READ LESS <img src="{% static 'icons/chevron-right.svg' %}" alt="Read Less" />
+                        </div>
+                    {% endif %}
                 </div>
+                
                 <hr class="line">
-                <div class="d-flex flex-column gap-16">
-                    <h2 class="big-text bold">Why I Give</h2>
-                    <p>{{ user.giving_motivation }}</p>
+
+                <div class="d-flex flex-column gap-32 expandable-box">
+                    <div class="d-flex flex-column gap-16">
+                        <h2 class="big-text bold">Why I Give</h2>
+                        <p class="truncated-text">{{ user.giving_motivation|truncatechars:255 }}</p>
+                        {% if user.giving_motivation|length > 255 %}
+                            <p class="d-none full-text">{{ user.giving_motivation }}</p>
+                        {% endif %}
+                    </div>
+                    {% if user.about_me|length > 255 %}
+                        <div class="d-flex align-items-center gap-4 semi-bold clickable accent-text" id="read-more-btn">
+                            READ MORE <img src="{% static 'icons/chevron-right.svg' %}" alt="Read More" />
+                        </div>
+                        <div class="d-none align-items-center gap-4 semi-bold clickable accent-text" id="read-less-btn">
+                            READ LESS <img src="{% static 'icons/chevron-right.svg' %}" alt="Read Less" />
+                        </div>
+                    {% endif %}
                 </div>
+                
             </div>
         </div>
         <div class="d-flex flex-column profile-main gap-64">
@@ -78,3 +109,8 @@
         </div>
     </div>
 </div>
+
+
+{% comment %} SCRIPTS - USER ABOUT ME AND WHY I GIVE TOGGLE FEATURE {% endcomment %}
+
+{% comment %} <script src="{% static 'scripts/expandable-box.js' %}"></script> {% endcomment %}

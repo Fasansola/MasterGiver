@@ -1,0 +1,68 @@
+.account-setting-header {
+    position: fixed;
+    top: 0;
+    height: 92px;
+    width: calc(100% - 264px);
+    padding: 24px 24px;
+    border-bottom: 1px solid var(--brand-gray);
+    background-color: var(--secondary-bg);
+    z-index: 2;
+}
+
+.save-btn {
+    font-size: 1.25rem;
+    display: flex;
+    justify-content: center;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-width: 100px;
+    line-height: inherit;
+}
+
+.account-submenu {
+    position: fixed;
+    width: 368px;
+    top: 92px;
+    height: calc(100% - 92px);
+    border-right: 1px solid var(--brand-gray);
+    overflow-y: auto;
+}
+
+
+.account-submenu-links {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px 20px;
+    border-bottom: 1px solid var(--brand-gray);
+}
+
+.account-submenu-links:hover,
+.active-account-submenu-links {
+    color: var(--secondary-purple);
+    background-color: var(--white);
+}
+
+
+.account-setting-main-content {
+    margin-left: 368px;
+    padding: 24px 24px;
+    margin-top: 92px;
+}
+
+
+.account-main-contents-div {
+    width: 840px;
+    padding: 32px;
+    background-color: var(--white);
+    border-radius: 8px;
+}
+
+
+@media only screen and (min-width: 2560px) {
+    .account-setting-main-content {
+        margin-left: 0;
+    }    
+}

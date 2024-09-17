@@ -1,0 +1,42 @@
+body {
+    background-color: var(--secondary-bg);
+}
+
+
+
+.dashboard-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 265px;
+    height: 100%;
+    background: var(--primary-purple);
+    color: var(--white);
+}
+
+
+.dashboard-sidebar p {
+    color: var(--white);
+}
+
+.sidebar-brand-logo {
+    padding: 16px 24px;
+}
+
+
+.sidebar-menu-items {
+    padding: 12px 24px;
+    transition: all 0.3s;
+}
+
+
+.sidebar-menu-items:hover {
+    background: var(--secondary-purple);
+}
+
+
+.page-content {
+    margin-left: 265px;
+    width: calc(100% - 265px);
+    height: 100vh;
+}

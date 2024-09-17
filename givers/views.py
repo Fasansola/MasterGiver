@@ -131,7 +131,6 @@ def what_care_about(request):
         return render(request, 'givers/what_care_about.html', context)
 
     userData = request.POST
-    print(userData)
     user = request.user
 
     why_i_give = userData.get('why_i_give')
@@ -285,7 +284,7 @@ def dashboard(request):
         user=userInfo).pledge_organization.all()
     user_organizations = UsersCharityOwnEvent.objects.filter(user=userInfo)
 
-    user_pledge_orgs = fetch_user_organization(pledge_organizations)
+    user_pledge_orgs = fetch_user_organization(pledge_organizations, False)
 
     context = {
         'causes': causes,
@@ -307,7 +306,7 @@ def profile(request, username):
         user=userInfo).pledge_organization.all()
     user_organizations = UsersCharityOwnEvent.objects.filter(user=userInfo)
 
-    user_pledge_orgs = fetch_user_organization(pledge_organizations)
+    user_pledge_orgs = fetch_user_organization(pledge_organizations, False)
 
     context = {
         'user': userInfo,
@@ -453,7 +452,7 @@ def fetch_organizations(request):
         return JsonResponse({"error": str(e)}, status=500)
 
 
-def fetch_user_organization(pledge_organizations):
+def fetch_user_organization(pledge_organizations, dashboard=True):
     user_pledge_orgs = []
     for org in pledge_organizations:
         api_url = f'https://api.pledge.to/v1/organizations/{org.id}'
@@ -466,7 +465,7 @@ def fetch_user_organization(pledge_organizations):
             response = requests.get(api_url, headers=headers)
             response.raise_for_status()  # Raises an HTTPError for bad responses
             org_data = response.json()
-            org.name = org_data['name']
+            org.name = org_data['name'][:20] + '...' if (len(org_data['name']) > 20 and dashboard) else org_data['name']
             org.website = org_data['website_url']
             org.logo = org_data['logo_url']
             org.save()
