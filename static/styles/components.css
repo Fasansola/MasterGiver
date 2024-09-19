@@ -312,10 +312,8 @@ button {
 }
 
 .upload-image-button {
-    padding: 8px 20px;
-    min-width: 140px;
+    padding: 10px 24px;
     border: 1px solid var(--brand-gray);
-    background-color: var(--light-hue);
     border-radius: 8px;
     cursor: pointer;
 }

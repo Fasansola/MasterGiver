@@ -3,6 +3,12 @@
     background: var(--purple-hue-background);
 }
 
+
+.profile-view-logo {
+    max-width: 25%;
+}
+
+
 .profile-body {
     padding: 0 48px;
 }
@@ -15,7 +21,7 @@
     background-color: var(--white);
     padding: 48px 32px;
     padding-bottom: 52px;
-    margin-top: -100px;
+    margin-top: -8%;
     border-radius: 8px;
 }
 
@@ -23,7 +29,7 @@
 .profile-main {
     width: 853px;
     min-height: 1200px;
-    padding: 40px 200px 80px 0px;
+    padding: 40px 5% 80px 0px;
 }
 
 
@@ -76,4 +82,31 @@
     padding: 16px 24px;
     background-color: #EAEBED;
     border-radius: 8px;
+}
+
+
+@media only screen and (max-width: 1240px) {
+
+}
+
+
+@media only screen and (max-width: 992px) {
+    .profile-body {
+        padding: 0 24px;
+    }
+
+    .profile-view-logo {
+        max-width: 250px;
+        margin-bottom: 40px;
+    }
+    
+    .profile-info {
+        width: 100%;
+        margin-top: -15%;
+    }
+
+    .profile-main {
+        width: 100%;
+        padding: 40px 0 40px 0px;
+    }
 }

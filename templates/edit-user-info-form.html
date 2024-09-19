@@ -18,10 +18,10 @@
       </div>
       <!-- Upload and delete buttons -->
       <div>
-        <div>
+        <div class="d-flex flex-wrap">
           <input id="upload-image" type="file" name="profile_photo" accept="image/gif,image/jpeg,image/png" class="d-none" aria-label="Upload profile picture" />
-          <label class="dark-button button" for="upload-image">Upload New Picture</label>
-          <button type="button" class="light-button button delete-profile-pic-button" id="clear-profile-picture" aria-label="Delete profile picture">Delete</button>
+          <label class="dark-button upload-image-button" for="upload-image">Upload New Picture</label>
+          <button type="button" class="light-button upload-image-button delete-profile-pic-button" id="clear-profile-picture" aria-label="Delete profile picture">Delete</button>
           {% if not user.profile_photo %}
             <p id="file-chosen" class="small-text">No file selected</p>
           {% endif %}
@@ -73,7 +73,7 @@
 
   <!-- 7. My Organizations and Causes Section -->
   <div class="forms-div">
-    <div class="flex element-content-field justify-content-between">
+    <div class="flex flex-wrap gap-16 element-content-field justify-content-between">
       <div class="flex">
         <h3 class="big-text bold">My Organizations and Causes</h3>
       </div>
