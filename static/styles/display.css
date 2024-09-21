@@ -111,7 +111,7 @@
         align-items: flex-end;
     }
 
-    .d-xs-none {
+    .d-sm-none {
         display: none !important;
     }
 }
@@ -161,7 +161,7 @@
         align-items: flex-end;
     }
 
-    .d-sm-none {
+    .d-md-none {
         display: none !important;
     }
 }
@@ -211,7 +211,7 @@
         align-items: flex-end;
     }
 
-    .d-md-none {
+    .d-lg-none {
         display: none !important;
     }
 }
@@ -261,7 +261,7 @@
         align-items: flex-end;
     }
 
-    .d-lg-none {
+    .d-xl-none {
         display: none !important;
     }
 }

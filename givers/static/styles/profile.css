@@ -86,8 +86,10 @@
 }
 
 
-@media only screen and (max-width: 1240px) {
-
+@media only screen and (max-width: 1200px) {
+    .profile-main {
+        padding: 40px 0;
+    }
 }
 
 
@@ -95,19 +97,31 @@
     .profile-body {
         padding: 0 24px;
     }
+    
+    .profile-info {
+        margin-top: -10%;
+    }
+}
 
+
+@media only screen and (max-width: 768px) {
     .profile-view-logo {
         max-width: 250px;
         margin-bottom: 40px;
     }
-    
+
     .profile-info {
         width: 100%;
-        margin-top: -15%;
     }
 
     .profile-main {
         width: 100%;
-        padding: 40px 0 40px 0px;
+    }
+}
+
+
+@media only screen and (max-width: 576px) {
+    .profile-info {
+        margin-top: -15%;
     }
 }

@@ -17,6 +17,11 @@ section {
 }
 
 
+.white-bg {
+    background-color: var(--white);
+}
+
+
 .secondary-bg {
     background-color: var(--secondary-bg);
 }
@@ -38,7 +43,7 @@ section {
     height: 100%;
     z-index: 10;
     background: var(--primary-purple);
-    padding: 48px 0;
+    padding: 64px 0;
     transition: all 0.4s;
 }
 
@@ -60,13 +65,6 @@ section {
     top: 18px;
     right: 18px;
 }
-
-
-@media (max-width: 992px) {
-}
-
-
-
 
 
 /* TABLETS RESPONSIVE */
