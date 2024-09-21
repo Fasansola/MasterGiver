@@ -59,7 +59,7 @@
 
 @media only screen and (max-width: 576px) {
     .button {
-        width: 90vw;
+        /* width: 90vw; */
     }
 
     button.button {
@@ -95,7 +95,6 @@ button {
 
 .forms-split-div {
     display: flex;
-    flex-direction: row;
     width: 100%;
     gap: 16px;
 }
@@ -329,12 +328,6 @@ button {
 
 
 /* FORMS RESPONSIVE */
-
-@media only screen and (max-width: 576px) {
-    .forms-split-div {
-        flex-direction: column;
-    }
-}
 
 
 /* STRAIGHT LINE */

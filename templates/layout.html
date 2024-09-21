@@ -58,11 +58,17 @@
     <!-- Dynamic title: "MasterGiver - [Page Title]" -->
     <title>MasterGiver - {% block title %}{% endblock %}</title>
   </head>
-  <body>
+  <body class="relative">
+      {% comment %} MOBILE MENU {% endcomment %}
+      <div class="d-none d-lg-flex flex-column dashboard-menu menu-not-is-visible gap-32" id="mobile-menu">
+          {% include 'dashboard-menu.html' %}
+      </div>
     <!-- Main content block -->
     {% block body %}{% endblock %}
     
     <!-- Placeholder for page-specific scripts -->
-    {% block scripts %}{% endblock %}
+    <script src="{% static 'scripts/hamburger-menu.js' %}"></script>
+    {% block scripts %}
+    {% endblock %}
   </body>
 </html>

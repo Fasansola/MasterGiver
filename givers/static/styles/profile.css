@@ -19,10 +19,10 @@
     height: -webkit-max-content;
     height: max-content;
     background-color: var(--white);
-    padding: 48px 32px;
+    padding: 40px 32px;
     padding-bottom: 52px;
     margin-top: -8%;
-    border-radius: 8px;
+    border-radius: 16px;
 }
 
 
@@ -68,6 +68,7 @@
 .org-h-box {
     height: 100px;
     width: 100px;
+    min-width: 100px;
     background-color: var(--light-hue);
     border-radius: 8px;
 }

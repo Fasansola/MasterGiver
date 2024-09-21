@@ -287,6 +287,7 @@ def dashboard(request):
     user_pledge_orgs = fetch_user_organization(pledge_organizations, False)
 
     context = {
+        'userInfo': userInfo,
         'causes': causes,
         'user_causes': user_causes,
         'user_skills': user_skills,
@@ -309,7 +310,7 @@ def profile(request, username):
     user_pledge_orgs = fetch_user_organization(pledge_organizations, False)
 
     context = {
-        'user': userInfo,
+        'userInfo': userInfo,
         'causes': causes,
         'user_causes': user_causes,
         'user_skills': user_skills,

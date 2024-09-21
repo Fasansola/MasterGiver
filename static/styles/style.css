@@ -31,6 +31,44 @@ section {
 }
 
 
+.dashboard-menu {
+    position: fixed;
+    top: 0;
+    width: 265px;
+    height: 100%;
+    z-index: 10;
+    background: var(--primary-purple);
+    padding: 48px 0;
+    transition: all 0.4s;
+}
+
+
+.dashboard-menu p {
+    color: var(--white);
+}
+
+.menu-is-visible {
+    right: 0;
+}
+
+.menu-not-is-visible {
+    right: -268px;
+}
+
+.close-menu {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+}
+
+
+@media (max-width: 992px) {
+}
+
+
+
+
+
 /* TABLETS RESPONSIVE */
 
 @media only screen and (max-width: 992px) {

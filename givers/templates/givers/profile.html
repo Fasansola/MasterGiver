@@ -8,7 +8,10 @@
 {% endblock %}
 
 {% block body %}
-    {% include "header.html" %}
+    <div class="d-none d-lg-flex">
+        {% include "header.html" %}
+    </div>
+    <div></div>
     {% include 'profile-view.html' with causes=causes user_causes=user_causes user_skills=user_skills pledge_organizations=pledge_organizations user_organizations=user_organizations is_profile=is_profile %}
 {% endblock %}
 
