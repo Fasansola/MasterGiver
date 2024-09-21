@@ -66,3 +66,27 @@
         margin-left: 0;
     }    
 }
+
+
+@media screen and (max-width: 1200px) {
+    .account-setting-header {
+        position: static;
+        width: 100%;
+    }
+
+    .account-submenu {
+        position: static;
+        width: 100%;
+    }
+
+    .account-setting-main-content {
+        margin-left: 0;
+        padding: 24px 24px;
+        margin-top: 0;
+    }
+
+    .account-main-contents-div {
+        width: 100%;
+        padding: 24px;
+    }
+}

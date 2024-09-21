@@ -31,7 +31,7 @@
                 <h1 class="small-heading-slim">Account Settings</h1>
                 <button type="submit" class="link save-btn">Save</button>
             </div>
-            <div class="d-flex">
+            <div class="d-flex flex-lg-column">
                 <div class="account-submenu">
                     <a href="{% url 'edit_profile' %}">
                         <div class="account-submenu-links {% if page == "edit_profile" %} active-account-submenu-links {% endif %} semi-bold">Edit Profile</div>
@@ -44,6 +44,7 @@
                     {% block main_content %} {% endblock %}
                 </div>
             </div>
+
         </form>
     </div>
 {% endblock %}
