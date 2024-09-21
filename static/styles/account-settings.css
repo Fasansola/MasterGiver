@@ -69,6 +69,10 @@
 
 
 @media screen and (max-width: 1200px) {
+    .save-btn {
+        min-width: 50px;
+    }
+
     .account-setting-header {
         position: static;
         width: 100%;
