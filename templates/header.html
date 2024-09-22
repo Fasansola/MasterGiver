@@ -13,20 +13,23 @@
     <div>
         {% if user.is_anonymous %}
         <!-- Desktop Navigation -->
-        <nav class="d-flex align-items-center nav-menu d-xs-none">
+        <nav class="d-flex align-items-center nav-menu">
           <a href="{% url 'login' %}">
-            <div class="button light-btn">Login</div>
+            <div class="button d-sm-none light-btn" id="login-btn">Login</div>
+            <div class="button d-none d-sm-flex dark-button">Sign In</div>
           </a>
-          <a href="{% url 'signup' %}">
+          <a href="{% url 'signup' %}" class="d-sm-none">
             <div class="button dark-button">Sign Up</div>
           </a>
         </nav>
+
+        {% else %}
+
+          <!-- Mobile Navigation (Hamburger Menu) -->
+          <div class="hamburger-menu d-none d-lg-flex" id="hamburger-menu">
+            <img src="{% static '/images/mobile-menu.svg' %}" alt="mobile-menu" />
+          </div>
         {% endif %}
-        
-        <!-- Mobile Navigation (Hamburger Menu) -->
-        <div class="hamburger-menu d-none d-lg-flex" id="hamburger-menu">
-          <img src="{% static '/images/mobile-menu.svg' %}" alt="mobile-menu" />
-        </div>
       </div>
   </section>
 </header>

@@ -59,7 +59,8 @@
 
 @media only screen and (max-width: 576px) {
     .button {
-        width: 90vw;
+        /* width: 90vw; */
+        min-width: 0;
     }
 
     button.button {
@@ -95,7 +96,6 @@ button {
 
 .forms-split-div {
     display: flex;
-    flex-direction: row;
     width: 100%;
     gap: 16px;
 }
@@ -312,10 +312,8 @@ button {
 }
 
 .upload-image-button {
-    padding: 8px 20px;
-    min-width: 140px;
+    padding: 10px 24px;
     border: 1px solid var(--brand-gray);
-    background-color: var(--light-hue);
     border-radius: 8px;
     cursor: pointer;
 }
@@ -331,12 +329,6 @@ button {
 
 
 /* FORMS RESPONSIVE */
-
-@media only screen and (max-width: 576px) {
-    .forms-split-div {
-        flex-direction: column;
-    }
-}
 
 
 /* STRAIGHT LINE */
