@@ -2,7 +2,7 @@
 # your_app/management/commands/add_skills.py
 
 from django.core.management.base import BaseCommand
-from your_app.models import Skill  # Replace 'your_app' with your actual app name
+from givers.models import Skill  # Replace 'your_app' with your actual app name
 
 class Command(BaseCommand):
     help = 'Adds a comprehensive list of skills to the database'
