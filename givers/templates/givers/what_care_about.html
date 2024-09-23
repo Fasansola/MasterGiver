@@ -15,6 +15,14 @@
 >
   {% csrf_token %}
 
+  <!-- About Me section -->
+  <div class="forms-div">
+    <label for="about_me" class="small-text required">About Me</label>
+    <textarea class="input" name="about_me" id="about_me" rows="4" placeholder="Your personal and professional bio here" required aria-required="true" minlength="10" maxlength="2000">{% if user.about_me %}{{ user.about_me }} {% endif %}
+    </textarea>
+    <span id="about_me-error" class="error-message" aria-live="polite"></span>
+  </div>
+
   <!-- Why I Give section -->
   <div class="forms-div">
     <label for="why_i_give" class="small-text required" id="why_i_give_label">Why I Give</label>
@@ -27,172 +35,23 @@
       aria-labelledby="why_i_give_label"
       aria-required="true"
       minlength="10"
-      maxlength="500"
-    ></textarea>
+      maxlength="2000"
+    >{% if user.giving_motivation %}{{ user.giving_motivation }} {% endif %}</textarea>
     <span id="why_i_give-error" class="error-message" aria-live="polite"></span>
   </div>
 
   <!-- What I Care About section -->
-  <div class="forms-div relative">
-    <label for="what-i-care-about" class="small-text required" id="what-i-care-about_label">What I Care About</label>
-    <input
-      type="text"
-      id="what-i-care-about"
-      placeholder="Select one or more causes you care to support"
-      class="input"
-      aria-labelledby="what-i-care-about_label"
-      aria-required="true"
-      aria-haspopup="true"
-      aria-expanded="false"
-    />
-    <span id="what-i-care-about-error" class="error-message" aria-live="polite"></span>
-
-    <!-- Dropdown for selecting causes -->
-    <div
-      class="absolute dropdown-list"
-      id="causes-dropdown"
-      role="listbox"
-      aria-labelledby="what-i-care-about_label"
-    >
-      <h4 class="bold dropdown-h" id="causes-dropdown-title">What I Care About</h4>
-      <div class="dropdown-ul">
-        {% for cause in causes %}
-        <div
-          class="checkbox-div justify-content-between align-items-center"
-          role="option"
-          aria-selected="false"
-        >
-          <label for="{{ cause.name }}" class="small-text icons-text">
-            <img src="{{ cause.icon.url }}" alt="" aria-hidden="true" />
-            {{ cause.name }}
-          </label>
-          <input
-            type="checkbox"
-            name="causes"
-            id="{{ cause.name }}"
-            class="causes-check skill-causes-items"
-            value="{{ cause.id }}"
-            aria-labelledby="causes-dropdown-title"
-          />
-        </div>
-        {% endfor %}
-      </div>
-      <div class="dropdown-btn">
-        <div
-          class="button dark-button"
-          id="causes-btn"
-          role="button"
-          aria-label="Save selected causes"
-        >
-          Save
-        </div>
-      </div>
-    </div>
-  </div>
+  {% comment %} Select Items From Dropdown {% endcomment %}
+  {% include "partials/multi_select_selection-dropdown.html" with section_name="What I Care About" data="causes" items=causes user_items=user_causes %}
 
   <!-- Container for displaying selected causes -->
-  <div
-    class="d-none items-container"
-    aria-live="polite"
-    aria-relevant="additions removals"
-  >
-    {% for cause in causes %}
-    <div class="d-none items-box causes-items" role="listitem">
-      <div class="icons-text">
-        <img src="{{ cause.icon.url }}" alt="" aria-hidden="true" />
-        <p>{{ cause.name }}</p>
-      </div>
-      <div>
-        <img
-          src="{% static '/icons/x-close.svg' %}"
-          alt="Remove {{ cause.name }}"
-          class="remove-parent clickable"
-          role="button"
-          aria-label="Remove {{ cause.name }}"
-        />
-      </div>
-    </div>
-    {% endfor %}
-  </div>
+  {% include "partials/multi_select_selection-values.html" with items=causes user_items=user_causes %}
 
   <!-- Giving Skills section -->
-  <div class="forms-div relative">
-    <label for="giving-skills" class="small-text required" id="giving-skills_label">Giving Skills</label>
-    <input
-      type="text"
-      id="giving-skills"
-      placeholder="Select one or more skills you have that you can offer for a cause"
-      class="input"
-      aria-labelledby="giving-skills_label"
-      aria-required="true"
-      aria-haspopup="true"
-      aria-expanded="false"
-    />
-    <span id="giving-skills-error" class="error-message" aria-live="polite"></span>
-
-    <!-- Dropdown for selecting skills -->
-    <div
-      class="absolute dropdown-list"
-      id="skills-dropdown"
-      role="listbox"
-      aria-labelledby="giving-skills_label"
-    >
-      <h4 class="bold dropdown-h" id="skills-dropdown-title">Giving Skills</h4>
-      <div class="dropdown-ul">
-        {% for skill in skills %}
-        <div
-          class="checkbox-div justify-content-between align-items-center"
-          role="option"
-          aria-selected="false"
-        >
-          <label for="{{ skill.name }}" class="small-text icons-text">{{ skill.name }}</label>
-          <input
-            type="checkbox"
-            name="skills"
-            id="{{ skill.name }}"
-            value="{{ skill.id }}"
-            class="skills-check skill-causes-items"
-            aria-labelledby="skills-dropdown-title"
-          />
-        </div>
-        {% endfor %}
-      </div>
-      <div class="dropdown-btn">
-        <div
-          class="button dark-button"
-          id="skills-btn"
-          role="button"
-          aria-label="Save selected skills"
-        >
-          Save
-        </div>
-      </div>
-    </div>
-  </div>
+  {% include "partials/multi_select_selection-dropdown.html" with section_name="Giving Skills" data="skills" items=skills user_items=user_skills %}
 
   <!-- Container for displaying selected skills -->
-  <div
-    class="d-none items-container"
-    aria-live="polite"
-    aria-relevant="additions removals"
-  >
-    {% for skill in skills %}
-    <div class="d-none items-box skills-items" role="listitem">
-      <div class="icons-text">
-        <p>{{ skill.name }}</p>
-      </div>
-      <div>
-        <img
-          src="{% static '/icons/x-close.svg' %}"
-          alt="Remove {{ skill.name }}"
-          class="remove-parent clickable"
-          role="button"
-          aria-label="Remove {{ skill.name }}"
-        />
-      </div>
-    </div>
-    {% endfor %}
-  </div>
+  {% include "partials/multi_select_selection-values.html" with items=skills user_items=user_skills %}
 
   <hr class="line" aria-hidden="true">
 

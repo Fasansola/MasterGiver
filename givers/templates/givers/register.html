@@ -16,18 +16,21 @@
 >
   {% csrf_token %}
   <!-- Username input field -->
-  <div class="forms-div">
-    <label for="username" class="small-text required">Username</label>
-    <input
-      type="text"
-      id="username"
-      name="username"
-      placeholder="Username"
-      class="input"
-      required
-      aria-required="true"
-    />
+
+  <!-- Name input section -->
+  <div class="forms-split-div flex-sm-column">
+    <div class="col-6 col-12-sm d-flex flex-column forms-div">
+      <label for="first_name" class="small-text required">First Name</label>
+      <input type="text" id="first_name" name="first_name" placeholder="John" class="input" required aria-required="true" minlength="2" maxlength="50">
+      <span id="first_name-error" class="error-message" aria-live="polite"></span>
+    </div>
+    <div class="col-6 col-12-sm d-flex flex-column forms-div">
+      <label for="last_name" class="small-text required">Last Name</label>
+      <input type="text" id="last_name" name="last_name" placeholder="Doe" class="input" required aria-required="true" minlength="2" maxlength="50">
+      <span id="last_name-error" class="error-message" aria-live="polite"></span>
+    </div>
   </div>
+  
   <!-- Email input field -->
   <div class="forms-div">
     <label for="email" class="small-text required">Email</label>

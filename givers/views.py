@@ -36,13 +36,15 @@ def signup(request):
         return render(request, 'givers/register.html')
 
     # Collect data from the form
-    username = request.POST.get('username').strip()
+    first_name = request.POST.get('first_name')
+    last_name = request.POST.get('last_name')
     email = request.POST.get('email').strip()
     password = request.POST.get('password')
     confirm_password = request.POST.get('confirm_password')
+    username = first_name + last_name + str(User.objects.count())
 
     # Validate user data
-    if not all([username, email, password, confirm_password]):
+    if not all([first_name, last_name, email, password, confirm_password]):
         return render(request, 'givers/register.html', {'error': 'All fields are required!'})
 
     if password != confirm_password:
@@ -54,12 +56,6 @@ def signup(request):
     except ValidationError:
         return render(request, 'givers/register.html', {'error': 'Invalid email format!'})
 
-    # Validate username
-    if not re.match(r'^[a-zA-Z0-9_]{3,20}$', username):
-        return render(request, 'givers/register.html', {
-            'error': 'Username must be 3-20 characters long and contain only letters, numbers, and underscores.'
-        })
-
     # Validate password strength
     if len(password) < 8 or not re.search(r'[A-Z]', password) or not re.search(r'[a-z]', password) or not re.search(r'\d', password):
         return render(request, 'givers/register.html', {
@@ -69,8 +65,10 @@ def signup(request):
     # Save Data to the database
     try:
         user = User.objects.create_user(username, email, password)
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, username=username, email=email, password=password)
         if user is not None:
+            user.first_name = first_name
+            user.last_name = last_name
             login(request, user)
             return redirect('create_profile')
         else:
@@ -92,7 +90,7 @@ def create_profile(request):
         return render(request, 'givers/create_profile.html')
 
     userData = request.POST
-    user = request.user
+    userInfo = request.user
 
     profile_photo = request.FILES.get('profile_photo')
 
@@ -101,45 +99,44 @@ def create_profile(request):
             'images/' + profile_photo.name, ContentFile(profile_photo.read()))
         # profile_photo = path
 
-    first_name = userData.get('first_name')
-    last_name = userData.get('last_name')
+    username = userData.get('username')
     state = userData.get('state')
     city = userData.get('city')
-    about_me = userData.get('about_me')
-
-    userInfo = User.objects.get(username=user.username)
 
     userInfo.profile_photo = path
-    userInfo.first_name = first_name
-    userInfo.last_name = last_name
+    userInfo.username = username
     userInfo.state = state
     userInfo.city = city
-    userInfo.about_me = about_me
     userInfo.save()
     return redirect('what_care_about')
 
 
 @login_required
 def what_care_about(request):
+    userInfo = request.user
     if request.method != 'POST':
         causes = Causes.objects.all()
+        user_causes = UserCauses.objects.get(user=userInfo).cause.all()
         skills = Skill.objects.all()
+        user_skills = UserSkills.objects.get(user=userInfo).skill.all()
         context = {
             'causes': causes,
-            'skills': skills
+            'skills': skills,
+            'user_causes': user_causes,
+            'user_skills': user_skills
         }
         return render(request, 'givers/what_care_about.html', context)
 
     userData = request.POST
-    user = request.user
 
     why_i_give = userData.get('why_i_give')
+    about_me = userData.get('about_me')
     causes = userData.getlist('causes')
     skills = userData.getlist('skills')
     pledge_organizations = userData.getlist('pledge_organizations[]')
     user_organizations = userData.getlist('user_organizations[]')
 
-    userInfo = User.objects.get(username=user.username)
+    userInfo.about_me = about_me
     userInfo.giving_motivation = why_i_give
     userInfo.save()
 

@@ -1,0 +1,24 @@
+{% load static %}
+
+
+<div class="d-flex items-container" aria-live="polite" aria-relevant="additions removals">
+    {% for item in items %}
+      <div class="{% if item in user_items %}flex{% else %}d-none{% endif %} items-box {{ data }}-items" data-id={{ forloop.counter0 }} role="listitem">
+        <div class="icons-text">
+          {% if item.icon %}
+            <img src="{{ item.icon.url }}" alt="" aria-hidden="true" />
+          {% endif %}
+          <p>{{ item.name }}</p>
+        </div>
+        <div>
+          <img
+            src="{% static '/icons/x-close.svg' %}"
+            alt="Remove {{ item.name }}"
+            class="remove-parent clickable"
+            role="button"
+            aria-label="Remove {{ item.name }}"
+          />
+        </div>
+      </div>
+    {% endfor %}
+  </div>

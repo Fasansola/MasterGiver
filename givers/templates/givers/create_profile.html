@@ -18,7 +18,11 @@
     <div class="d-flex align-items-center align-items-sm-start flex-sm-column">
       <div>
         <label for="upload-image">
-          <img src="{% static 'icons/upload.svg' %}" alt="Upload profile picture" class="upload-image-icon" id="profile-picture" width="136">
+          {% if user.profile_photo %}
+            <img src="{{ user.profile_photo.url }}" alt="Upload profile picture" class="upload-image-icon" id="profile-picture" width="136">
+          {% else %}
+            <img src="{% static 'icons/upload.svg' %}" alt="Upload profile picture" class="upload-image-icon" id="profile-picture" width="136">
+          {% endif %}
         </label>
       </div>
       <div>
@@ -36,25 +40,27 @@
 
   <hr class="line">
 
-  <!-- Name input section -->
-  <div class="forms-split-div flex-sm-column">
-    <div class="col-6 col-12-sm d-flex flex-column forms-div">
-      <label for="first_name" class="small-text required">First Name</label>
-      <input type="text" id="first_name" name="first_name" placeholder="John" class="input" required aria-required="true" minlength="2" maxlength="50">
-      <span id="first_name-error" class="error-message" aria-live="polite"></span>
-    </div>
-    <div class="col-6 col-12-sm d-flex flex-column forms-div">
-      <label for="last_name" class="small-text required">Last Name</label>
-      <input type="text" id="last_name" name="last_name" placeholder="Doe" class="input" required aria-required="true" minlength="2" maxlength="50">
-      <span id="last_name-error" class="error-message" aria-live="polite"></span>
-    </div>
+
+  <!-- Username input field -->
+  <div class="forms-div">
+    <label for="username" class="small-text required">Username</label>
+    <input
+      type="text"
+      id="username"
+      name="username"
+      placeholder="Username"
+      class="input"
+      required
+      aria-required="true"
+      {% if user.username %} value="{{ user.username }}"{% endif %}
+    />
   </div>
 
   <!-- Location input section -->
   <div class="forms-split-div flex-sm-column">
     <div class="col-6 col-12-sm flex-row-sm relative forms-div">
       <label for="state" class="small-text required">State</label>
-      <input type="text" id="state" name="state" placeholder="" class="input" required aria-required="true" aria-autocomplete="list" aria-controls="state-list">
+      <input type="text" id="state" name="state" {% if user.state %} value="{{ user.state }}" {% endif %} placeholder="" class="input" required aria-required="true" aria-autocomplete="list" aria-controls="state-list">
       <div class="absolute dropdown-list" id="state-dropdown">
         <h4 class="bold dropdown-h">States</h4>
         <ul class="dropdown-ul" id="state-list" role="listbox"></ul>
@@ -63,20 +69,13 @@
     </div>
     <div class="col-6 col-12-sm relative forms-div">
       <label for="city" class="small-text required">City</label>
-      <input type="text" id="city" name="city" placeholder="" class="input" required aria-required="true" aria-autocomplete="list" aria-controls="city-list">
+      <input type="text" id="city" name="city" {% if user.city %} value="{{ user.city }}" {% endif %} placeholder="" class="input" required aria-required="true" aria-autocomplete="list" aria-controls="city-list">
       <div class="absolute dropdown-list" id="city-dropdown">
         <h4 class="bold dropdown-h">Cities</h4>
         <ul class="dropdown-ul" id="city-list" role="listbox"></ul>
       </div>
       <span id="city-error" class="error-message" aria-live="polite"></span>
     </div>
-  </div>
-
-  <!-- About Me section -->
-  <div class="forms-div">
-    <label for="about_me" class="small-text required">About Me</label>
-    <textarea class="input" name="about_me" id="about_me" rows="4" placeholder="Your personal and professional bio here" required aria-required="true" minlength="10" maxlength="500"></textarea>
-    <span id="about_me-error" class="error-message" aria-live="polite"></span>
   </div>
 
   <!-- Error message display -->

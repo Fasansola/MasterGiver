@@ -1,0 +1,47 @@
+{% load static %}
+<div class="forms-div" id="{{ section_name|slugify }}_input">
+  <div class="forms-div relative">
+    <label for="{{ section_name|slugify }}" class="small-text required" id="{{ section_name|slugify }}-label">{{ section_name }}</label>
+    <input
+      type="text"
+      id="{{ section_name|slugify }}"
+      placeholder="Select one or more {{ section_name|lower }}"
+      class="input"
+      aria-labelledby="{{ section_name|slugify }}-label"
+      aria-required="true"
+      aria-haspopup="true"
+      aria-expanded="false"
+    />
+
+    <div class="absolute dropdown-list" id="{{ data }}-dropdown" role="listbox" aria-labelledby="{{ data }}-label">
+      <h4 class="bold dropdown-h" id="{{ data }}-dropdown-title">{{ section_name }}</h4>
+      <div class="dropdown-ul">
+        {% for item in items %}
+          <div class="checkbox-div justify-content-between align-items-center" role="option" aria-selected="false">
+            <label for="{{ item.name }}" class="small-text icons-text">
+              {% if item.icon %}
+                <img src="{{ item.icon.url }}" alt="" aria-hidden="true" />
+              {% endif %}
+              {{ item.name }}
+            </label>
+            <input
+              type="checkbox"
+              name="{{ data }}"
+              id="{{ item.name }}"
+              class="{{ data }}-check skill-causes-items"
+              value="{{ item.id }}"
+              aria-labelledby="{{ data }}-dropdown-title"
+              {% if item in user_items %}checked{% endif %}
+            />
+          </div>
+        {% endfor %}
+      </div>
+      <div class="dropdown-btn">
+        <button type="button" class="button dark-button" id="{{ data }}-btn" aria-label="Save selected {{ section_name|lower }}">
+          Save
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
