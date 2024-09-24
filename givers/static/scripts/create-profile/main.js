@@ -24,10 +24,12 @@ async function initialize() {
     const stateList = document.getElementById('state-list');
     try {
         const states = await fetchStates();
-        stateList.innerHTML = states.map(state => 
-            `<li class="user-state" tabindex="0">${state.state_name}</li>`
-        ).join('');
-
+        stateList.innerHTML = states
+            .filter(state => !["Ramey", "Sublimity", "Trimble"].includes(state.state_name))
+            .map(state => 
+                `<li class="user-state" tabindex="0">${state.state_name}</li>`
+            ).join('');
+    
         // Add keyboard navigation to the state list
         addKeyboardNavigation(stateList, '.user-state', fillState);
     } catch (error) {

@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     
     togglePassword.addEventListener('click', function (e) {
-        console.log(passwords)
         // toggle the type attribute
         passwords.forEach(password => {
             const type = password.getAttribute('type') === 'password' ? 'text' : 'password';

@@ -1,9 +1,10 @@
 from django.conf import settings
 import re
 import requests
+import json
 
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.db import IntegrityError
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
@@ -36,19 +37,20 @@ def signup(request):
         return render(request, 'givers/register.html')
 
     # Collect data from the form
-    first_name = request.POST.get('first_name')
-    last_name = request.POST.get('last_name')
-    email = request.POST.get('email').strip()
-    password = request.POST.get('password')
-    confirm_password = request.POST.get('confirm_password')
+    userData = json.loads(request.body)
+    first_name = userData.get('first_name')
+    last_name = userData.get('last_name')
+    email = userData.get('email').strip()
+    password = userData.get('password')
+    confirm_password = userData.get('confirm_password')
     username = first_name + last_name + str(User.objects.count())
 
     # Validate user data
     if not all([first_name, last_name, email, password, confirm_password]):
-        return render(request, 'givers/register.html', {'error': 'All fields are required!'})
+        return JsonResponse({'error': 'All fields are required!'}, status=400)
 
     if password != confirm_password:
-        return render(request, 'givers/register.html', {'error': 'Passwords do not match!'})
+        return JsonResponse({'error': 'Passwords do not match!'}, status=400)
 
     # Validate email format
     try:
@@ -58,9 +60,7 @@ def signup(request):
 
     # Validate password strength
     if len(password) < 8 or not re.search(r'[A-Z]', password) or not re.search(r'[a-z]', password) or not re.search(r'\d', password):
-        return render(request, 'givers/register.html', {
-            'error': 'Password must be at least 8 characters long and contain uppercase, lowercase, and numbers.'
-        })
+        return JsonResponse({'error': 'Password must be at least 8 characters long and contain uppercase, lowercase, and numbers.'}, status=400)
 
     # Save Data to the database
     try:
@@ -70,9 +70,9 @@ def signup(request):
             user.first_name = first_name
             user.last_name = last_name
             login(request, user)
-            return redirect('create_profile')
+            return JsonResponse({'status': 'success'}, status=200)
         else:
-            return render(request, 'givers/register.html', {'error': 'Failed to authenticate after registration.'})
+            return JsonResponse({'error': 'An error occurred during registration. Please try again.'}, status=500)
     except IntegrityError as e:
         error_message = str(e)
         if 'username' in error_message:
@@ -81,7 +81,7 @@ def signup(request):
             error = 'This email is already registered. Please use a different email address.'
         else:
             error = 'An error occurred during registration. Please try again.'
-        return render(request, 'givers/register.html', {'error': error})
+        return JsonResponse({'error': error}, status=500)
 
 
 @login_required
@@ -116,9 +116,15 @@ def what_care_about(request):
     userInfo = request.user
     if request.method != 'POST':
         causes = Causes.objects.all()
-        user_causes = UserCauses.objects.get(user=userInfo).cause.all()
         skills = Skill.objects.all()
-        user_skills = UserSkills.objects.get(user=userInfo).skill.all()
+        # Use filter().first() instead of get()
+        user_causes_obj = UserCauses.objects.filter(user=userInfo).first()
+        user_skills_obj = UserSkills.objects.filter(user=userInfo).first()
+
+        # If the objects exist, get all causes/skills, otherwise use an empty queryset
+        user_causes = user_causes_obj.cause.all() if user_causes_obj else Causes.objects.none()
+        user_skills = user_skills_obj.skill.all() if user_skills_obj else Skill.objects.none()
+    
         context = {
             'causes': causes,
             'skills': skills,

@@ -18,8 +18,8 @@
   <!-- About Me section -->
   <div class="forms-div">
     <label for="about_me" class="small-text required">About Me</label>
-    <textarea class="input" name="about_me" id="about_me" rows="4" placeholder="Your personal and professional bio here" required aria-required="true" minlength="10" maxlength="2000">{% if user.about_me %}{{ user.about_me }} {% endif %}
-    </textarea>
+    <textarea class="input" name="about_me" id="about_me" rows="4" placeholder="Your personal and professional bio here" required aria-required="true" minlength="10" maxlength="2000"
+      >{% if user.about_me %}{{ user.about_me }} {% endif %}</textarea>
     <span id="about_me-error" class="error-message" aria-live="polite"></span>
   </div>
 
@@ -53,7 +53,7 @@
   <!-- Container for displaying selected skills -->
   {% include "partials/multi_select_selection-values.html" with items=skills user_items=user_skills %}
 
-  <hr class="line" aria-hidden="true">
+  <hr class="line" aria-hidden="true" style="margin: 8px 0 16px 0;">
 
   <!-- My Organizations and Causes section -->
   <div class="forms-div relative">

@@ -202,7 +202,6 @@ button {
 }
 
 .forms-warning {
-    display: flex;
     flex-direction: row !important;
     align-items: center;
 }

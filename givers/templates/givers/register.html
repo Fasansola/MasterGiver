@@ -9,9 +9,7 @@
   <a href="{% url 'login' %}" class="link bold" aria-label="Login to MasterGiver">Login to MasterGiver</a>
 </div>
 <form
-  class="d-flex flex-column align-items-start forms gap-24"
-  action="{% url 'signup' %}"
-  method="POST"
+  class="d-flex flex-column align-items-start forms gap-24" id="signup-form"
   aria-label="Signup form"
 >
   {% csrf_token %}
@@ -101,17 +99,17 @@
     </label>
   </div>
   <!-- Error message display -->
-  {% if error %}
-  <div class="danger-text forms-warning" role="alert" aria-live="assertive">
-    <img src="{% static "icons/error.svg" %}" alt="Error icon"> {{ error }}
+  <div class="d-none forms-warning" id="form-error" role="alert" aria-live="assertive">
+    <img src="{% static "icons/error.svg" %}" alt="Error icon">
+    <span id="error-text" class="danger-text">{{ error }}</span>
   </div>
-  {% endif %}
   <!-- Submit button -->
-  <button type="submit" class="forms-submit-button button dark-button">Create Account</button>
+  <button type="submit" class="forms-submit-button button dark-button" id="submit-form">Create Account</button>
 </form>
 {% endblock %}
 
 {% block page_scripts %}
   <!-- Include the password toggle functionality script -->
+  <script src="{% static 'scripts/sign-up.js' %}"></script>
   <script src="{% static 'scripts/password-toggle.js' %}"></script>
 {% endblock %}
