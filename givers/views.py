@@ -29,6 +29,9 @@ logger = logging.getLogger(__name__)
 
 
 def home(request):
+    user = request.user
+    if user.is_authenticated:
+        return redirect('dashboard')
     return render(request, 'givers/index.html')
 
 
@@ -97,13 +100,12 @@ def create_profile(request):
     if profile_photo:
         path = default_storage.save(
             'images/' + profile_photo.name, ContentFile(profile_photo.read()))
-        # profile_photo = path
+        profile_photo = path
 
     username = userData.get('username')
     state = userData.get('state')
     city = userData.get('city')
 
-    userInfo.profile_photo = path
     userInfo.username = username
     userInfo.state = state
     userInfo.city = city
@@ -213,9 +215,16 @@ def preview_profile(request):
         return redirect('confirmation')
 
     causes = Causes.objects.all()
-    user_causes = UserCauses.objects.get(user=userInfo).cause.all()
     skills = Skill.objects.all()
-    user_skills = UserSkills.objects.get(user=userInfo).skill.all()
+    
+    # Use filter().first() instead of get()
+    user_causes_obj = UserCauses.objects.filter(user=userInfo).first()
+    user_skills_obj = UserSkills.objects.filter(user=userInfo).first()
+
+    # If the objects exist, get all causes/skills, otherwise use an empty queryset
+    user_causes = user_causes_obj.cause.all() if user_causes_obj else Causes.objects.none()
+    user_skills = user_skills_obj.skill.all() if user_skills_obj else Skill.objects.none()
+    
     pledge_organizations = UsersPledgeOrganizations.objects.get(
         user=userInfo).pledge_organization.all()
     user_organizations = UsersCharityOwnEvent.objects.filter(user=userInfo)
@@ -281,8 +290,17 @@ def logout_view(request):
 def dashboard(request):
     userInfo = request.user
     causes = Causes.objects.all()
-    user_causes = UserCauses.objects.get(user=userInfo).cause.all()
-    user_skills = UserSkills.objects.get(user=userInfo).skill.all()
+    
+    
+    # Use filter().first() instead of get()
+    user_causes_obj = UserCauses.objects.filter(user=userInfo).first()
+    user_skills_obj = UserSkills.objects.filter(user=userInfo).first()
+
+    # If the objects exist, get all causes/skills, otherwise use an empty queryset
+    user_causes = user_causes_obj.cause.all() if user_causes_obj else Causes.objects.none()
+    user_skills = user_skills_obj.skill.all() if user_skills_obj else Skill.objects.none()
+    
+    
     pledge_organizations = UsersPledgeOrganizations.objects.get(
         user=userInfo).pledge_organization.all()
     user_organizations = UsersCharityOwnEvent.objects.filter(user=userInfo)
@@ -296,7 +314,7 @@ def dashboard(request):
         'user_skills': user_skills,
         'pledge_organizations': user_pledge_orgs,
         'user_organizations': user_organizations,
-        'is_profile': True
+        'is_profile': False
     }
     return render(request, 'givers/dashboard.html', context)
 
@@ -304,8 +322,17 @@ def dashboard(request):
 def profile(request, username):
     userInfo = User.objects.get(username=username)
     causes = Causes.objects.all()
-    user_causes = UserCauses.objects.get(user=userInfo).cause.all()
-    user_skills = UserSkills.objects.get(user=userInfo).skill.all()
+    
+    
+    # Use filter().first() instead of get()
+    user_causes_obj = UserCauses.objects.filter(user=userInfo).first()
+    user_skills_obj = UserSkills.objects.filter(user=userInfo).first()
+
+    # If the objects exist, get all causes/skills, otherwise use an empty queryset
+    user_causes = user_causes_obj.cause.all() if user_causes_obj else Causes.objects.none()
+    user_skills = user_skills_obj.skill.all() if user_skills_obj else Skill.objects.none()
+    
+    
     pledge_organizations = UsersPledgeOrganizations.objects.get(
         user=userInfo).pledge_organization.all()
     user_organizations = UsersCharityOwnEvent.objects.filter(user=userInfo)
