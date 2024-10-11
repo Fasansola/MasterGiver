@@ -25,8 +25,6 @@ export function filterList(inputField, itemSelector) {
     const filter = inputField.value.toUpperCase();
     const items = document.querySelectorAll(itemSelector);
     items.forEach(item => {
-        console.log(item);
-        console.log(filter);
         item.parentNode.style.display = item.parentNode.querySelector('.icons-text').textContent.toUpperCase().includes(filter) ? 'flex' : 'none';
     });
 }

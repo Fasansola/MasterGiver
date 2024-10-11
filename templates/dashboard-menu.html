@@ -5,10 +5,12 @@
 </div>
 
 <div class="d-flex flex-column gap-20">
-    <a href="{% url 'dashboard' %}"><div class="d-flex gap-16 sidebar-menu-items">
-        <img src="{% static 'icons/umbrella.svg' %}" alt="">
-        <p class="small-text">MasterGiver Profile</p>
-    </div></a>
+    {% if not is_dashboard %}
+        <a href="{% url 'profile' user.username %}"><div class="d-flex gap-16 sidebar-menu-items">
+            <img src="{% static 'icons/umbrella.svg' %}" alt="">
+            <p class="small-text">MasterGiver Profile</p>
+        </div></a>
+    {% endif %}
     <a href="{% url 'edit_profile' %}"><div class="d-flex gap-16 sidebar-menu-items">
         <img src="{% static 'icons/settings.svg' %}" alt="">
         <p class="small-text">Account Setting</p>

@@ -4,7 +4,7 @@ Usage: {% include "partials/multi_select_section.html" with section_name="Sectio
 
 {% load static %}
 
-{% if not is_profile %}
+{% if not is_profile and not is_dashboard %}
   <div class="forms-div">
       <div class="flex flex-wrap gap-16 element-content-field justify-content-between">
         <div class="flex">

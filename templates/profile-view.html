@@ -68,10 +68,10 @@
                 
             </div>
 
-            {% if user.is_authenticated and user.username == userInfo.username %}
+            {% if user.is_authenticated and user.username == userInfo.username and is_profile %}
                 <hr class="line">
                 <a href="{% url 'edit_profile' %}">
-                    <div class="d-flex button green-button">Edit My Profile</div>
+                    <div class="d-flex justify-content-center button green-button">Edit My Profile</div>
                 </a>
             {% endif %}
         </div>
@@ -107,7 +107,7 @@
                 <hr class="line">
                 <div class="d-flex flex-column gap-32">
                     <h2 class="heading">Giving Skills</h2>
-                    <div class="d-flex flex-column gap-16 profile-skills-items">
+                    <div class="d-flex flex-wrap gap-16 profile-skills-items">
                         {% for skill in user_skills %}
                             <div class="profile-skills-item">
                                 <p class="big-text bold">{{ skill }}</p>

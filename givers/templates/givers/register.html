@@ -4,9 +4,9 @@
 {% block page_title %}Create An Account{% endblock %}
 {% block page_body %}
 <!-- Main container for the signup form -->
-<div class="form-header">
+<div class="form-header gap-8">
   <h1 class="small-heading">Create An Account</h1>
-  <a href="{% url 'login' %}" class="link bold" aria-label="Login to MasterGiver">Login to MasterGiver</a>
+  <p>Already have an account? <a href="{% url 'login' %}" class="link bold" aria-label="Login to MasterGiver">Sign in</a></p>
 </div>
 <form
   class="d-flex flex-column align-items-start forms gap-24" id="signup-form"
@@ -19,12 +19,12 @@
   <div class="forms-split-div flex-sm-column">
     <div class="col-6 col-12-sm d-flex flex-column forms-div">
       <label for="first_name" class="small-text required">First Name</label>
-      <input type="text" id="first_name" name="first_name" placeholder="John" class="input" required aria-required="true" minlength="2" maxlength="50">
+      <input type="text" id="first_name" name="first_name" class="input" required aria-required="true" minlength="2" maxlength="50">
       <span id="first_name-error" class="error-message" aria-live="polite"></span>
     </div>
     <div class="col-6 col-12-sm d-flex flex-column forms-div">
       <label for="last_name" class="small-text required">Last Name</label>
-      <input type="text" id="last_name" name="last_name" placeholder="Doe" class="input" required aria-required="true" minlength="2" maxlength="50">
+      <input type="text" id="last_name" name="last_name" class="input" required aria-required="true" minlength="2" maxlength="50">
       <span id="last_name-error" class="error-message" aria-live="polite"></span>
     </div>
   </div>
@@ -36,7 +36,6 @@
       type="email"
       id="email"
       name="email"
-      placeholder="Email"
       class="input"
       required
       aria-required="true"
@@ -49,7 +48,6 @@
       type="password"
       id="password"
       name="password"
-      placeholder="Password"
       class="input password-field"
       required
       aria-required="true"
@@ -83,7 +81,6 @@
       type="password"
       id="confirm_password"
       name="confirm_password"
-      placeholder="Confirm Password"
       class="input password-field"
       required
       aria-required="true"

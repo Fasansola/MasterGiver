@@ -1,9 +1,24 @@
 // main.js
 
 import { initializeImageUpload } from './imageUpload.js';
-import { fetchStates } from './locationService.js';
 import { addKeyboardNavigation } from './uiHelpers.js';
 import { initializeFormHandlers } from './formHandlers.js';
+
+
+const usStates = [
+    'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
+    'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia',
+    'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa',
+    'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland',
+    'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri',
+    'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey',
+    'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio',
+    'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina',
+    'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
+    'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming',
+    'District of Columbia'
+  ];
+
 
 /**
  * This is the main entry point for the application.
@@ -23,11 +38,10 @@ async function initialize() {
     // Fetch and populate the list of states
     const stateList = document.getElementById('state-list');
     try {
-        const states = await fetchStates();
+        const states = usStates;
         stateList.innerHTML = states
-            .filter(state => !["Ramey", "Sublimity", "Trimble"].includes(state.state_name))
             .map(state => 
-                `<li class="user-state" tabindex="0">${state.state_name}</li>`
+                `<li class="user-state" tabindex="0">${state}</li>`
             ).join('');
     
         // Add keyboard navigation to the state list

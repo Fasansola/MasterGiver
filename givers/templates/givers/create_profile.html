@@ -1,7 +1,7 @@
 {% extends "signup-flow.html" %}
 {% load static %}
 
-{% block page_title %}Create An Account{% endblock %}
+{% block page_title %}Create MasterGiver Profile{% endblock %}
 
 {% block page_body %}
 <!-- Main form container -->
@@ -54,6 +54,9 @@
       aria-required="true"
       {% if user.username %} value="{{ user.username }}"{% endif %}
     />
+    <div class="form-info-card">
+      Your username appears in the URL of your public profile and cannot be changed later
+    </div>
   </div>
 
   <!-- Location input section -->
@@ -70,10 +73,6 @@
     <div class="col-6 col-12-sm relative forms-div">
       <label for="city" class="small-text required">City</label>
       <input type="text" id="city" name="city" {% if user.city %} value="{{ user.city }}" {% endif %} placeholder="" class="input" required aria-required="true" aria-autocomplete="list" aria-controls="city-list">
-      <div class="absolute dropdown-list" id="city-dropdown">
-        <h4 class="bold dropdown-h">Cities</h4>
-        <ul class="dropdown-ul" id="city-list" role="listbox"></ul>
-      </div>
       <span id="city-error" class="error-message" aria-live="polite"></span>
     </div>
   </div>

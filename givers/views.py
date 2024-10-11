@@ -2,12 +2,13 @@ from django.conf import settings
 import re
 import requests
 import json
+import random
 
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.db import IntegrityError
 from django.core.validators import validate_email
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -46,7 +47,10 @@ def signup(request):
     email = userData.get('email').strip()
     password = userData.get('password')
     confirm_password = userData.get('confirm_password')
-    username = first_name + last_name + str(User.objects.count())
+    username = first_name + last_name
+    
+    if User.objects.filter(username=username):
+        username = generateSpareUsername(username)
 
     # Validate user data
     if not all([first_name, last_name, email, password, confirm_password]):
@@ -72,6 +76,8 @@ def signup(request):
         if user is not None:
             user.first_name = first_name
             user.last_name = last_name
+            
+            user.save()
             login(request, user)
             return JsonResponse({'status': 'success'}, status=200)
         else:
@@ -95,13 +101,14 @@ def create_profile(request):
     userData = request.POST
     userInfo = request.user
 
-    profile_photo = request.FILES.get('profile_photo')
+    profile_photo = request.FILES.get('profile_photo', userInfo.profile_photo)
 
     if profile_photo:
         path = default_storage.save(
             'images/' + profile_photo.name, ContentFile(profile_photo.read()))
         profile_photo = path
 
+    userInfo.profile_photo = profile_photo
     username = userData.get('username')
     state = userData.get('state')
     city = userData.get('city')
@@ -261,20 +268,20 @@ def login_view(request):
         return render(request, 'givers/login.html')
 
     userData = request.POST
-    username = userData.get('username')
+    email = userData.get('email')
     password = userData.get('password')
 
-    if not all([username, password]):
+    if not all([email, password]):
         context['error'] = 'All fields are required!'
         return render(request, 'givers/login.html', context)
 
     try:
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
             return redirect('dashboard')
         else:
-            context['error'] = 'Invalid username or password!'
+            context['error'] = 'Invalid email or password!'
             return render(request, 'givers/login.html', context)
     except Exception as e:
         context['error'] = str(e)
@@ -291,7 +298,6 @@ def dashboard(request):
     userInfo = request.user
     causes = Causes.objects.all()
     
-    
     # Use filter().first() instead of get()
     user_causes_obj = UserCauses.objects.filter(user=userInfo).first()
     user_skills_obj = UserSkills.objects.filter(user=userInfo).first()
@@ -300,12 +306,20 @@ def dashboard(request):
     user_causes = user_causes_obj.cause.all() if user_causes_obj else Causes.objects.none()
     user_skills = user_skills_obj.skill.all() if user_skills_obj else Skill.objects.none()
     
-    
-    pledge_organizations = UsersPledgeOrganizations.objects.get(
-        user=userInfo).pledge_organization.all()
+    # Handle potential ObjectDoesNotExist exception
+    try:
+        pledge_organizations = UsersPledgeOrganizations.objects.get(
+            user=userInfo).pledge_organization.all()
+    except ObjectDoesNotExist:
+        pledge_organizations = []
+
     user_organizations = UsersCharityOwnEvent.objects.filter(user=userInfo)
 
-    user_pledge_orgs = fetch_user_organization(pledge_organizations, False)
+    # Handle potential exception in fetch_user_organization function
+    try:
+        user_pledge_orgs = fetch_user_organization(pledge_organizations, False)
+    except Exception:
+        user_pledge_orgs = []
 
     context = {
         'userInfo': userInfo,
@@ -314,7 +328,8 @@ def dashboard(request):
         'user_skills': user_skills,
         'pledge_organizations': user_pledge_orgs,
         'user_organizations': user_organizations,
-        'is_profile': False
+        'is_profile': False,
+        'is_dashboard': True
     }
     return render(request, 'givers/dashboard.html', context)
 
@@ -509,6 +524,15 @@ def fetch_user_organization(pledge_organizations, dashboard=True):
 
 
 # HELPER FUNCTIONS
+
+def generateSpareUsername(username):
+    newUsername = username + str(random.randint(0, 100))
+    
+    if User.objects.filter(username=newUsername):
+        generateSpareUsername(username)
+    return newUsername
+
+
 
 # SAVE ALL USER DATA
 def saveAllUserData(userInfo, userData, userFile):

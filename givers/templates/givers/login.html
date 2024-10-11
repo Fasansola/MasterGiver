@@ -4,7 +4,7 @@
 {% block page_title %}Login{% endblock %}
 {% block page_body %}
 <!-- Main container for the signup form -->
-<div class="form-header">
+<div class="form-header gap-8">
   <h1 class="small-heading">Login</h1>
   <p>You don't have an account? <a href="{% url 'signup' %}" class="link bold" aria-label="Login to MasterGiver">Create an account</a></p>
 </div>
@@ -15,14 +15,14 @@
   aria-label="Signup form"
 >
   {% csrf_token %}
-  <!-- Username input field -->
+  <!-- Email input field -->
   <div class="forms-div">
-    <label for="username" class="small-text required">Username</label>
+    <label for="email" class="small-text required">Email</label>
     <input
-      type="text"
-      id="username"
-      name="username"
-      placeholder="Username"
+      type="email"
+      id="email"
+      name="email"
+      placeholder="Email"
       class="input"
       required
       aria-required="true"
@@ -72,7 +72,7 @@
   <!-- Submit button -->
   <button type="submit" class="forms-submit-button button dark-button">Login</button>
 </form>
-<a href="{% url 'password_reset' %}" class="link bold" aria-label="reset password">Do You Want to Reset Password?</a>
+<a href="{% url 'password_reset' %}" class="link bold" aria-label="reset password">Forgot your Password?</a>
 {% endblock %}
 
 {% block page_scripts %}

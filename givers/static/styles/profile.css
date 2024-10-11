@@ -80,8 +80,10 @@
 }
 
 .profile-skills-item {
-    padding: 16px 24px;
-    background-color: #EAEBED;
+    width: -moz-fit-content;
+    width: fit-content;
+    padding: 16px 32px;
+    background-color: var(--light-hue);
     border-radius: 8px;
 }
 

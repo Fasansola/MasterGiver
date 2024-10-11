@@ -67,6 +67,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
+
 ROOT_URLCONF = 'MasterGiver.urls'
 
 TEMPLATES = [
@@ -215,3 +216,9 @@ else:
 # Common settings
 DEFAULT_FROM_EMAIL = 'noreply@mastergiver.com'
 
+
+
+AUTHENTICATION_BACKENDS = [
+    'MasterGiver.authentication.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]

@@ -1,7 +1,7 @@
 {% extends "signup-flow.html" %}
 {% load static %}
 
-{% block page_title %}Create An Account{% endblock %}
+{% block page_title %}What I Care About{% endblock %}
 
 {% block page_body %}
 <!-- Main form container -->
@@ -45,20 +45,21 @@
   {% include "partials/multi_select_selection-dropdown.html" with section_name="What I Care About" data="causes" items=causes user_items=user_causes %}
 
   <!-- Container for displaying selected causes -->
-  {% include "partials/multi_select_selection-values.html" with items=causes user_items=user_causes %}
+  {% include "partials/multi_select_selection-values.html" with items=causes user_items=user_causes data="causes" %}
 
   <!-- Giving Skills section -->
   {% include "partials/multi_select_selection-dropdown.html" with section_name="Giving Skills" data="skills" items=skills user_items=user_skills %}
 
   <!-- Container for displaying selected skills -->
-  {% include "partials/multi_select_selection-values.html" with items=skills user_items=user_skills %}
+  {% include "partials/multi_select_selection-values.html" with items=skills user_items=user_skills data="skills" %}
 
   <hr class="line" aria-hidden="true" style="margin: 8px 0 16px 0;">
 
   <!-- My Organizations and Causes section -->
   <div class="forms-div relative">
-    <label for="search-org" id="search-org-label">My Organizations and Causes</label>
-    <h3 class="heading">Find Your Charity or Cause</h3>
+    <label for="search-org" id="search-org-label">
+      <h3 class="heading">My Organizations and Causes</h3>
+    </label>
     <div class="input organizations-search" role="search">
       <img src="{% static 'icons/search.svg' %}" alt="" aria-hidden="true" />
       <input

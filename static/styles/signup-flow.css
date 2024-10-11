@@ -13,7 +13,7 @@ main {
 
 .form-container {
     background-color: var(--white);
-    max-width: 974px;
+    max-width: 784px;
     border-radius: 8px;
     padding: 48px;
     gap: 32px;
@@ -22,14 +22,25 @@ main {
 }
 
 .login-container {
-    max-width: 696px;
+    max-width: 624px;
 }
 
 .form-header {
     display: flex;
     flex-direction: column;
-    gap: 16px;
 }
+
+
+.form-info-card {
+    width: -moz-fit-content;
+    width: fit-content;
+    padding: 16px 24px;
+    border-radius: 8px;
+    line-height: 1.6rem;
+    background-color: var(--light-hue);
+    color: var(--primary-purple)
+}
+
 
 
 /* MOBILE RESPONSIVE */
