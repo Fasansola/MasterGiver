@@ -56,7 +56,7 @@
                             <p class="d-none full-text">{{ userInfo.giving_motivation }}</p>
                         {% endif %}
                     </div>
-                    {% if userInfo.about_me|length > 135 %}
+                    {% if userInfo.giving_motivation|length > 135 %}
                         <div class="d-flex align-items-center gap-4 semi-bold clickable accent-text" id="read-more-btn">
                             READ MORE <img src="{% static 'icons/chevron-right.svg' %}" alt="Read More" />
                         </div>
