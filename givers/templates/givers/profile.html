@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% load static %}
 
-{% block title %}{{ user.username|capfirst }}  Profile{% endblock %}
+{% block title %}{{ userInfo.username|capfirst }}  Profile{% endblock %}
 
 {% block styles %}
     <link href="{% static 'styles/profile.css' %}" rel="stylesheet" />
