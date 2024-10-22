@@ -33,12 +33,19 @@ def home(request):
     user = request.user
     if user.is_authenticated:
         return redirect('dashboard')
-    return render(request, 'givers/index.html')
+    
+    context = {
+        "page_id": 'home'
+    }
+    return render(request, 'givers/index.html', context)
 
 
 def signup(request):
     if request.method != 'POST':
-        return render(request, 'givers/register.html')
+        context = {
+            'is_signup_flow': True
+        }
+        return render(request, 'givers/register.html', context)
 
     # Collect data from the form
     userData = json.loads(request.body)
@@ -96,7 +103,10 @@ def signup(request):
 @login_required
 def create_profile(request):
     if request.method != 'POST':
-        return render(request, 'givers/create_profile.html')
+        context = {
+            'is_signup_flow': True
+        }
+        return render(request, 'givers/create_profile.html', context)
 
     userData = request.POST
     userInfo = request.user
@@ -138,7 +148,8 @@ def what_care_about(request):
             'causes': causes,
             'skills': skills,
             'user_causes': user_causes,
-            'user_skills': user_skills
+            'user_skills': user_skills,
+            'is_signup_flow': True
         }
         return render(request, 'givers/what_care_about.html', context)
 
@@ -232,11 +243,20 @@ def preview_profile(request):
     user_causes = user_causes_obj.cause.all() if user_causes_obj else Causes.objects.none()
     user_skills = user_skills_obj.skill.all() if user_skills_obj else Skill.objects.none()
     
-    pledge_organizations = UsersPledgeOrganizations.objects.get(
-        user=userInfo).pledge_organization.all()
+    # Handle potential ObjectDoesNotExist exception
+    try:
+        pledge_organizations = UsersPledgeOrganizations.objects.get(
+            user=userInfo).pledge_organization.all()
+    except ObjectDoesNotExist:
+        pledge_organizations = []
+
     user_organizations = UsersCharityOwnEvent.objects.filter(user=userInfo)
 
-    user_pledge_orgs = fetch_user_organization(pledge_organizations)
+    # Handle potential exception in fetch_user_organization function
+    try:
+        user_pledge_orgs = fetch_user_organization(pledge_organizations, False)
+    except Exception:
+        redirect('what_care_about')
 
     context = {
         'user': userInfo,
@@ -245,7 +265,8 @@ def preview_profile(request):
         'skills': skills,
         'user_skills': user_skills,
         'pledge_organizations': user_pledge_orgs,
-        'user_organizations': user_organizations
+        'user_organizations': user_organizations,
+        'is_signup_flow': True
     }
 
     return render(request, 'givers/preview_profile.html', context)

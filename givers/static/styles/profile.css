@@ -107,13 +107,19 @@
 
 
 @media only screen and (max-width: 768px) {
+    .profile-header-container {
+        height: 200px;
+    }
+
     .profile-view-logo {
+        display: none;
         max-width: 250px;
         margin-bottom: 40px;
     }
 
     .profile-info {
         width: 100%;
+        margin-top: -160px;
     }
 
     .profile-main {
@@ -123,7 +129,7 @@
 
 
 @media only screen and (max-width: 576px) {
-    .profile-info {
-        margin-top: -15%;
-    }
+    /* .profile-info {
+        margin-top: -160px;
+    } */
 }

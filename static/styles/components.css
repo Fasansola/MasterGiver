@@ -19,6 +19,10 @@
     line-height: inherit;
 }
 
+.small-btn {
+    padding: 12px 24px !important;
+}
+
 
 .dark-button {
     background-color: var(--primary-purple);

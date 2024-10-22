@@ -11,19 +11,19 @@
     
     <!-- Navigation -->
     <div>
-        {% if user.is_anonymous %}
+        {% if user.is_anonymous and page_id == 'home' %}
         <!-- Desktop Navigation -->
         <nav class="d-flex align-items-center nav-menu">
           <a href="{% url 'login' %}">
             <div class="button d-sm-none light-btn" id="login-btn">Login</div>
-            <div class="button d-none d-sm-flex dark-button">Sign In</div>
+            <div class="button d-none d-sm-flex dark-button small-btn">Sign In</div>
           </a>
           <a href="{% url 'signup' %}" class="d-sm-none">
             <div class="button dark-button">Sign Up</div>
           </a>
         </nav>
 
-        {% else %}
+        {% elif user.is_authenticated and not is_signup_flow %}
 
           <!-- Mobile Navigation (Hamburger Menu) -->
           <div class="hamburger-menu d-none d-xl-flex" id="hamburger-menu">
