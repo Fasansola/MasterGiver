@@ -11,12 +11,11 @@
     
     <!-- Navigation -->
     <div>
-        {% if user.is_anonymous and page_id == 'home' %}
+        {% if user.is_anonymous and page_type == 'static' %}
         <!-- Desktop Navigation -->
         <nav class="d-flex align-items-center nav-menu">
           <a href="{% url 'login' %}">
-            <div class="button d-sm-none light-btn" id="login-btn">Login</div>
-            <div class="button d-none d-sm-flex dark-button small-btn">Sign In</div>
+            <div class="buttonlight-btn" id="login-btn">Login</div>
           </a>
           <a href="{% url 'signup' %}" class="d-sm-none">
             <div class="button dark-button">Sign Up</div>

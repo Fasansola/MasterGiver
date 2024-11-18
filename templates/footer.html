@@ -14,9 +14,8 @@
     <div class="d-flex flex-column" id="resources">
       <h3 class="bold">Resources</h3>
       <ul class="d-flex list-gap flex-column small-text">
-        <li>FAQ</li>
-        <li>Blog</li>
-        <li>Register Your Organisation</li>
+        <li><a href="{% url 'about' %}">About Us</a></li>
+        <li><a href="{% url 'faq' %}">FAQs</a></li>
       </ul>
     </div>
 
@@ -24,9 +23,8 @@
     <div class="d-flex flex-column" id="company">
       <h3 class="bold">Company</h3>
       <ul class="d-flex list-gap flex-column small-text">
-        <li>About Us</li>
-        <li>Security</li>
-        <li>Legal</li>
+        <li><a href="{% url 'terms' %}">Terms of Use</a></li>
+        <li><a href="{% url 'privacy' %}">Privacy</a></li>
       </ul>
     </div>
 
@@ -34,11 +32,11 @@
     <div class="d-flex flex-column" id="contact-info">
       <h3 class="bold">Contact Info</h3>
       <ul class="d-flex list-gap flex-column small-text">
-        <li>support@mastergiver.org</li>
-        <li>75 Fifth St, Suite 2200 Atlanta, GS 30308</li>
+        <li><a href="mailto:support@mastergiver.org" class="link">support@mastergiver.org</a></li>
+        <li class="d-none">75 Fifth St, Suite 2200 Atlanta, GS 30308</li>
       </ul>
       <!-- Social Media Links -->
-      <div class="d-flex social-links">
+      <div class="d-none social-links">
         <a href=""><img src="{% static 'images/facebook.svg' %}" alt="follow us on facebook" /></a>
         <a href=""><img src="{% static 'images/linkedin.svg' %}" alt="follow us on linkedin" /></a>
         <a href=""><img src="{% static 'images/twitter.svg' %}" alt="follow us on twitter" /></a>

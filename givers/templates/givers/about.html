@@ -1,0 +1,78 @@
+{% extends "layout.html" %} {% load static %} {% block title %} About
+MasterGiver {% endblock title %} {% block styles %}
+<!-- Include custom CSS for this page -->
+<link rel="stylesheet" href="{% static 'styles/static-pages.css' %}" />
+{% endblock %} {% block body %} {% include "header.html" %}
+
+<main class="d-flex flex-column align-items-center white-bg gap-48 static-heading-main">
+    <div class="d-flex flex-column static-heading-block justify-content-center">
+        <div class="d-flex align-items-center flex-column gap-16 text-center">
+            <h1 class="heading">
+                About Us
+            </h1>
+        </div>
+    </div>
+  <div class="boxed-container d-flex flex-column gap-32 static-body-block">
+    <div class="intro d-flex flex-column gap-16">
+      <p>
+        Welcome to MasterGiver, the world's first platform dedicated to
+        showcasing and amplifying the impact of purposeful giving. We believe
+        that everyone has the power to make a difference, and that those
+        efforts—big or small—deserve to be recognized and celebrated.
+      </p>
+
+      <p>
+        MasterGiver was created to empower individuals to track, share, and
+        promote their charitable journeys in one convenient, engaging place.
+        Whether you volunteer your time, donate to causes, or support community
+        projects, MasterGiver provides a centralized space to capture and share
+        it all. With a personalized MasterGiver Profile, you can build an online
+        presence that reflects your values, your generosity, and your commitment
+        to positive change.
+      </p>
+    </div>
+
+    <div class="why-section d-flex flex-column gap-16">
+      <h2 class="small-heading">Why MasterGiver?</h2>
+      <p>
+        MasterGiver is more than just a platform; it's a movement. We've made it
+        easy for you to manage your charitable efforts, quantify your impact,
+        and connect with others who share your passion for giving back. With
+        every new profile, we're building a global community of people who
+        believe in doing good and inspiring others to do the same.
+      </p>
+    </div>
+
+    <div class="offerings d-flex flex-column gap-16">
+      <h2 class="small-heading">What We Offer</h2>
+      <ul class="lists">
+        <li>
+          <strong class="bold mid-text">Your Giving Portfolio</strong>: Capture and organize all your
+          charitable activities in one accessible profile.
+        </li>
+        <li>
+          <strong class="bold mid-text">A Boosted Reputation</strong>: Stand out by building a strong,
+          values-driven online presence.
+        </li>
+        <li>
+          <strong class="bold mid-text">Inspiration & Community</strong>: Connect with like-minded
+          individuals, discover new causes, and find inspiration in the good
+          works of others.
+        </li>
+      </ul>
+    </div>
+
+    <div class="call-to-action d-flex flex-column gap-16">
+      <h2 class="small-heading">Join Us in Making a Difference</h2>
+      <p>
+        Whether you're an active volunteer, a regular donor, or just beginning
+        your journey into the world of giving, MasterGiver is here to support,
+        celebrate, and amplify your efforts. <a class="link bold" href="{% url 'signup' %}">Join the MasterGiver community</a>
+        today and show off your good side to the world. Together, we're creating
+        a brighter future—one act of kindness at a time.
+      </p>
+    </div>
+  </div>
+</main>
+
+{% include "footer.html" %} {% endblock body %}

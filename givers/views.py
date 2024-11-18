@@ -33,11 +33,28 @@ def home(request):
     user = request.user
     if user.is_authenticated:
         return redirect('dashboard')
-    
+
     context = {
-        "page_id": 'home'
+        "page_id": 'home',
+        "page_type": 'static'
     }
     return render(request, 'givers/index.html', context)
+
+
+def about(request):
+    return render(request, 'givers/about.html', context={'page_id': 'about', "page_type": 'static'})
+
+
+def faq(request):
+    return render(request, 'givers/faq.html', context={'page_id': 'faq', "page_type": 'static'})
+
+
+def terms(request):
+    return render(request, 'givers/terms.html', context={'page_id': 'terms', "page_type": 'static'})
+
+
+def privacy(request):
+    return render(request, 'givers/privacy.html', context={'page_id': 'privacy', "page_type": 'static'})
 
 
 def signup(request):
@@ -55,7 +72,7 @@ def signup(request):
     password = userData.get('password')
     confirm_password = userData.get('confirm_password')
     username = first_name + last_name
-    
+
     if User.objects.filter(username=username):
         username = generateSpareUsername(username)
 
@@ -79,11 +96,12 @@ def signup(request):
     # Save Data to the database
     try:
         user = User.objects.create_user(username, email, password)
-        user = authenticate(request, username=username, email=email, password=password)
+        user = authenticate(request, username=username,
+                            email=email, password=password)
         if user is not None:
             user.first_name = first_name
             user.last_name = last_name
-            
+
             user.save()
             login(request, user)
             return JsonResponse({'status': 'success'}, status=200)
@@ -141,9 +159,11 @@ def what_care_about(request):
         user_skills_obj = UserSkills.objects.filter(user=userInfo).first()
 
         # If the objects exist, get all causes/skills, otherwise use an empty queryset
-        user_causes = user_causes_obj.cause.all() if user_causes_obj else Causes.objects.none()
-        user_skills = user_skills_obj.skill.all() if user_skills_obj else Skill.objects.none()
-    
+        user_causes = user_causes_obj.cause.all(
+        ) if user_causes_obj else Causes.objects.none()
+        user_skills = user_skills_obj.skill.all(
+        ) if user_skills_obj else Skill.objects.none()
+
         context = {
             'causes': causes,
             'skills': skills,
@@ -234,15 +254,17 @@ def preview_profile(request):
 
     causes = Causes.objects.all()
     skills = Skill.objects.all()
-    
+
     # Use filter().first() instead of get()
     user_causes_obj = UserCauses.objects.filter(user=userInfo).first()
     user_skills_obj = UserSkills.objects.filter(user=userInfo).first()
 
     # If the objects exist, get all causes/skills, otherwise use an empty queryset
-    user_causes = user_causes_obj.cause.all() if user_causes_obj else Causes.objects.none()
-    user_skills = user_skills_obj.skill.all() if user_skills_obj else Skill.objects.none()
-    
+    user_causes = user_causes_obj.cause.all(
+    ) if user_causes_obj else Causes.objects.none()
+    user_skills = user_skills_obj.skill.all(
+    ) if user_skills_obj else Skill.objects.none()
+
     # Handle potential ObjectDoesNotExist exception
     try:
         pledge_organizations = UsersPledgeOrganizations.objects.get(
@@ -318,15 +340,17 @@ def logout_view(request):
 def dashboard(request):
     userInfo = request.user
     causes = Causes.objects.all()
-    
+
     # Use filter().first() instead of get()
     user_causes_obj = UserCauses.objects.filter(user=userInfo).first()
     user_skills_obj = UserSkills.objects.filter(user=userInfo).first()
 
     # If the objects exist, get all causes/skills, otherwise use an empty queryset
-    user_causes = user_causes_obj.cause.all() if user_causes_obj else Causes.objects.none()
-    user_skills = user_skills_obj.skill.all() if user_skills_obj else Skill.objects.none()
-    
+    user_causes = user_causes_obj.cause.all(
+    ) if user_causes_obj else Causes.objects.none()
+    user_skills = user_skills_obj.skill.all(
+    ) if user_skills_obj else Skill.objects.none()
+
     # Handle potential ObjectDoesNotExist exception
     try:
         pledge_organizations = UsersPledgeOrganizations.objects.get(
@@ -358,17 +382,17 @@ def dashboard(request):
 def profile(request, username):
     userInfo = User.objects.get(username=username)
     causes = Causes.objects.all()
-    
-    
+
     # Use filter().first() instead of get()
     user_causes_obj = UserCauses.objects.filter(user=userInfo).first()
     user_skills_obj = UserSkills.objects.filter(user=userInfo).first()
 
     # If the objects exist, get all causes/skills, otherwise use an empty queryset
-    user_causes = user_causes_obj.cause.all() if user_causes_obj else Causes.objects.none()
-    user_skills = user_skills_obj.skill.all() if user_skills_obj else Skill.objects.none()
-    
-    
+    user_causes = user_causes_obj.cause.all(
+    ) if user_causes_obj else Causes.objects.none()
+    user_skills = user_skills_obj.skill.all(
+    ) if user_skills_obj else Skill.objects.none()
+
     pledge_organizations = UsersPledgeOrganizations.objects.get(
         user=userInfo).pledge_organization.all()
     user_organizations = UsersCharityOwnEvent.objects.filter(user=userInfo)
@@ -447,6 +471,7 @@ def edit_profile(request):
 
     return redirect('dashboard')
 
+
 @login_required
 def change_password(request):
     if request.method != 'POST':
@@ -487,8 +512,8 @@ def forgot_password(request):
 def clear_profile_picture(request):
     user = request.user
     userInfo = User.objects.get(username=user.username)
-    if  userInfo.profile_photo:
-         userInfo.profile_photo.delete(save=True)
+    if userInfo.profile_photo:
+        userInfo.profile_photo.delete(save=True)
     return JsonResponse({'status': 'success'})
 
 
@@ -532,7 +557,8 @@ def fetch_user_organization(pledge_organizations, dashboard=True):
             response = requests.get(api_url, headers=headers)
             response.raise_for_status()  # Raises an HTTPError for bad responses
             org_data = response.json()
-            org.name = org_data['name'][:20] + '...' if (len(org_data['name']) > 20 and dashboard) else org_data['name']
+            org.name = org_data['name'][:20] + '...' if (
+                len(org_data['name']) > 20 and dashboard) else org_data['name']
             org.website = org_data['website_url']
             org.logo = org_data['logo_url']
             org.save()
@@ -548,11 +574,10 @@ def fetch_user_organization(pledge_organizations, dashboard=True):
 
 def generateSpareUsername(username):
     newUsername = username + str(random.randint(0, 100))
-    
+
     if User.objects.filter(username=newUsername):
         generateSpareUsername(username)
     return newUsername
-
 
 
 # SAVE ALL USER DATA

@@ -96,8 +96,8 @@
     <input type="checkbox" name="terms" id="terms" required aria-required="true" />
     <label for="terms" class="small-text policy-text">
       I have read and agree to the
-      <a href="#" class="link" aria-label="Read Terms of Use">Terms of Use</a> and
-      <a href="#" class="link" aria-label="Read Privacy Policy">Privacy Policy</a>.
+      <a href="{% url 'terms' %}" class="link" aria-label="Read Terms of Use">Terms of Use</a> and
+      <a href="{% url 'privacy' %}" class="link" aria-label="Read Privacy Policy">Privacy Policy</a>.
     </label>
   </div>
   <!-- Error message display -->

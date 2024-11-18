@@ -1,0 +1,117 @@
+{% extends "layout.html" %} {% load static %} {% block title %}FAQ -
+MasterGiver{% endblock title %} {% block styles %}
+<link rel="stylesheet" href="{% static 'styles/static-pages.css' %}" />
+{% endblock %} {% block body %} {% include "header.html" %}
+
+<main
+  class="d-flex flex-column align-items-center white-bg gap-48 static-heading-main"
+>
+  <div class="d-flex flex-column static-heading-block justify-content-center">
+    <div class="d-flex align-items-center flex-column gap-16 text-center">
+      <h1 class="heading">Frequently Asked Questions</h1>
+    </div>
+  </div>
+
+  <div class="boxed-container d-flex flex-column gap-32 static-body-block">
+    <div class="faq-item d-flex flex-column gap-16">
+      <h2 class="small-heading">What is MasterGiver?</h2>
+      <p>
+        MasterGiver is an online platform that allows you to create a profile
+        showcasing your charitable efforts, volunteer work, and other good
+        deeds. It's a space where you can build your reputation as someone who
+        gives back and inspires others to do the same.
+      </p>
+    </section>
+
+    <div class="faq-item d-flex flex-column gap-16">
+      <h2 class="small-heading">How do I create a MasterGiver account?</h2>
+      <p>Creating an account is easy and free:</p>
+      <ul class="lists">
+        <li>
+          Go to the MasterGiver homepage and click
+          <strong class="bold">Get Started</strong>
+        </li>
+        <li>Enter your email address and create a password</li>
+        <li>
+          Follow the steps to set up your profile, including adding your name,
+          bio, and any initial giving activities you'd like to showcase
+        </li>
+      </ul>
+    </section>
+
+    <div class="faq-item d-flex flex-column gap-16">
+      <h2 class="small-heading">
+        What can I include on my MasterGiver profile?
+      </h2>
+      <p>
+        Your MasterGiver profile is your space to highlight all of your
+        charitable activities. You can include:
+      </p>
+      <ul class="lists">
+        <li>Donations and contributions to causes you support</li>
+        <li>Volunteer hours and projects</li>
+        <li>Community involvement and fundraising efforts</li>
+        <li>Personal stories about why giving back matters to you</li>
+      </ul>
+      <p>
+        MasterGiver is constantly evolving to meet the needs of our users with
+        new features and tools added often. If you have suggestions for how to
+        make MasterGiver better, let us know your thoughts! Email us at
+        <a href="mailto:support@mastergiver.com" class="link"
+          >support@mastergiver.com</a
+        >.
+      </p>
+    </section>
+
+    <div class="faq-item d-flex flex-column gap-16">
+      <h2 class="small-heading">Is my MasterGiver profile public?</h2>
+      <p>
+        Yes, your MasterGiver profile is publicly accessible, allowing others to
+        view and be inspired by your contributions. You control what information
+        you want to showcase, and you can edit your profile anytime.
+      </p>
+    </section>
+
+    <div class="faq-item d-flex flex-column gap-16">
+      <h2 class="small-heading">
+        How do I update my profile with new activities?
+      </h2>
+      <p>To add new activities or update your profile:</p>
+      <ul class="lists">
+        <li>Log in to your MasterGiver account</li>
+        <li>
+          Navigate to <strong class="bold">My Profile</strong> and update
+          Profile sections
+        </li>
+        <li>
+          Enter the details of your new activity, organization, skills you want
+          to volunteer, etc.
+        </li>
+        <li>Save your updates, and they'll appear on your profile instantly</li>
+      </ul>
+    </section>
+
+    <div class="faq-item d-flex flex-column gap-16">
+      <h2 class="small-heading">Do I have to pay to use MasterGiver?</h2>
+      <p>
+        No, MasterGiver is free to join and use. Our goal is to make it easy for
+        everyone to showcase their good works and connect with like-minded
+        individuals.
+      </p>
+    </div>
+
+    <div class="faq-item d-flex flex-column gap-16">
+      <h2 class="small-heading">Who can I contact for support?</h2>
+      <p>
+        If you have any questions or need help, feel free to reach out to our
+        support team at
+        <a href="mailto:support@mastergiver.com" class="link"
+          >support@mastergiver.com</a
+        >. We're here to assist you and make your experience on MasterGiver as
+        seamless as possible!
+      </p>
+    </section>
+  </div>
+</main>
+
+{% include "footer.html" %} {% endblock body %}
