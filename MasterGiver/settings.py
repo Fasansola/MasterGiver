@@ -205,16 +205,15 @@ LOGIN_REDIRECT_URL = '/'  # Where to redirect after successful login
 # For development (local server)
 # if DEBUG:
 #     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# else:
+# else:    
 # Email Configuration for Brevo
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp-relay.brevo.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('BREVO_EMAIL')  # Your Brevo login email
-EMAIL_HOST_PASSWORD = os.environ.get('BREVO_API_KEY')  # Your Brevo SMTP API key
-DEFAULT_FROM_EMAIL = os.environ.get('BREVO_EMAIL')
-    
+EMAIL_HOST_USER = os.environ.get('BREVO_EMAIL')
+EMAIL_HOST_PASSWORD = os.environ.get('BREVO_API_KEY')
+DEFAULT_FROM_EMAIL = os.environ.get('BREVO_EMAIL', 'noreply@mastergiver.com')  # Add a default value
 
 
 

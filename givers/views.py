@@ -491,21 +491,6 @@ def change_password(request):
     return render(request, 'givers/change_password.html', context)
 
 
-def forgot_password(request):
-    if request.user.is_authenticated:
-        return redirect('dashboard')
-
-    context = {}
-    if request.method != 'POST':
-        return render(request, 'givers/forgot_password.html', context)
-
-    userData = request.POST
-    email = userData.get('email')
-
-    if not email:
-        context['error'] = 'Input email so we can verify your email!'
-        return render(request, 'givers/forgot_password.html', context)
-
 
 @login_required
 @require_POST
