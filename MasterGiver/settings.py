@@ -218,29 +218,45 @@ DEFAULT_FROM_EMAIL = os.environ.get('BREVO_EMAIL', 'noreply@mastergiver.com')  #
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+    },
     'handlers': {
         'console': {
-            'class': 'logging.StreamHandler',  # Prints to console
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
         },
-        'mail_admins': {
-            'level': 'ERROR',  # Only logs errors
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
     },
     'loggers': {
-        'django.request': {  # Logs request-related errors
-            'handlers': ['console', 'mail_admins'],
-            'level': 'ERROR',
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
             'propagate': True,
         },
-        'django.security': {  # Logs security-related errors
-            'handlers': ['console', 'mail_admins'],
-            'level': 'ERROR',
+        'django.security': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.server': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.mail': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
             'propagate': True,
         },
     }
 }
-
 
 
 
