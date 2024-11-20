@@ -1,7 +1,7 @@
 
 {% load static %}
 <div class="d-flex align-items-center justify-content-center profile-header-container">
-    {% if is_profile %}
+    {% if is_profile and user.is_authenticated %}
     <a href="{% url 'dashboard' %}" class="d-lg-none">
         <div class="align-items-center flex" style="color: #226094; position: absolute; top: 32px; left: 32px;">
         <img src="{% static 'icons/chevron-left.svg' %}" alt="">

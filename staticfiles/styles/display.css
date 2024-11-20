@@ -274,6 +274,11 @@
     max-width: 1512px;
 }
 
+.boxed-container {
+    max-width: 880px;
+    margin: 0 auto;
+}
+
 .col-3 {
     width: 25%;
 }
