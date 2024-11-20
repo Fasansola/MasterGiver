@@ -7,7 +7,7 @@ class Command(BaseCommand):
     help = 'Test SMTP email connection'
 
     def handle(self, *args, **options):
-        smtp_server = "smtp-relay.sendinblue.com"
+        smtp_server = "smtp-relay.brevo.com"
         port = 587
         sender = settings.EMAIL_HOST_USER
         password = settings.EMAIL_HOST_PASSWORD
