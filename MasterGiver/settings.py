@@ -21,7 +21,8 @@ load_dotenv(env_path)
 
 # SECURITY SETTINGS
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'your-default-secret-key')
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'  # Default to False in production
+# Default to False in production
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -51,7 +52,8 @@ INSTALLED_APPS = [
 # MIDDLEWARE SETTINGS
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Make sure it's right after SecurityMiddleware
+    # Make sure it's right after SecurityMiddleware
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -168,13 +170,13 @@ INTERNAL_IPS = ['127.0.0.1']
 
 # EMAIL SETTINGS
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp-relay.sendinblue.com'
+EMAIL_HOST = 'smtp-relay.brevo.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('BREVO_EMAIL')
 EMAIL_HOST_PASSWORD = os.environ.get('BREVO_API_KEY')
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = 'carlos@mastergiver.com'  # Your verified sender email
+SERVER_EMAIL = 'carlos@mastergiver.com'
 
 # Add this for debugging
 EMAIL_DEBUG = True
