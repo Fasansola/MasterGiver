@@ -7,8 +7,13 @@ import os
 import dj_database_url
 from dotenv import load_dotenv
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables
+load_dotenv(BASE_DIR / '.env')
+
 
 # Load environment variables
 env_path = BASE_DIR / 'apis.env'
@@ -163,15 +168,47 @@ INTERNAL_IPS = ['127.0.0.1']
 
 # EMAIL SETTINGS
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.brevo.com'
+EMAIL_HOST = 'smtp-relay.sendinblue.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False  # Add this line
-EMAIL_HOST_USER = os.environ.get('BREVO_EMAIL')  # This looks correct
-EMAIL_HOST_PASSWORD = os.environ.get('BREVO_API_KEY')  # This looks correct
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # Change this to use EMAIL_HOST_USER directly
-SERVER_EMAIL = EMAIL_HOST_USER  # Change this too
-EMAIL_TIMEOUT = 30
+EMAIL_HOST_USER = os.environ.get('BREVO_EMAIL')
+EMAIL_HOST_PASSWORD = os.environ.get('BREVO_API_KEY')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+
+# Add this for debugging
+EMAIL_DEBUG = True
+
+# Print email settings at startup
+print(f"Email Settings:")
+print(f"EMAIL_HOST: {EMAIL_HOST}")
+print(f"EMAIL_HOST_USER: {EMAIL_HOST_USER}")
+print(f"EMAIL_HOST_PASSWORD: {'*' * 10 if EMAIL_HOST_PASSWORD else 'Not Set'}")
+
+# For debugging DNS issues
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django.core.mail': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    }
+}
 
 LOGGING = {
     'version': 1,
