@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'your-default-secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'  # Default to False in production
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -69,7 +69,6 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-
 ROOT_URLCONF = 'MasterGiver.urls'
 
 TEMPLATES = [
@@ -92,7 +91,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'MasterGiver.wsgi.application'
 
 # Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 DATABASES = {
     'default': dj_database_url.config(
         default='sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3'),
@@ -101,7 +99,6 @@ DATABASES = {
 }
 
 # Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -116,23 +113,17 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'givers.User'
 
-
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
 
 # Internationalization
-# https://docs.djangoproject.com/en/5.0/topics/i18n/
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static'
@@ -141,7 +132,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Production settings
@@ -155,22 +145,16 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
     X_FRAME_OPTIONS = 'DENY'
 
-
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
-# LIMIT FILE SIZE USERS CAN UPLOAD
-
+# File upload limits
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB
 
-
-# If you need to allow credentials (cookies, authorization headers)
+# CORS Settings
 CORS_ALLOW_CREDENTIALS = True
-
-# If you need to allow specific HTTP methods
 CORS_ALLOW_METHODS = [
     'DELETE',
     'GET',
@@ -180,7 +164,6 @@ CORS_ALLOW_METHODS = [
     'PUT',
 ]
 
-# If you need to allow specific headers
 CORS_ALLOW_HEADERS = [
     'accept',
     'accept-encoding',
@@ -193,28 +176,35 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
+# Load environment variables
 env_path = BASE_DIR / 'apis.env'
 load_dotenv(env_path)
 
 PLEDGE_API_TOKEN = os.getenv('PLEDGE_API_TOKEN')
 
-LOGIN_URL = '/login/'  # Adjust this to match your login URL
-LOGIN_REDIRECT_URL = '/'  # Where to redirect after successful login
+# Authentication settings
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
 
+# Admin configuration for error notifications
+ADMINS = [('Admin', os.environ.get('ADMIN_EMAIL', 'admin@mastergiver.com'))]
 
-# For development (local server)
-# if DEBUG:
-#     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# else:    
-# Email Configuration for Brevo
+# Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp-relay.brevo.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('BREVO_EMAIL')
 EMAIL_HOST_PASSWORD = os.environ.get('BREVO_API_KEY')
-DEFAULT_FROM_EMAIL = os.environ.get('BREVO_EMAIL', 'noreply@mastergiver.com')  # Add a default value
+DEFAULT_FROM_EMAIL = os.environ.get('BREVO_EMAIL', 'noreply@mastergiver.com')
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
+EMAIL_TIMEOUT = 30
 
+# Verify email settings
+if not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
+    raise ValueError("BREVO_EMAIL and BREVO_API_KEY must be set in environment variables")
+
+# Logging Configuration
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -223,25 +213,35 @@ LOGGING = {
             'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
             'style': '{',
         },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
     },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
         },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'verbose',
+        }
     },
     'loggers': {
         'django': {
             'handlers': ['console'],
             'level': 'INFO',
+            'propagate': True,
         },
         'django.request': {
-            'handlers': ['console'],
+            'handlers': ['console', 'mail_admins'],
             'level': 'DEBUG',
             'propagate': True,
         },
         'django.security': {
-            'handlers': ['console'],
+            'handlers': ['console', 'mail_admins'],
             'level': 'DEBUG',
             'propagate': True,
         },
@@ -255,18 +255,18 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
+        'django.template': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        }
     }
 }
-
-
 
 AUTHENTICATION_BACKENDS = [
     'MasterGiver.authentication.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
-
-
-# MEDIA STORAGE
 
 # Cloudinary settings
 CLOUDINARY_STORAGE = {
@@ -276,5 +276,3 @@ CLOUDINARY_STORAGE = {
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-
