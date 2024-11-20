@@ -1,46 +1,43 @@
 from django.core.management.base import BaseCommand
+from django.core.mail import send_mail
+from django.conf import settings
 import smtplib
 from email.mime.text import MIMEText
-from django.conf import settings
+import socket
+
 
 class Command(BaseCommand):
-    help = 'Test SMTP email connection'
+    help = 'Test email sending configuration'
 
     def handle(self, *args, **options):
-        smtp_server = "smtp-relay.brevo.com"
-        port = 587
-        sender = settings.EMAIL_HOST_USER
-        password = settings.EMAIL_HOST_PASSWORD
-        recipient = "wpxstudiox@gmail.com"
-
         try:
-            self.stdout.write(f"Testing with {smtp_server}")
-            self.stdout.write(f"Using credentials:")
-            self.stdout.write(f"Email: {sender}")
-            self.stdout.write(f"Password length: {len(password) if password else 'None'}")
-            
-            server = smtplib.SMTP(smtp_server, port)
-            server.set_debuglevel(1)
-            server.starttls()
-            
-            self.stdout.write("Attempting login...")
-            server.login(sender, password)
-            self.stdout.write(self.style.SUCCESS("Login successful!"))
-            
-            msg = MIMEText('Test message')
-            msg['Subject'] = 'Test Subject'
-            msg['From'] = sender
-            msg['To'] = recipient
-            
-            self.stdout.write("Sending email...")
-            server.send_message(msg)
-            self.stdout.write(self.style.SUCCESS("Email sent successfully!"))
-            
-            server.quit()
-            return True
-            
+            # First try basic connection
+            with smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT) as server:
+                server.ehlo()
+                if settings.EMAIL_USE_TLS:
+                    server.starttls()
+                server.ehlo()
+                server.login(settings.EMAIL_HOST_USER,
+                             settings.EMAIL_HOST_PASSWORD)
+
+                # Create message
+                msg = MIMEText('Test message')
+                msg['Subject'] = 'Test Subject'
+                msg['From'] = settings.DEFAULT_FROM_EMAIL
+                msg['To'] = 'wpxstudiox@gmail.com'
+
+                # Send message and get full response
+                try:
+                    server.send_message(msg)
+                    return "Email test completed successfully"
+                except smtplib.SMTPRecipientsRefused as e:
+                    return f"Recipients refused: {str(e)}"
+                except smtplib.SMTPResponseException as e:
+                    return f"SMTP error occurred: {e.smtp_code} {e.smtp_error}"
+
+        except socket.gaierror:
+            return "DNS lookup failed"
+        except smtplib.SMTPAuthenticationError:
+            return "SMTP authentication failed"
         except Exception as e:
-            self.stdout.write(self.style.ERROR(f"Error: {str(e)}"))
-            if hasattr(e, 'smtp_error'):
-                self.stdout.write(self.style.ERROR(f"SMTP Error: {str(e.smtp_error)}"))
-            return False
+            return f"Error: {str(e)}"
