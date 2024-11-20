@@ -181,12 +181,6 @@ SERVER_EMAIL = 'carlos@mastergiver.com'
 # Add this for debugging
 EMAIL_DEBUG = True
 
-# Print email settings at startup
-print(f"Email Settings:")
-print(f"EMAIL_HOST: {EMAIL_HOST}")
-print(f"EMAIL_HOST_USER: {EMAIL_HOST_USER}")
-print(f"EMAIL_HOST_PASSWORD: {'*' * 10 if EMAIL_HOST_PASSWORD else 'Not Set'}")
-
 # For debugging DNS issues
 LOGGING = {
     'version': 1,

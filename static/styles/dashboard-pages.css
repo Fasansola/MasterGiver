@@ -29,7 +29,8 @@ body {
 }
 
 
-.sidebar-menu-items:hover {
+.sidebar-menu-items:hover,
+.sidebar-menu-items:active {
     background: var(--secondary-purple);
 }
 

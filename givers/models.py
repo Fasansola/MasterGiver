@@ -24,9 +24,12 @@ class User(AbstractUser):
 
     def delete(self, *args, **kwargs):
         # Delete related objects
-        self.userskills_set.all().delete()
-        self.usercharitysupport_set.all().delete()
-        # Call the "real" delete() method
+        for related_name in ['userskills_set', 'usercharitysupport_set', 'user_causes', 
+                           'user_pledge_orgs', 'userscharityownevent_set']:
+            try:
+                getattr(self, related_name).all().delete()
+            except AttributeError:
+                pass  # Skip if relation doesn't exist
         super().delete(*args, **kwargs)
 
     def __str__(self) -> str:
