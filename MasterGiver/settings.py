@@ -175,7 +175,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('BREVO_EMAIL')
 EMAIL_HOST_PASSWORD = os.environ.get('BREVO_API_KEY')
-DEFAULT_FROM_EMAIL = 'carlos@mastergiver.com'  # Your verified sender email
+DEFAULT_FROM_EMAIL = 'MasterGiver <carlos@mastergiver.com>'
 SERVER_EMAIL = 'carlos@mastergiver.com'
 
 # Add this for debugging

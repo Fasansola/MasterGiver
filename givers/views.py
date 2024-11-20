@@ -491,7 +491,6 @@ def change_password(request):
     return render(request, 'givers/change_password.html', context)
 
 
-
 @login_required
 @require_POST
 def clear_profile_picture(request):
@@ -633,20 +632,3 @@ def updatePassword(request, userData, userInfo):
     update_session_auth_hash(request, userInfo)
 
     return False  # No error
-
-
-
-# TEMPORARY CODE
-
-from django.apps import apps
-from givers.models import User
-
-def check_all_user_relations():
-    related_models = []
-    for model in apps.get_models():
-        for field in model._meta.fields:
-            if hasattr(field, 'remote_field') and field.remote_field and field.remote_field.model == User:
-                related_models.append(f"{model._meta.app_label}.{model.__name__}")
-    print("Models referencing User:", related_models)
-
-check_all_user_relations()
