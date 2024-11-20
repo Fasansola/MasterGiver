@@ -256,10 +256,6 @@ LOGGING = {
     }
 }
 
-# Remove email validation to prevent app startup issues
-# if not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
-#     raise ValueError("BREVO_EMAIL and BREVO_API_KEY must be set in environment variables")
-
 # CLOUDINARY SETTINGS
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
@@ -267,6 +263,10 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+if not all(CLOUDINARY_STORAGE.values()):
+    raise ValueError("CLOUDINARY_CLOUD_NAME, API_KEY and API_SECRET must be set")
+
 
 # PRODUCTION SETTINGS
 if not DEBUG:

@@ -16,7 +16,11 @@ class User(AbstractUser):
     city = models.CharField(max_length=128, null=True, blank=True)
     country = models.CharField(max_length=128, default='United States')
     profile_photo = models.FileField(
-        null=True, blank=True, upload_to='images/', storage=RawMediaCloudinaryStorage(), default='images/upload.svg')
+    null=True, 
+    blank=True, 
+    upload_to='images/', 
+    storage=RawMediaCloudinaryStorage(),
+    default='https://res.cloudinary.com/dxeogv8rj/image/upload/v1732121946/media/images/upload.svg')
     about_me = models.TextField(null=True, blank=True)
     giving_motivation = models.TextField(null=True, blank=True)
     supported_charities = models.ManyToManyField(
