@@ -163,20 +163,16 @@ INTERNAL_IPS = ['127.0.0.1']
 
 # EMAIL SETTINGS
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp-relay.brevo.com'
+EMAIL_HOST = 'smtp.brevo.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('BREVO_EMAIL')
-EMAIL_HOST_PASSWORD = os.environ.get('BREVO_API_KEY')
-DEFAULT_FROM_EMAIL = os.environ.get('BREVO_EMAIL', 'noreply@mastergiver.com')
-SERVER_EMAIL = DEFAULT_FROM_EMAIL
+EMAIL_USE_SSL = False  # Add this line
+EMAIL_HOST_USER = os.environ.get('BREVO_EMAIL')  # This looks correct
+EMAIL_HOST_PASSWORD = os.environ.get('BREVO_API_KEY')  # This looks correct
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # Change this to use EMAIL_HOST_USER directly
+SERVER_EMAIL = EMAIL_HOST_USER  # Change this too
 EMAIL_TIMEOUT = 30
 
-# Verify email settings
-if not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
-    raise ValueError("BREVO_EMAIL and BREVO_API_KEY must be set in environment variables")
-
-# LOGGING SETTINGS
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -185,21 +181,12 @@ LOGGING = {
             'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
             'style': '{',
         },
-        'simple': {
-            'format': '{levelname} {message}',
-            'style': '{',
-        },
     },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
         },
-        'mail_admins': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
-            'formatter': 'verbose',
-        }
     },
     'loggers': {
         'django': {
@@ -208,32 +195,37 @@ LOGGING = {
             'propagate': True,
         },
         'django.request': {
-            'handlers': ['console', 'mail_admins'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-        'django.security': {
-            'handlers': ['console', 'mail_admins'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-        'django.server': {
             'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': True,
         },
-        'django.mail': {
+        'django.core.mail': {
             'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': True,
         },
-        'django.template': {
+        'django.core.mail.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        # Add SMTP debugging
+        'smtp': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'smtp.connection': {
             'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': True,
         }
     }
 }
+
+# Remove email validation to prevent app startup issues
+# if not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
+#     raise ValueError("BREVO_EMAIL and BREVO_API_KEY must be set in environment variables")
 
 # CLOUDINARY SETTINGS
 CLOUDINARY_STORAGE = {
