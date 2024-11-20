@@ -215,6 +215,33 @@ EMAIL_HOST_USER = os.environ.get('BREVO_EMAIL')
 EMAIL_HOST_PASSWORD = os.environ.get('BREVO_API_KEY')
 DEFAULT_FROM_EMAIL = os.environ.get('BREVO_EMAIL', 'noreply@mastergiver.com')  # Add a default value
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',  # Prints to console
+        },
+        'mail_admins': {
+            'level': 'ERROR',  # Only logs errors
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django.request': {  # Logs request-related errors
+            'handlers': ['console', 'mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.security': {  # Logs security-related errors
+            'handlers': ['console', 'mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
+}
+
+
 
 
 AUTHENTICATION_BACKENDS = [
