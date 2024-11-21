@@ -25,6 +25,7 @@ class User(AbstractUser):
     giving_motivation = models.TextField(null=True, blank=True)
     supported_charities = models.ManyToManyField(
         Charity, through='UserCharitySupport', related_name='supporting_users')
+    giving_style = models.ForeignKey('GivingStyle', on_delete=models.CASCADE, related_name='giving_style', null=True, blank=True)
 
     def delete(self, *args, **kwargs):
         # Delete related objects
@@ -126,3 +127,16 @@ class UserCharitySupport(models.Model):
         ordering = ['user']
         verbose_name = 'User Charity Support'
         verbose_name_plural = 'Charities Users Supports'
+
+
+class GivingStyle(models.Model):
+    name = models.CharField(max_length=128)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = 'Giving Style'
+        verbose_name_plural = 'Giving Styles'

@@ -30,7 +30,7 @@
       <h4 class="bold dropdown-h" id="{{ data }}-dropdown-title">{{ section_name }}</h4>
       <div class="dropdown-ul">
         {% for item in items %}
-          <div class="checkbox-div justify-content-between align-items-center" role="option" aria-selected="false">
+          <div class="d-flex checkbox-div justify-content-between align-items-center gap-16" role="option" aria-selected="false">
             <label for="{{ item.name }}" class="small-text icons-text">
               {% if item.icon %}
                 <img src="{{ item.icon.url }}" alt="" aria-hidden="true" />

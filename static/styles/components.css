@@ -158,10 +158,6 @@ button {
 /* SETUP CHECKBOX */
 .checkbox-div {
     margin-top: 8px;
-    display: flex;
-    width: 100%;
-    flex-direction: row !important;
-    gap: 10px !important;
 }
 
 .checkbox-div label {
