@@ -374,7 +374,8 @@ def dashboard(request):
         'pledge_organizations': user_pledge_orgs,
         'user_organizations': user_organizations,
         'is_profile': False,
-        'is_dashboard': True
+        'is_dashboard': True,
+        'no_index': True,
     }
     return render(request, 'givers/dashboard.html', context)
 
@@ -436,7 +437,8 @@ def edit_profile(request):
             'skills': skills,
             'user_skills': user_skills,
             'pledge_organizations': user_pledge_orgs,
-            'user_organizations': user_organizations
+            'user_organizations': user_organizations,
+            'no_index': True,
         }
         return render(request, 'givers/edit_profile.html', context)
 
@@ -464,6 +466,7 @@ def edit_profile(request):
             'user_skills': user_skills,
             'pledge_organizations': user_pledge_orgs,
             'user_organizations': user_organizations,
+            'no_index': True,
             'error': error
         }
 
@@ -476,7 +479,8 @@ def edit_profile(request):
 def change_password(request):
     if request.method != 'POST':
         context = {
-            'page': 'change_password'
+            'page': 'change_password',
+            'no_index': True
         }
         return render(request, 'givers/change_password.html', context)
 
@@ -485,6 +489,7 @@ def change_password(request):
 
     context = {
         'page': 'change_password',
+        'no_index': True,
         'error': updatePassword(request, userData, userInfo)
     }
 
