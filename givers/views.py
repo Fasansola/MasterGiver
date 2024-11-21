@@ -17,7 +17,7 @@ from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.contrib.contenttypes.models import ContentType
 
-from .models import User, Skill, UserSkills, UserCauses, UsersPledgeOrganizations, UsersCharityOwnEvent
+from .models import User, Skill, UserSkills, UserCauses, UsersPledgeOrganizations, UsersCharityOwnEvent, GivingStyle
 from causes.models import Causes
 from organizations.models import PledgeOrganizations
 
@@ -296,7 +296,19 @@ def preview_profile(request):
 
 @login_required
 def confirmation(request):
+    if request.method == 'POST':
+        userData = request.POST
+        userInfo = request.user
+        giving_style = userData.get('giving_style')
+        userInfo.giving_style = GivingStyle.objects.get(name=giving_style)
+        userInfo.save()
+        print(userInfo.giving_style)
+        
+        return redirect('dashboard')
+        
+    giving_styles = GivingStyle.objects.all()
     context = {
+        'giving_styles': giving_styles,
         'login_flow': True,
     }
     return render(request, 'givers/confirmation.html', context)

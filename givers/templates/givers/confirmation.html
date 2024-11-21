@@ -14,21 +14,34 @@
         <img src="{% static 'images/confirmation-icon.svg' %}" alt="" width="106px" height="106px">
         <h2 class="small-heading text-center bold">Congratulations, your account has been successfully created.</h2>
     </div>
-    <div class="d-flex flex-column gap-20 align-items-center content-bordered-box">
-        <h3 class="big-text text-center bold">We’d love to know you better.<br>Which Best Describes Your Giving Style?</h3>
-        <div class="d-flex checkbox-div align-items-center gap-16" role="option" aria-selected="false">
-            <input
-              type="checkbox"
-              name="{{ data }}"
-              id="{{ item.name }}"
-              value="1"
-            />
-            <label for="sola" class="small-text d-flex flex-column align-items-start gap-8">
-                <p class="bold">Intentional Giver</p>
-                <p class="small-text">I’m organized and committed in my giving. I plan my donations ahead, knowing exactly who, how much, and when I’ll give each month or year.</p>
-            </label>
+
+    <form method="POST">
+        <div class="d-flex flex-column gap-20 align-items-center content-bordered-box">
+            {% csrf_token %}
+            <h3 class="big-text text-center bold">We’d love to know you better.<br>Which Best Describes Your Giving Style?</h3>
+            {% for giving_style in giving_styles %}
+                <div class="d-flex radio-div align-items-start gap-16" role="option" aria-selected="false">
+                    <input
+                    type="radio"
+                    name="giving_style"
+                    id="{{ giving_style.name }}"
+                    value="{{ giving_style.name }}"
+                    />
+                    <label for="{{ giving_style.name }}" class="small-text d-flex flex-column align-items-start gap-8">
+                        <p class="bold">{{ giving_style.name }}</p>
+                        <p class="small-text">{{ giving_style.description }}</p>
+                    </label>
+                </div>
+            {% endfor %}
+            <p>By understanding your unique giving style, we can better tailor your MasterGiver experience to suit your values and goals. Thank you for sharing!</p>
+            <div class="d-flex justify-content-between gap-24">
+                <button type="submit" class="button dark-button">Submit</button>
+                <button class="link">
+                    <a href="{% url 'dashboard' %}">No Thanks.  Take me to my Profile</a>
+                </button>
+            </div>
         </div>
-    </div>
+    </form>
     <div class="d-none flex-column gap-16">
         <div class="d-flex flex-sm-column gap-20 align-items-sm-center content-bordered-box">
             <img src="{% static 'images/user-dashboard.svg' %}" alt="" width="80px" height="80px">
