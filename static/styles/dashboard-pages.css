@@ -30,7 +30,7 @@ body {
 
 
 .sidebar-menu-items:hover,
-.sidebar-menu-items:active {
+.active-sidebar-menu-items {
     background: var(--secondary-purple);
 }
 

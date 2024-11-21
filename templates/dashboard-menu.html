@@ -11,7 +11,7 @@
             <p class="small-text">MasterGiver Profile</p>
         </div></a>
     {% endif %}
-    <a href="{% url 'edit_profile' %}"><div class="d-flex gap-16 sidebar-menu-items">
+    <a href="{% url 'edit_profile' %}"><div class="d-flex gap-16 {% if page == "edit_profile" or page == "change_password" %} active-sidebar-menu-items {% endif %} sidebar-menu-items">
         <img src="{% static 'icons/settings.svg' %}" alt="">
         <p class="small-text">Account Setting</p>
     </div></a>
