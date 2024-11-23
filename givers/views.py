@@ -439,7 +439,7 @@ def profile(request, username):
         'is_profile': True,
         'index': True,
         'page_title': f"{userInfo.first_name} {userInfo.last_name} | MasterGiver Profile | Showcase Your Impact",
-        'page_description': f"Discover {userInfo.first_name} {userInfo.last_name}'s MasterGiver profile showcasing her charitable giving, volunteer work, and community impact."
+        'page_description': f"Discover {userInfo.first_name} {userInfo.last_name}'s MasterGiver profile showcasing my charitable giving, volunteer work, and community impact."
     }
 
     return render(request, 'givers/profile.html', context)
