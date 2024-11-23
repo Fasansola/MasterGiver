@@ -36,17 +36,31 @@ def home(request):
 
     context = {
         "page_id": 'home',
-        "page_type": 'static'
+        "page_type": 'static',
+        "page_title": 'MasterGiver | Showcase Your Giving and Track Your Impact',
+        "page_description": "Join MasterGiver, the platform that helps you showcase your giving, track your impact, and connect with meaningful causes. Build your profile today and show off your good side!",
     }
     return render(request, 'givers/index.html', context)
 
 
 def about(request):
-    return render(request, 'givers/about.html', context={'page_id': 'about', "page_type": 'static'})
+    context = {
+        'page_id': 'about',
+        "page_type": 'static',
+        "page_title": 'About Us | MasterGiver - Empowering Givers to Make an Impact',
+        "page_description": "Learn about MasterGiver, the platform that empowers you to showcase your giving, track your impact, and connect with meaningful causes. Discover our mission to build a global community of givers",
+    }
+    return render(request, 'givers/about.html', context)
 
 
 def faq(request):
-    return render(request, 'givers/faq.html', context={'page_id': 'faq', "page_type": 'static'})
+    context = {
+        'page_id': 'faq',
+        "page_type": 'static',
+        "page_title": 'FAQs | MasterGiver - Your Questions Answered',
+        "page_description": "Find answers to common questions about MasterGiver. Learn how to create a profile, track your giving, and connect with causes today.",
+    }
+    return render(request, 'givers/faq.html', context)
 
 
 def terms(request):
@@ -303,9 +317,9 @@ def confirmation(request):
         userInfo.giving_style = GivingStyle.objects.get(name=giving_style)
         userInfo.save()
         print(userInfo.giving_style)
-        
+
         return redirect('dashboard')
-        
+
     giving_styles = GivingStyle.objects.all()
     context = {
         'giving_styles': giving_styles,

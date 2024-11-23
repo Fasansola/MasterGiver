@@ -1,5 +1,8 @@
-{% extends "layout.html" %} {% load static %} {% block title %}FAQ -
-MasterGiver{% endblock title %} {% block styles %}
+{% extends "layout.html" %}
+{% load static %} 
+{% block title %}
+  {{ page_title }}
+{% endblock title %} {% block styles %}
 <link rel="stylesheet" href="{% static 'styles/static-pages.css' %}" />
 {% endblock %} {% block body %} {% include "header.html" %}
 

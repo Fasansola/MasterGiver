@@ -39,8 +39,21 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}">
-    <meta property="og:title" content="{% block og_title %}Master Giver - Show Off Your Good Side{% endblock %}">
-    <meta property="og:description" content="{% block og_description %}Join the world's largest community of intentional givers, showcase your good works, and boost your online reputation.{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}
+      {% if page_title %}
+        {{ page_title }}
+      {% else %}
+        Master Giver | Show Off Your Good Side
+      {% endif %}
+    {% endblock %}">
+    <meta property="og:description" content="
+    {% block og_description %}
+      {% if page_description %}
+        {{ page_description }}
+      {% else %}
+        Join the world's largest community of intentional givers, showcase your good works, and boost your online reputation.
+      {% endif %}
+    {% endblock %}">
     <meta property="og:image" content="{% block og_image %}{% static 'images/hero-image-1200x630.png' %}{% endblock %}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -70,7 +83,7 @@
     {% block styles %}{% endblock %}
 
     <!-- Dynamic title: "MasterGiver - [Page Title]" -->
-    <title>MasterGiver - {% block title %}{% endblock %}</title>
+    <title>{% block title %}{% endblock %}</title>
   </head>
   <body class="relative">
       {% comment %} MOBILE MENU {% endcomment %}
