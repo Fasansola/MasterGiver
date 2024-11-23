@@ -39,6 +39,7 @@ def home(request):
         "page_type": 'static',
         "page_title": 'MasterGiver | Showcase Your Giving and Track Your Impact',
         "page_description": "Join MasterGiver, the platform that helps you showcase your giving, track your impact, and connect with meaningful causes. Build your profile today and show off your good side!",
+        'index': True,
     }
     return render(request, 'givers/index.html', context)
 
@@ -401,7 +402,7 @@ def dashboard(request):
         'user_organizations': user_organizations,
         'is_profile': False,
         'is_dashboard': True,
-        'no_index': True,
+        'index': False,
     }
     return render(request, 'givers/dashboard.html', context)
 
@@ -433,7 +434,8 @@ def profile(request, username):
         'user_skills': user_skills,
         'pledge_organizations': user_pledge_orgs,
         'user_organizations': user_organizations,
-        'is_profile': True
+        'is_profile': True,
+        'index': True,
     }
 
     return render(request, 'givers/profile.html', context)
@@ -464,7 +466,7 @@ def edit_profile(request):
             'user_skills': user_skills,
             'pledge_organizations': user_pledge_orgs,
             'user_organizations': user_organizations,
-            'no_index': True,
+            'index': False,
         }
         return render(request, 'givers/edit_profile.html', context)
 
@@ -492,7 +494,7 @@ def edit_profile(request):
             'user_skills': user_skills,
             'pledge_organizations': user_pledge_orgs,
             'user_organizations': user_organizations,
-            'no_index': True,
+            'index': False,
             'error': error
         }
 
@@ -506,7 +508,7 @@ def change_password(request):
     if request.method != 'POST':
         context = {
             'page': 'change_password',
-            'no_index': True
+            'index': False
         }
         return render(request, 'givers/change_password.html', context)
 
@@ -515,7 +517,7 @@ def change_password(request):
 
     context = {
         'page': 'change_password',
-        'no_index': True,
+        'index': False,
         'error': updatePassword(request, userData, userInfo)
     }
 
