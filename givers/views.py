@@ -50,6 +50,7 @@ def about(request):
         "page_type": 'static',
         "page_title": 'About Us | MasterGiver - Empowering Givers to Make an Impact',
         "page_description": "Learn about MasterGiver, the platform that empowers you to showcase your giving, track your impact, and connect with meaningful causes. Discover our mission to build a global community of givers",
+        'index': True,
     }
     return render(request, 'givers/about.html', context)
 
@@ -60,6 +61,7 @@ def faq(request):
         "page_type": 'static',
         "page_title": 'FAQs | MasterGiver - Your Questions Answered',
         "page_description": "Find answers to common questions about MasterGiver. Learn how to create a profile, track your giving, and connect with causes today.",
+        'index': True,
     }
     return render(request, 'givers/faq.html', context)
 
@@ -436,6 +438,8 @@ def profile(request, username):
         'user_organizations': user_organizations,
         'is_profile': True,
         'index': True,
+        'page_title': f"{userInfo.first_name} {userInfo.last_name} | MasterGiver Profile | Showcase Your Impact",
+        'page_description': f"Discover {userInfo.first_name} {userInfo.last_name}'s MasterGiver profile showcasing her charitable giving, volunteer work, and community impact."
     }
 
     return render(request, 'givers/profile.html', context)
