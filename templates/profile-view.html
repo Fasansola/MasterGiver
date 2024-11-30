@@ -66,10 +66,8 @@
                     {% endif %}
                 </div>
 
-                <hr class="line">
-
-                <div>
-                    <p>Show Off Your Good Side! <a href="{% static "images/Mastergiver Badge.png" %}" class="link" download="{{ userInfo.first_name }} {{ userInfo.last_name }} MasterGiver Badge.png">Download your MasterGiver badge</a> to add to your email signature or share on social media</p>
+                <div class="badge-box">
+                    <p class="">Show Off Your Good Side! <a href="{% static "images/Mastergiver Badge.png" %}" class="link clickable" download="{{ userInfo.first_name }} {{ userInfo.last_name }} MasterGiver Badge.png">Download your MasterGiver badge</a> to add to your email signature or share on social media</p>
                 </div>
                 
             </div>
