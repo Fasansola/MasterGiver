@@ -15,11 +15,14 @@
     <div class="d-flex container flex-md-column justify-content-between gap-32 profile-body">
         <div class="d-flex flex-column profile-info gap-48">
             <div class="d-flex flex-column align-items-center text-center gap-24">
-                {% if userInfo.profile_photo %}
-                    <img src="{{ userInfo.profile_photo.url }}" alt="{{ userInfo.first_name }} profile picture" class="profile-picture" />
-                {% else %}
-                    <img src="{% static 'icons/upload.svg' %}" alt="{{ userInfo.first_name }} profile picture" class="profile-picture" />
-                {% endif %}
+                <div class="relative">
+                    {% if userInfo.profile_photo %}
+                        <img src="{{ userInfo.profile_photo.url }}" alt="{{ userInfo.first_name }} profile picture" class="profile-picture" />
+                    {% else %}
+                        <img src="{% static 'icons/upload.svg' %}" alt="{{ userInfo.first_name }} profile picture" class="profile-picture" />
+                    {% endif %}
+                    <img alt="" src="{% static "images/Mastergiver Badge.png" %}" class="profile-badge absolute" width="80px">
+                </div>
                 <div class="gap-16">
                     <h1 class="heading">{{ userInfo.first_name }} {{ userInfo.last_name }}</h1>
                     <p>{{ userInfo.city }}, {{ userInfo.state }}</p>
@@ -65,10 +68,11 @@
                         </div>
                     {% endif %}
                 </div>
-
-                <div class="badge-box">
-                    <p class="">Show Off Your Good Side! <a href="{% static "images/Mastergiver Badge.png" %}" class="link clickable" download="{{ userInfo.first_name }} {{ userInfo.last_name }} MasterGiver Badge.png">Download your MasterGiver badge</a> to add to your email signature or share on social media</p>
-                </div>
+                {% if is_dashboard %}
+                    <div class="badge-box">
+                        <p class="">Show Off Your Good Side! <a href="{% static "images/Mastergiver Badge.png" %}" class="link clickable" download="{{ userInfo.first_name }} {{ userInfo.last_name }} MasterGiver Badge.png">Download your MasterGiver badge</a> to add to your email signature or share on social media</p>
+                    </div>
+                {% endif %}
                 
             </div>
 

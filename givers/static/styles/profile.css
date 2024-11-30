@@ -52,6 +52,12 @@
     background-color: var(--brand-gray);
 }
 
+.profile-badge {
+    right: -10%;
+    bottom: 8%;
+}
+
+
 .profile-org-items {
     padding: 24px 0;
     border: 1px solid var(--brand-gray);

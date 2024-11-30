@@ -158,15 +158,16 @@ button {
 /* SETUP CHECKBOX */
 .checkbox-div {
     margin-top: 8px;
-    display: flex;
-    width: 100%;
-    flex-direction: row !important;
-    gap: 10px !important;
 }
 
 .checkbox-div label {
     font-size: 0.875rem;
     font-weight: 400;
+}
+
+
+.radio-div input {
+    margin-top: 6px;
 }
 
 .policy-text {
