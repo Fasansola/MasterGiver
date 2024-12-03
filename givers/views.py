@@ -188,7 +188,7 @@ def what_care_about(request):
             'user_skills': user_skills,
             'is_signup_flow': True
         }
-        return render(request, 'givers/what_care_about.html', context)
+        return render(request, 'givers/profile-setup.html', context)
 
     userData = request.POST
 

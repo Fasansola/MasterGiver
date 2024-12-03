@@ -1,7 +1,7 @@
 {% load static %}
 <div class="forms-div" id="{{ section_name|slugify }}_input">
   <div class="forms-div relative">
-    <div class="d-flex justify-content-between gap-8 relative">
+    <div class="d-flex gap-8 relative">
       <label for="{{ section_name|slugify }}" class="small-text required" id="{{ section_name|slugify }}-label">{{ section_name }}</label>
       {% if data == "skills" %}
         <img class="clickable" id="giving-info-toggle" src="{% static 'icons/help.svg' %}" alt="more-info" >
@@ -27,7 +27,7 @@
     />
 
     <div class="absolute dropdown-list" id="{{ data }}-dropdown" role="listbox" aria-labelledby="{{ data }}-label">
-      <h4 class="bold dropdown-h" id="{{ data }}-dropdown-title">{{ section_name }}</h4>
+      {% comment %} <h4 class="bold dropdown-h" id="{{ data }}-dropdown-title">{{ section_name }}</h4> {% endcomment %}
       <div class="dropdown-ul">
         {% for item in items %}
           <div class="d-flex checkbox-div justify-content-between align-items-center gap-16" role="option" aria-selected="false">
