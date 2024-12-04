@@ -69,8 +69,9 @@
                     {% endif %}
                 </div>
                 {% if is_dashboard %}
-                    <div class="badge-box">
-                        <p class="small-text">Show Off Your Good Side! <a href="{% static "images/Mastergiver Badge.png" %}" class="link clickable" download="{{ userInfo.first_name }} {{ userInfo.last_name }} MasterGiver Badge.png">Download your MasterGiver badge</a> to add to your email signature or share on social media</p>
+                    <div class="d-flex flex-sm-column align-items-sm-center gap-16 badge-box">
+                        <img alt="" src="{% static "images/Mastergiver Badge.png" %}" class="profile-badge" width="100px" height="100px">
+                        <p class="small-text text-sm-center">Show Off Your Good Side! <a href="{% static "images/Mastergiver Badge.png" %}" class="link clickable" download="{{ userInfo.first_name }} {{ userInfo.last_name }} MasterGiver Badge.png">Download your MasterGiver badge</a> to add to your email signature or share on social media</p>
                     </div>
                 {% endif %}
                 
