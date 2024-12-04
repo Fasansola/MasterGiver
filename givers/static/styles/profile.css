@@ -179,8 +179,8 @@
     }
 
     .badge-box {
-        background-position-x: 100%;
-        /* padding: 28px 30% 28px 28px; */
+        /* background-position-x: 100%; */
+        padding: 18px 14px;
     }
 }
 
