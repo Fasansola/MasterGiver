@@ -30,16 +30,16 @@
             </div>
 
 
-            <div class="d-flex flex-column gap-48">
+            <div class="d-flex flex-column gap-32">
                 <div class="d-flex flex-column gap-32 expandable-box">
                     <div class="d-flex flex-column gap-16">
                         <h2 class="big-text bold">About Me</h2>
-                        <p class="truncated-text">{{ userInfo.about_me|truncatechars:135 }}</p>
-                        {% if userInfo.about_me|length > 135 %}
+                        <p class="truncated-text">{{ userInfo.about_me|truncatechars:150 }}</p>
+                        {% if userInfo.about_me|length > 150 %}
                             <p class="d-none full-text">{{ userInfo.about_me }}</p>
                         {% endif %}
                     </div>
-                    {% if userInfo.about_me|length > 135 %}
+                    {% if userInfo.about_me|length > 150 %}
                         <div class="d-flex align-items-center gap-4 semi-bold clickable accent-text" id="read-more-btn">
                             READ MORE <img src="{% static 'icons/chevron-right.svg' %}" alt="Read More" />
                         </div>
@@ -54,12 +54,12 @@
                 <div class="d-flex flex-column gap-32 expandable-box">
                     <div class="d-flex flex-column gap-16">
                         <h2 class="big-text bold">Why I Give</h2>
-                        <p class="truncated-text">{{ userInfo.giving_motivation|truncatechars:135 }}</p>
-                        {% if userInfo.giving_motivation|length > 135 %}
+                        <p class="truncated-text">{{ userInfo.giving_motivation|truncatechars:150 }}</p>
+                        {% if userInfo.giving_motivation|length > 150 %}
                             <p class="d-none full-text">{{ userInfo.giving_motivation }}</p>
                         {% endif %}
                     </div>
-                    {% if userInfo.giving_motivation|length > 135 %}
+                    {% if userInfo.giving_motivation|length > 150 %}
                         <div class="d-flex align-items-center gap-4 semi-bold clickable accent-text" id="read-more-btn">
                             READ MORE <img src="{% static 'icons/chevron-right.svg' %}" alt="Read More" />
                         </div>
@@ -78,10 +78,14 @@
 
             {% if user.is_authenticated and user.username == userInfo.username and is_profile %}
                 <hr class="line">
-                <a href="{% url 'edit_profile' %}">
-                    <div class="d-flex justify-content-center button green-button">Edit My Profile</div>
-                </a>
-            {% endif %}
+                    <a href="{% url 'edit_profile' %}">
+                        <div class="d-flex justify-content-center button green-button">Edit My Profile</div>
+                    </a>
+                {% elif is_dashboard %}
+                    <a href="{% url 'profile' user.username %}">
+                        <div class="d-flex justify-content-center button green-button">View My Public Profile</div>
+                    </a>
+                {% endif %}
         </div>
         <div class="d-flex flex-column profile-main gap-64">
             <div class="d-flex flex-column gap-40">

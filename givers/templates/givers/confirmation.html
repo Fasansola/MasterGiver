@@ -12,13 +12,14 @@
  <div class="d-flex flex-column gap-48">
     <div class="d-flex flex-column align-items-center gap-32">
         <img src="{% static 'images/confirmation-icon.svg' %}" alt="" width="106px" height="106px">
-        <h2 class="small-heading text-center bold">Congratulations, your account has been successfully created.</h2>
+        <h2 class="small-heading text-center bold">Congratulations! <br><span class="big-text">Your account has been successfully created.</span></h2>
     </div>
 
     <form method="POST">
-        <div class="d-flex flex-column gap-20 align-items-center content-bordered-box">
+        <div class="d-flex flex-column gap-24 align-items-center content-bordered-box">
             {% csrf_token %}
-            <h3 class="big-text text-center bold">We’d love to know you better.<br>Which Best Describes Your Giving Style?</h3>
+            <h3 class="big-text text-center bold" style="line-height: 1.5em;">We’d love to know you better.<br>Which best describes your giving style?</h3>
+            <p class="text-center">By understanding your unique giving style, we can better tailor your MasterGiver experience to suit your values and goals. Thank you for sharing!</p>
             {% for giving_style in giving_styles %}
                 <div class="d-flex radio-div align-items-start gap-16" role="option" aria-selected="false">
                     <input
@@ -27,17 +28,16 @@
                     id="{{ giving_style.name }}"
                     value="{{ giving_style.name }}"
                     />
-                    <label for="{{ giving_style.name }}" class="small-text d-flex flex-column align-items-start gap-8">
+                    <label for="{{ giving_style.name }}" class="small-text d-flex flex-column align-items-start gap-4">
                         <p class="bold">{{ giving_style.name }}</p>
                         <p class="small-text">{{ giving_style.description }}</p>
                     </label>
                 </div>
             {% endfor %}
-            <p>By understanding your unique giving style, we can better tailor your MasterGiver experience to suit your values and goals. Thank you for sharing!</p>
             <div class="d-flex justify-content-between gap-24">
                 <button type="submit" class="button dark-button">Submit</button>
                 <button class="link">
-                    <a href="{% url 'dashboard' %}">No Thanks.  Take me to my Profile</a>
+                    <a href="{% url 'dashboard' %}"><u>No Thanks.  Take me to my Profile</u></a>
                 </button>
             </div>
         </div>

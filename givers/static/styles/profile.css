@@ -14,7 +14,7 @@
 }
 
 .profile-info {
-    min-width: 380px;
+    min-width: 370px;
     width: 440px;
     height: -moz-max-content;
     height: -webkit-max-content;
@@ -22,7 +22,7 @@
     background-color: var(--white);
     padding: 40px 32px;
     padding-bottom: 52px;
-    margin-top: -4%;
+    margin-top: -10%;
     border-radius: 16px;
 }
 
@@ -42,13 +42,6 @@
     background-repeat: no-repeat;
     background-position-x: 160%;
     background-position-y: -10%;
-}
-
-
-@media screen and (min-width: 1582px) {
-    .badge-box {
-        background-position-x: 130%;
-    }
 }
 
 
@@ -113,7 +106,24 @@
 }
 
 
+@media screen and (min-width: 1582px) {
+    .badge-box {
+        background-position-x: 130%;
+    }
+}
+
+
+@media only screen and (max-width: 1400px) {
+    .profile-info {
+        margin-top: -5%;
+    }
+}
+
 @media only screen and (max-width: 1200px) {
+    .profile-info {
+        margin-top: -10%;
+    }
+
     .profile-main {
         padding: 40px 0;
     }

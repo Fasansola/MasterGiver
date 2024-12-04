@@ -5,15 +5,15 @@
 </div>
 
 <div class="d-flex flex-column gap-20">
-    {% if not user.is_anonymous and not is_dashboard %}
-        <a href="{% url 'profile' user.username %}"><div class="d-flex gap-16 sidebar-menu-items">
+    {% comment %} {% if not user.is_anonymous and not is_dashboard %} {% endcomment %}
+        <a href="{% url 'dashboard' %}"><div class="d-flex gap-16 sidebar-menu-items {% if is_dashboard %} active-sidebar-menu-items {% endif %}">
             <img src="{% static 'icons/umbrella.svg' %}" alt="">
-            <p class="small-text">MasterGiver Profile</p>
+            <p class="small-text">Dashboard</p>
         </div></a>
-    {% endif %}
+    {% comment %} {% endif %} {% endcomment %}
     <a href="{% url 'edit_profile' %}"><div class="d-flex gap-16 {% if page == "edit_profile" or page == "change_password" %} active-sidebar-menu-items {% endif %} sidebar-menu-items">
         <img src="{% static 'icons/settings.svg' %}" alt="">
-        <p class="small-text">Account Setting</p>
+        <p class="small-text">Account Settings</p>
     </div></a>
     <a href="{% url 'logout' %}"><div class="d-flex gap-16 sidebar-menu-items">
         <img src="{% static 'icons/log-out.svg' %}" alt="">
