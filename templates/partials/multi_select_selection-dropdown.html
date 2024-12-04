@@ -18,7 +18,11 @@
     <input
       type="text"
       id="{{ section_name|slugify }}"
-      placeholder="Select one or more {{ section_name|lower }}"
+      {% if data == "causes" %}
+        placeholder="Select one or more areas that you care about from the list below"
+      {% else %}
+        placeholder="Select one or more {{ section_name|lower }}"
+      {% endif %}
       class="input"
       aria-labelledby="{{ section_name|slugify }}-label"
       aria-required="true"

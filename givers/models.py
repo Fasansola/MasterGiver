@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from organizations.models import Charity, PledgeOrganizations
 from causes.models import Causes
 from django.utils import timezone
-from cloudinary_storage.storage import RawMediaCloudinaryStorage
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 # Create your models here.
 
@@ -19,7 +19,7 @@ class User(AbstractUser):
         null=True,
         blank=True,
         upload_to='images/',
-        storage=RawMediaCloudinaryStorage())
+        storage=MediaCloudinaryStorage())
     about_me = models.TextField(null=True, blank=True)
     giving_motivation = models.TextField(null=True, blank=True)
     supported_charities = models.ManyToManyField(
