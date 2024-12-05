@@ -369,6 +369,12 @@ def logout_view(request):
 def dashboard(request):
     userInfo = request.user
     causes = Causes.objects.all()
+    
+    # Check if this is the first visit
+    first_visit = not request.session.get('has_visited', False)
+    
+    # Mark as visited
+    request.session['has_visited'] = True
 
     # Use filter().first() instead of get()
     user_causes_obj = UserCauses.objects.filter(user=userInfo).first()
@@ -405,6 +411,7 @@ def dashboard(request):
         'is_profile': False,
         'is_dashboard': True,
         'index': False,
+        'show_welcome': first_visit,
     }
     return render(request, 'givers/dashboard.html', context)
 

@@ -1,0 +1,110 @@
+{% load static %}
+
+<style>
+
+    @keyframes pop-up {
+        0% {
+            right: -100%;
+            bottom: -100%;
+            opacity: 0;
+        }
+        
+
+        100% {
+            right: 28px;
+            bottom: 28px;
+            opacity: 1;
+        }
+    }
+    
+    @keyframes pop-out {
+        0% {
+            right: 28px;
+            bottom: 28px;
+            opacity: 1;
+        }
+
+        100% {
+            right: -100%;
+            bottom: -100%;
+            opacity: 0;
+        }
+    }
+    
+    @keyframes rise-up {
+        0% {
+            bottom: -100%;
+            opacity: 0;
+        }
+        
+
+        100% {
+            bottom: 0px;
+            opacity: 1;
+        }
+    }
+    
+    @keyframes rise-down {
+        0% {
+            bottom: 0px;
+            opacity: 1;
+        }
+
+        100% {
+            bottom: -100%;
+            opacity: 0;
+        }
+    }
+    
+    .welcome-box {
+        position: fixed;
+        max-width: 500px;
+        background-color: white;
+        padding: 48px 38px 38px 38px;
+        border-radius: 24px;
+        box-shadow: 0 4px 8px 10px rgba(136, 135, 148, 0.1);
+        animation: pop-up 1.5s forwards;
+    }
+
+    .move-out {
+        animation: pop-out 1.5s forwards;
+    }
+
+    @media only screen and (max-width: 574px) {
+        .welcome-box {
+            max-width: unset;
+            padding: 38px 24px 32px 24px;
+            animation: rise-up 1.5s forwards;
+            border-radius: 24px 24px 0 0;
+        }
+    
+        .move-out {
+            animation: rise-down 1.5s forwards;
+        }
+    }
+
+    .close-x-icon {
+        width: 24px;
+        top: 18px;
+        right: 18px;
+    }
+</style>
+<div class="d-flex gap-24 flex-column welcome-box relative">
+    <img src="{% static 'icons/x-close.svg' %}" alt="close-pop-up" class="absolute close-x-icon" id="close-welcome-pop-up">
+    <h4 class="big-text bold">🎉 Thank You for Joining MasterGiver! 🎉</h4>
+    <p class="small-text">
+        Your profile is complete—now, we’d love to hear your thoughts! As one of our early beta users, your feedback is incredibly valuable in shaping the future of MasterGiver. Let us know what you think about the sign-up process, profile creation, and how we can make the platform even better!
+    </p>
+    <a href="https://forms.gle/tQcG988ZNYbUQz3n7"><button class="button dark-button">Give Feedback</button></a>
+    <u class="text-sm-center">It only takes 2 minutes—we promise!</u>
+</div>
+<script>
+    let close = document.getElementById('close-welcome-pop-up');
+    close.addEventListener('click', () => {
+        element = close.parentNode
+        element.classList.add('move-out');
+        element.addEventListener('animationend', () => {
+            element.parentNode.remove()
+        })
+    })
+</script>
