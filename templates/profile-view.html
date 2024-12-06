@@ -67,14 +67,7 @@
                             READ LESS <img src="{% static 'icons/chevron-right.svg' %}" alt="Read Less" />
                         </div>
                     {% endif %}
-                </div>
-                {% if is_dashboard %}
-                    <div class="d-flex flex-sm-column align-items-sm-center gap-16 badge-box">
-                        <img alt="" src="{% static "images/Mastergiver Badge.png" %}" class="profile-badge" width="100px" height="100px">
-                        <p class="small-text text-sm-center">Show Off Your Good Side! <a href="{% static "images/Mastergiver Badge.png" %}" class="link clickable" download="{{ userInfo.first_name }} {{ userInfo.last_name }} MasterGiver Badge.png">Download your MasterGiver badge</a> to add to your email signature or share on social media</p>
-                    </div>
-                {% endif %}
-                
+                </div>                
             </div>
 
             {% if user.is_authenticated and user.username == userInfo.username and is_profile %}
@@ -82,11 +75,7 @@
                     <a href="{% url 'edit_profile' %}">
                         <div class="d-flex justify-content-center button green-button">Edit My Profile</div>
                     </a>
-                {% elif is_dashboard %}
-                    <a href="{% url 'profile' user.username %}">
-                        <div class="d-flex justify-content-center button green-button">View My Public Profile</div>
-                    </a>
-                {% endif %}
+            {% endif %}
         </div>
         <div class="d-flex flex-column profile-main gap-64">
             <div class="d-flex flex-column gap-40">
