@@ -420,6 +420,10 @@ button {
     background-color: var(--light-hue);
 }
 
+.organization-item.selected {
+    background-color: var(--light-hue);
+}
+
 
 .organization-item>div {
     display: flex;

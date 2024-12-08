@@ -14,6 +14,10 @@ function initializeApp() {
     // Set up event listeners for buttons
     elements.causesBtn.addEventListener('click', handleCausesButtonClick);
     elements.skillsBtn.addEventListener('click', handleSkillsButtonClick);
+
+
+    // Set up event listeners for closing organization dropdowns
+    elements.closeDropdown.addEventListener('click', () => toggleDropdown(elements.orgDropdown, false));
     
     // Set up event listener for outside clicks
     document.addEventListener('click', handleOutsideClick);

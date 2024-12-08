@@ -5,6 +5,7 @@ import { debounce, toggleDropdown } from './utils.js';
 
 // Flag to track if the dropdown should be visible
 let isDropdownVisible = false;
+let selectedOrganizations = new Set(); // Track selected organization IDs
 
 /**
  * Fetches organizations from the API based on the search query
@@ -31,32 +32,43 @@ async function fetchOrganizations(query = '') {
         orgCardList.classList.add('dropdown-ul');
 
         // Set dropdown visibility based on results
-        isDropdownVisible = organizations.results.length > 0;
+        isDropdownVisible = true; // Keep dropdown visible even with no results
 
-        // Generate HTML for each organization
-        for (let org of organizations.results) {
-            let orgCard = `
-                <div class="organization-item" data-id="${org.id}">
-                    <img src="${org.logo_url}" alt="" class="organization-logo" />
-                    <div class="">
-                        <h4 class="bold organization-name">${org.name}</h4>
-                        <div class="organization-info">
-                            <div class="organization-location">
-                                <img src="${STATIC_URLS.locationIcon}" alt="location-icon" />
-                                <p class="small-text">${org.city}, ${org.region}</p>
-                            </div>
-                            <img src="${STATIC_URLS.verticalLineIcon}" alt="vertical-line" class="d-xs-none" />
-                            <p class="small-text organization-ngo d-xs-none">EIN: ${org.ngo_id}</p>
-                        </div>
-                    </div>
+        if (organizations.results.length === 0) {
+            // No results found - show message
+            orgCardList.innerHTML = `
+                <div class="d-flex flex-column text-center">
+                    <p>No organizations found matching <span class="bold">"${query}"</span></p>
+                    <p>Consider adding your organization manually</p>
                 </div>`;
-            orgCardList.innerHTML += orgCard;
+        } else {
+            // Generate HTML for each organization
+            for (let org of organizations.results) {
+                let isSelected = selectedOrganizations.has(org.id);
+                let orgCard = `
+                    <div class="organization-item ${isSelected ? 'selected' : ''}" 
+                         data-id="${org.id}">
+                        <img src="${org.logo_url}" alt="" class="organization-logo" />
+                        <div class="">
+                            <h4 class="bold organization-name">${org.name}</h4>
+                            <div class="organization-info">
+                                <div class="organization-location">
+                                    <img src="${STATIC_URLS.locationIcon}" alt="location-icon" />
+                                    <p class="small-text">${org.city}, ${org.region}</p>
+                                </div>
+                                <img src="${STATIC_URLS.verticalLineIcon}" alt="vertical-line" class="d-xs-none" />
+                                <p class="small-text organization-ngo d-xs-none">EIN: ${org.ngo_id}</p>
+                            </div>
+                        </div>
+                    </div>`;
+                orgCardList.innerHTML += orgCard;
+            }
         }
 
         // Update the DOM with the new organization list
         orgList.innerHTML = orgCardList.outerHTML;
 
-        // Toggle dropdown visibility based on results
+        // Toggle dropdown visibility
         toggleDropdown(elements.orgDropdown, isDropdownVisible);
 
     } catch (error) {
@@ -68,34 +80,45 @@ async function fetchOrganizations(query = '') {
 }
 
 /**
- * Adds the selected organization to the form
+ * Adds or removes the selected organization from the form
  * @param {Event} event - The click event on the organization item
  */
 function addOrgToForm(event) {
     let orgItem = event.target.closest('.organization-item');
-    let orgImg = orgItem.querySelector('.organization-logo');
-    let orgName = orgItem.querySelector('.organization-name').textContent;
-    // Truncate organization name if it's too long
-    orgName = (orgName.length > 20) ? orgName.slice(0, 20) + '...' : orgName;
     let orgId = orgItem.dataset.id;
-
-    // Create a new organization box element
-    let orgBox = document.createElement('div');
-    orgBox.classList.add('organization-items-box', 'items-box', 'clickable');
-    orgBox.innerHTML = `
-        <div class="icons-text">
-            <img src="${orgImg.src}" alt="" class="organization-logo" />
-            <p>${orgName}</p>
-            <input type="hidden" name="pledge_organizations[]" value="${orgId}">
-        </div>
-        <img src="${STATIC_URLS.closeIcon}" alt="close-icon" class="remove-parent" />`;
-
-    // Display the container and add the new organization box
-    elements.boxesContainer[2].style.display = 'flex';
-    document.getElementById('org-boxes').appendChild(orgBox);
     
-    // Hide the dropdown after selection
-    toggleDropdown(elements.orgDropdown, false);
+    if (selectedOrganizations.has(orgId)) {
+        selectedOrganizations.delete(orgId);
+        orgItem.classList.remove('selected');
+        const existingBox = document.querySelector(`.organization-items-box[data-id="${orgId}"]`);
+        if (existingBox) {
+            existingBox.remove();
+            if (document.getElementById('org-boxes').children.length === 0) {
+                elements.boxesContainer[2].style.display = 'none';
+            }
+        }
+    } else {
+        selectedOrganizations.add(orgId);
+        orgItem.classList.add('selected');
+
+        let orgImg = orgItem.querySelector('.organization-logo');
+        let orgName = orgItem.querySelector('.organization-name').textContent;
+        orgName = (orgName.length > 20) ? orgName.slice(0, 20) + '...' : orgName;
+
+        let orgBox = document.createElement('div');
+        orgBox.classList.add('organization-items-box', 'items-box', 'clickable');
+        orgBox.dataset.id = orgId;
+        orgBox.innerHTML = `
+            <div class="icons-text">
+                <img src="${orgImg.src}" alt="" class="organization-logo" />
+                <p>${orgName}</p>
+                <input type="hidden" name="pledge_organizations[]" value="${orgId}">
+            </div>
+            <img src="${STATIC_URLS.closeIcon}" alt="close-icon" class="remove-parent" />`;
+
+        elements.boxesContainer[2].style.display = 'flex';
+        document.getElementById('org-boxes').appendChild(orgBox);
+    }
 }
 
 /**
@@ -141,6 +164,32 @@ function handleManualOrgAdd() {
 }
 
 /**
+ * Handles removal of organizations via close icon
+ */
+function initializeRemoveListeners() {
+    document.getElementById('org-boxes').addEventListener('click', (event) => {
+        if (event.target.classList.contains('remove-parent')) {
+            const orgBox = event.target.closest('.organization-items-box');
+            const orgId = orgBox.dataset.id;
+            
+            if (orgId) {
+                selectedOrganizations.delete(orgId);
+                const dropdownItem = document.querySelector(`.organization-item[data-id="${orgId}"]`);
+                if (dropdownItem) {
+                    dropdownItem.classList.remove('selected');
+                }
+            }
+            
+            orgBox.remove();
+            
+            if (document.getElementById('org-boxes').children.length === 0) {
+                elements.boxesContainer[2].style.display = 'none';
+            }
+        }
+    });
+}
+
+/**
  * Initializes the organization search functionality
  * This function should be called when the DOM is ready
  */
@@ -165,4 +214,15 @@ export function initializeOrganizationSearch() {
 
     // Initialize manual organization addition functionality
     handleManualOrgAdd();
+    
+    // Initialize remove listeners
+    initializeRemoveListeners();
+
+    // Load existing selections (if any) into the selectedOrganizations Set
+    document.querySelectorAll('.organization-items-box').forEach(box => {
+        const orgId = box.dataset.id;
+        if (orgId) {
+            selectedOrganizations.add(orgId);
+        }
+    });
 }
