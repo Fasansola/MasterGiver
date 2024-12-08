@@ -18,5 +18,6 @@ export const elements = {
     skillsCheck: document.querySelectorAll('.skills-check'),
     boxesContainer: document.querySelectorAll('.items-container'),
     causesBtn: document.getElementById('causes-btn'),
-    skillsBtn: document.getElementById('skills-btn')
+    skillsBtn: document.getElementById('skills-btn'),
+    closeDropdown: document.getElementById('close-org-dropdown'),
 };

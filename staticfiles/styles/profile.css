@@ -14,7 +14,7 @@
 }
 
 .profile-info {
-    min-width: 380px;
+    min-width: 370px;
     width: 440px;
     height: -moz-max-content;
     height: -webkit-max-content;
@@ -22,7 +22,7 @@
     background-color: var(--white);
     padding: 40px 32px;
     padding-bottom: 52px;
-    margin-top: -4%;
+    margin-top: -10%;
     border-radius: 16px;
 }
 
@@ -34,21 +34,20 @@
 }
 
 .badge-box {
-    padding: 8% 30% 8% 8%;
+    margin-top: 15vh;
+    bottom: 0;
+    padding: 18px 12px;
+    max-width: 400px;
     background-color: var(--light-hue);
-    border-radius: 16px;
-    background-image: url("/static/images/Mastergiver Badge.png");
+    /* border-radius: 16px; */
     background-size: contain;
     background-repeat: no-repeat;
     background-position-x: 160%;
     background-position-y: -10%;
 }
 
-
-@media screen and (min-width: 1582px) {
-    .badge-box {
-        background-position-x: 130%;
-    }
+.badge-box p {
+    color: black !important;
 }
 
 
@@ -113,7 +112,24 @@
 }
 
 
+@media screen and (min-width: 1582px) {
+    .badge-box {
+        /* background-position-x: 130%; */
+    }
+}
+
+
+@media only screen and (max-width: 1400px) {
+    .profile-info {
+        margin-top: -5%;
+    }
+}
+
 @media only screen and (max-width: 1200px) {
+    .profile-info {
+        margin-top: -10%;
+    }
+
     .profile-main {
         padding: 40px 0;
     }
@@ -129,17 +145,17 @@
         margin-top: -6%;
     }
 
-    .badge-box {
+    /* .badge-box {
         background-position-x: 150%;
-    }
+    } */
 }
 
 
 @media only screen and (max-width: 768px) {
-    .badge-box {
+    /* .badge-box {
         background-position-x: 99%;
         padding: 28px 30% 28px 28px;
-    }
+    } */
 
     .profile-header-container {
         height: 200px;
@@ -168,8 +184,8 @@
     }
 
     .badge-box {
-        background-position-x: 100%;
-        padding: 28px 30% 28px 28px;
+        /* background-position-x: 100%; */
+        padding: 18px 14px;
     }
 }
 

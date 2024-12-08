@@ -253,7 +253,7 @@ button {
 .dropdown-ul {
     display: flex;
     flex-direction: column;
-    max-height: 340px;
+    max-height: 360px;
     overflow: hidden;
     overflow-y: auto;
 }
@@ -417,6 +417,10 @@ button {
 }
 
 .organization-item:hover {
+    background-color: var(--light-hue);
+}
+
+.organization-item.selected {
     background-color: var(--light-hue);
 }
 
