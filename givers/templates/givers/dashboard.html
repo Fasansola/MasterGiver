@@ -5,7 +5,7 @@
 
 {% block page_content %}
     {% include 'profile-view.html' with causes=causes user_causes=user_causes user_skills=user_skills pledge_organizations=pledge_organizations user_organizations=user_organizations %}
-    {% if not show_welcome %}
+    {% if show_welcome %}
         <div>
             {% include 'welcome-pop-up.html' %}
         </div>

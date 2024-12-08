@@ -29,7 +29,7 @@ Usage: {% include "partials/multi_select_section.html" with section_name="Sectio
   </div>
     
     {% comment %} List Selected Items {% endcomment %}
-    {% include "partials/multi_select_selection-values.html" with items=user_items %}
+    {% include "partials/multi_select_selection-values.html" with items=items user_items=user_items %}
 
 {% else %}
   <div class="d-flex items-container" aria-live="polite" aria-relevant="additions removals">

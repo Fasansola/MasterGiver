@@ -3,6 +3,8 @@ import re
 import requests
 import json
 import random
+import logging
+from typing import Optional
 
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
@@ -21,13 +23,7 @@ from .models import User, Skill, UserSkills, UserCauses, UsersPledgeOrganization
 from causes.models import Causes
 from organizations.models import PledgeOrganizations
 
-
-import logging
 logger = logging.getLogger(__name__)
-
-
-# Create your views here.
-
 
 def home(request):
     user = request.user
@@ -43,7 +39,6 @@ def home(request):
     }
     return render(request, 'givers/index.html', context)
 
-
 def about(request):
     context = {
         'page_id': 'about',
@@ -53,7 +48,6 @@ def about(request):
         'index': True,
     }
     return render(request, 'givers/about.html', context)
-
 
 def faq(request):
     context = {
@@ -65,14 +59,23 @@ def faq(request):
     }
     return render(request, 'givers/faq.html', context)
 
-
 def terms(request):
     return render(request, 'givers/terms.html', context={'page_id': 'terms', "page_type": 'static'})
-
 
 def privacy(request):
     return render(request, 'givers/privacy.html', context={'page_id': 'privacy', "page_type": 'static'})
 
+def generateSpareUsername(username: str) -> str:
+    """Generate a unique username with error handling."""
+    try:
+        newUsername = username + str(random.randint(0, 100))
+        if User.objects.filter(username=newUsername).exists():
+            return generateSpareUsername(username)
+        return newUsername
+    except Exception as e:
+        logger.error(f"Username generation error: {str(e)}")
+        # Fallback to timestamp if needed
+        return f"{username}{int(time.time())}"
 
 def signup(request):
     if request.method != 'POST':
@@ -81,49 +84,50 @@ def signup(request):
         }
         return render(request, 'givers/register.html', context)
 
-    # Collect data from the form
-    userData = json.loads(request.body)
-    first_name = userData.get('first_name')
-    last_name = userData.get('last_name')
-    email = userData.get('email').strip()
-    password = userData.get('password')
-    confirm_password = userData.get('confirm_password')
-    username = first_name + last_name
-
-    if User.objects.filter(username=username):
-        username = generateSpareUsername(username)
-
-    # Validate user data
-    if not all([first_name, last_name, email, password, confirm_password]):
-        return JsonResponse({'error': 'All fields are required!'}, status=400)
-
-    if password != confirm_password:
-        return JsonResponse({'error': 'Passwords do not match!'}, status=400)
-
-    # Validate email format
     try:
-        validate_email(email)
-    except ValidationError:
-        return render(request, 'givers/register.html', {'error': 'Invalid email format!'})
+        # Collect data from the form
+        userData = json.loads(request.body)
+        first_name = userData.get('first_name', '').strip()
+        last_name = userData.get('last_name', '').strip()
+        email = userData.get('email', '').strip()
+        password = userData.get('password', '')
+        confirm_password = userData.get('confirm_password', '')
+        username = first_name + last_name
 
-    # Validate password strength
-    if len(password) < 8 or not re.search(r'[A-Z]', password) or not re.search(r'[a-z]', password) or not re.search(r'\d', password):
-        return JsonResponse({'error': 'Password must be at least 8 characters long and contain uppercase, lowercase, and numbers.'}, status=400)
+        # Basic validation
+        if not all([first_name, last_name, email, password, confirm_password]):
+            return JsonResponse({'error': 'All fields are required!'}, status=400)
 
-    # Save Data to the database
-    try:
+        if password != confirm_password:
+            return JsonResponse({'error': 'Passwords do not match!'}, status=400)
+
+        # Email validation
+        try:
+            validate_email(email)
+        except ValidationError:
+            return JsonResponse({'error': 'Invalid email format!'}, status=400)
+
+        # Password strength validation
+        if len(password) < 8 or not re.search(r'[A-Z]', password) or not re.search(r'[a-z]', password) or not re.search(r'\d', password):
+            return JsonResponse({'error': 'Password must be at least 8 characters long and contain uppercase, lowercase, and numbers.'}, status=400)
+
+        # Generate unique username if needed
+        if User.objects.filter(username=username).exists():
+            username = generateSpareUsername(username)
+
+        # Create and save user
         user = User.objects.create_user(username, email, password)
-        user = authenticate(request, username=username,
-                            email=email, password=password)
+        user = authenticate(request, username=username, email=email, password=password)
+        
         if user is not None:
             user.first_name = first_name
             user.last_name = last_name
-
             user.save()
             login(request, user)
             return JsonResponse({'status': 'success'}, status=200)
         else:
-            return JsonResponse({'error': 'An error occurred during registration. Please try again.'}, status=500)
+            return JsonResponse({'error': 'An error occurred during registration.'}, status=500)
+
     except IntegrityError as e:
         error_message = str(e)
         if 'username' in error_message:
@@ -132,8 +136,10 @@ def signup(request):
             error = 'This email is already registered. Please use a different email address.'
         else:
             error = 'An error occurred during registration. Please try again.'
-        return JsonResponse({'error': error}, status=500)
-
+        return JsonResponse({'error': error}, status=400)
+    except Exception as e:
+        logger.error(f"Signup error: {str(e)}")
+        return JsonResponse({'error': 'An unexpected error occurred during registration.'}, status=500)
 
 @login_required
 def create_profile(request):
@@ -143,27 +149,41 @@ def create_profile(request):
         }
         return render(request, 'givers/create_profile.html', context)
 
-    userData = request.POST
-    userInfo = request.user
+    try:
+        userInfo = request.user
+        profile_photo = request.FILES.get('profile_photo')
 
-    profile_photo = request.FILES.get('profile_photo', userInfo.profile_photo)
+        if profile_photo:
+            try:
+                path = default_storage.save(
+                    'images/' + profile_photo.name,
+                    ContentFile(profile_photo.read())
+                )
+                userInfo.profile_photo = path
+            except Exception as e:
+                logger.error(f"Profile photo save error: {str(e)}")
 
-    if profile_photo:
-        path = default_storage.save(
-            'images/' + profile_photo.name, ContentFile(profile_photo.read()))
-        profile_photo = path
+        username = request.POST.get('username', '').strip()
+        state = request.POST.get('state', '').strip()
+        city = request.POST.get('city', '').strip()
 
-    userInfo.profile_photo = profile_photo
-    username = userData.get('username')
-    state = userData.get('state')
-    city = userData.get('city')
+        if username:
+            userInfo.username = username
+        if state:
+            userInfo.state = state
+        if city:
+            userInfo.city = city
 
-    userInfo.username = username
-    userInfo.state = state
-    userInfo.city = city
-    userInfo.save()
-    return redirect('what_care_about')
+        userInfo.save()
+        return redirect('what_care_about')
 
+    except Exception as e:
+        logger.error(f"Create profile error: {str(e)}")
+        context = {
+            'is_signup_flow': True,
+            'error': 'An error occurred while creating your profile'
+        }
+        return render(request, 'givers/create_profile.html', context)
 
 @login_required
 def what_care_about(request):
@@ -171,72 +191,371 @@ def what_care_about(request):
     if request.method != 'POST':
         causes = Causes.objects.all()
         skills = Skill.objects.all()
-        # Use filter().first() instead of get()
-        user_causes_obj = UserCauses.objects.filter(user=userInfo).first()
-        user_skills_obj = UserSkills.objects.filter(user=userInfo).first()
+        
+        try:
+            user_causes_obj = UserCauses.objects.filter(user=userInfo).first()
+            user_skills_obj = UserSkills.objects.filter(user=userInfo).first()
 
-        # If the objects exist, get all causes/skills, otherwise use an empty queryset
-        user_causes = user_causes_obj.cause.all(
-        ) if user_causes_obj else Causes.objects.none()
-        user_skills = user_skills_obj.skill.all(
-        ) if user_skills_obj else Skill.objects.none()
+            user_causes = user_causes_obj.cause.all() if user_causes_obj else Causes.objects.none()
+            user_skills = user_skills_obj.skill.all() if user_skills_obj else Skill.objects.none()
 
-        context = {
-            'causes': causes,
-            'skills': skills,
-            'user_causes': user_causes,
-            'user_skills': user_skills,
+            context = {
+                'causes': causes,
+                'skills': skills,
+                'user_causes': user_causes,
+                'user_skills': user_skills,
+                'is_signup_flow': True
+            }
+            return render(request, 'givers/profile-setup.html', context)
+        except Exception as e:
+            logger.error(f"Error loading what_care_about page: {str(e)}")
+            return render(request, 'givers/profile-setup.html', {
+                'is_signup_flow': True,
+                'error': 'Error loading page'
+            })
+
+    try:
+        userData = request.POST
+
+        # Get and clean form data
+        why_i_give = userData.get('why_i_give', '').strip()
+        about_me = userData.get('about_me', '').strip()
+        causes = userData.getlist('causes', [])
+        skills = userData.getlist('skills', [])
+        pledge_organizations = userData.getlist('pledge_organizations[]', [])
+        user_organizations = userData.getlist('user_organizations[]', [])
+
+        # Save user info
+        userInfo.about_me = about_me
+        userInfo.giving_motivation = why_i_give
+        userInfo.save()
+
+        # Handle causes
+        userCause, _ = UserCauses.objects.get_or_create(user=userInfo)
+        userCause.cause.clear()  # Clear existing causes
+        for cause in causes:
+            try:
+                cause_obj = Causes.objects.get(id=cause)
+                userCause.cause.add(cause_obj)
+            except Causes.DoesNotExist:
+                logger.warning(f"Cause with id {cause} does not exist")
+
+        # Handle skills
+        userSkill, _ = UserSkills.objects.get_or_create(user=userInfo)
+        userSkill.skill.clear()  # Clear existing skills
+        for skill in skills:
+            try:
+                skill_obj = Skill.objects.get(id=skill)
+                userSkill.skill.add(skill_obj)
+            except Skill.DoesNotExist:
+                logger.warning(f"Skill with id {skill} does not exist")
+
+        # Handle pledge organizations
+        userPledgeOrg, _ = UsersPledgeOrganizations.objects.get_or_create(user=userInfo)
+        userPledgeOrg.pledge_organization.clear()  # Clear existing organizations
+        for organization in pledge_organizations:
+            org, created = PledgeOrganizations.objects.get_or_create(id=organization)
+            userPledgeOrg.pledge_organization.add(org)
+
+        # Handle user organizations
+        UsersCharityOwnEvent.objects.filter(user=userInfo).delete()  # Clear existing
+        for organization in user_organizations:
+            if organization.strip():  # Only create if name isn't empty
+                UsersCharityOwnEvent.objects.create(
+                    user=userInfo,
+                    name=organization.strip()
+                )
+
+        return redirect('preview_profile')
+
+    except Exception as e:
+        logger.error(f"Error saving what_care_about data: {str(e)}")
+        return render(request, 'givers/profile-setup.html', {
+            'error': 'Error saving your preferences',
             'is_signup_flow': True
-        }
-        return render(request, 'givers/profile-setup.html', context)
-
-    userData = request.POST
-
-    why_i_give = userData.get('why_i_give')
-    about_me = userData.get('about_me')
-    causes = userData.getlist('causes')
-    skills = userData.getlist('skills')
-    pledge_organizations = userData.getlist('pledge_organizations[]')
-    user_organizations = userData.getlist('user_organizations[]')
-
-    userInfo.about_me = about_me
-    userInfo.giving_motivation = why_i_give
-    userInfo.save()
-
-    # For causes
-    userCause, created = UserCauses.objects.get_or_create(user=userInfo)
-    for cause in causes:
-        cause_obj = Causes.objects.get(id=cause)
-        userCause.cause.add(cause_obj)
-
-    # For skills
-    userSkill, created = UserSkills.objects.get_or_create(user=userInfo)
-    for skill in skills:
-        skill_obj = Skill.objects.get(id=skill)
-        userSkill.skill.add(skill_obj)
-
-    userPledgeOrg, created = UsersPledgeOrganizations.objects.get_or_create(
-        user=userInfo)
-    for organization in pledge_organizations:
-        if PledgeOrganizations.objects.filter(id=organization).exists():
-            org = PledgeOrganizations.objects.get(id=organization)
-        else:
-            org = PledgeOrganizations.objects.create(id=organization)
-        userPledgeOrg.pledge_organization.add(org)
-
-    for organization in user_organizations:
-        UsersCharityOwnEvent.objects.create(
-            user=userInfo, name=organization)
-
-    return redirect('preview_profile')
-
+        })
 
 @login_required
 def preview_profile(request):
-    user = request.user
-    userInfo = User.objects.get(username=user.username)
+    try:
+        user = request.user
+        userInfo = User.objects.get(username=user.username)
 
+        if request.method == 'POST':
+            userData = request.POST
+            userFile = request.FILES
+
+            error = saveAllUserData(userInfo, userData, userFile)
+
+            if error:
+                causes = Causes.objects.all()
+                user_causes = UserCauses.objects.get(user=userInfo).cause.all()
+                skills = Skill.objects.all()
+                user_skills = UserSkills.objects.get(user=userInfo).skill.all()
+                pledge_organizations = UsersPledgeOrganizations.objects.get(
+                    user=userInfo
+                ).pledge_organization.all()
+                user_organizations = UsersCharityOwnEvent.objects.filter(user=userInfo)
+
+                user_pledge_orgs = fetch_user_organization(pledge_organizations)
+
+                context = {
+                    'user': userInfo,
+                    'causes': causes,
+                    'user_causes': user_causes,
+                    'skills': skills,
+                    'user_skills': user_skills,
+                    'pledge_organizations': user_pledge_orgs,
+                    'user_organizations': user_organizations,
+                    'error': error
+                }
+
+                return render(request, 'givers/preview_profile.html', context)
+
+            return redirect('confirmation')
+
+        # Get user data for display
+        causes = Causes.objects.all()
+        skills = Skill.objects.all()
+
+        user_causes_obj = UserCauses.objects.filter(user=userInfo).first()
+        user_skills_obj = UserSkills.objects.filter(user=userInfo).first()
+
+        user_causes = user_causes_obj.cause.all() if user_causes_obj else Causes.objects.none()
+        user_skills = user_skills_obj.skill.all() if user_skills_obj else Skill.objects.none()
+
+        try:
+            pledge_organizations = UsersPledgeOrganizations.objects.get(
+                user=userInfo
+            ).pledge_organization.all()
+        except ObjectDoesNotExist:
+            pledge_organizations = []
+
+        user_organizations = UsersCharityOwnEvent.objects.filter(user=userInfo)
+
+        try:
+            user_pledge_orgs = fetch_user_organization(pledge_organizations, False)
+        except Exception as e:
+            logger.error(f"Error fetching organizations: {str(e)}")
+            return redirect('what_care_about')
+
+        context = {
+            'user': userInfo,
+            'causes': causes,
+            'user_causes': user_causes,
+            'skills': skills,
+            'user_skills': user_skills,
+            'pledge_organizations': user_pledge_orgs,
+            'user_organizations': user_organizations,
+            'is_signup_flow': True
+        }
+
+        return render(request, 'givers/preview_profile.html', context)
+
+    except Exception as e:
+        logger.error(f"Error in preview_profile: {str(e)}")
+        return render(request, 'givers/preview_profile.html', {
+            'error': 'Error loading profile preview',
+            'is_signup_flow': True
+        })
+
+@login_required
+def confirmation(request):
     if request.method == 'POST':
+        try:
+            userData = request.POST
+            userInfo = request.user
+            giving_style = userData.get('giving_style')
+            if giving_style:
+                style_obj = GivingStyle.objects.get(name=giving_style)
+                userInfo.giving_style = style_obj
+                userInfo.save()
+            return redirect('dashboard')
+        except Exception as e:
+            logger.error(f"Error saving giving style: {str(e)}")
+            giving_styles = GivingStyle.objects.all()
+            return render(request, 'givers/confirmation.html', {
+                'giving_styles': giving_styles,
+                'login_flow': True,
+                'error': 'Error saving your giving style'
+            })
+
+    giving_styles = GivingStyle.objects.all()
+    context = {
+        'giving_styles': giving_styles,
+        'login_flow': True,
+    }
+    return render(request, 'givers/confirmation.html', context)
+
+def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+
+    if request.method != 'POST':
+        return render(request, 'givers/login.html')
+
+    try:
+        userData = request.POST
+        email = userData.get('email', '').strip()
+        password = userData.get('password', '')
+
+        if not all([email, password]):
+            return render(request, 'givers/login.html', {
+                'error': 'All fields are required!'
+            })
+
+        user = authenticate(request, email=email, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('dashboard')
+        else:
+            return render(request, 'givers/login.html', {
+                'error': 'Invalid email or password!'
+            })
+    except Exception as e:
+        logger.error(f"Login error: {str(e)}")
+        return render(request, 'givers/login.html', {
+            'error': 'An error occurred during login'
+        })
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
+
+@login_required
+def dashboard(request):
+    try:
+        userInfo = request.user
+        causes = Causes.objects.all()
+        
+        # Check if this is the first visit
+        first_visit = not request.session.get('has_visited', False)
+        request.session['has_visited'] = True
+
+        # Get user causes
+        user_causes_obj = UserCauses.objects.filter(user=userInfo).first()
+        user_skills_obj = UserSkills.objects.filter(user=userInfo).first()
+
+        # Get associated data or empty querysets
+        user_causes = user_causes_obj.cause.all() if user_causes_obj else Causes.objects.none()
+        user_skills = user_skills_obj.skill.all() if user_skills_obj else Skill.objects.none()
+
+        # Get pledge organizations
+        try:
+            pledge_organizations = UsersPledgeOrganizations.objects.get(
+                user=userInfo
+            ).pledge_organization.all()
+        except ObjectDoesNotExist:
+            pledge_organizations = []
+
+        user_organizations = UsersCharityOwnEvent.objects.filter(user=userInfo)
+
+        try:
+            user_pledge_orgs = fetch_user_organization(pledge_organizations, False)
+        except Exception as e:
+            logger.error(f"Error fetching organizations in dashboard: {str(e)}")
+            user_pledge_orgs = []
+
+        context = {
+            'userInfo': userInfo,
+            'causes': causes,
+            'user_causes': user_causes,
+            'user_skills': user_skills,
+            'pledge_organizations': user_pledge_orgs,
+            'user_organizations': user_organizations,
+            'is_profile': False,
+            'is_dashboard': True,
+            'index': False,
+            'show_welcome': first_visit,
+        }
+        return render(request, 'givers/dashboard.html', context)
+
+    except Exception as e:
+        logger.error(f"Dashboard error: {str(e)}")
+        return render(request, 'givers/dashboard.html', {
+            'error': 'Error loading dashboard',
+            'is_dashboard': True,
+            'index': False
+        })
+
+def profile(request, username):
+    try:
+        userInfo = User.objects.get(username=username)
+        causes = Causes.objects.all()
+
+        # Get user causes and skills
+        user_causes_obj = UserCauses.objects.filter(user=userInfo).first()
+        user_skills_obj = UserSkills.objects.filter(user=userInfo).first()
+
+        user_causes = user_causes_obj.cause.all() if user_causes_obj else Causes.objects.none()
+        user_skills = user_skills_obj.skill.all() if user_skills_obj else Skill.objects.none()
+
+        # Get organizations
+        try:
+            pledge_organizations = UsersPledgeOrganizations.objects.get(
+                user=userInfo
+            ).pledge_organization.all()
+        except ObjectDoesNotExist:
+            pledge_organizations = []
+
+        user_organizations = UsersCharityOwnEvent.objects.filter(user=userInfo)
+
+        try:
+            user_pledge_orgs = fetch_user_organization(pledge_organizations, False)
+        except Exception as e:
+            logger.error(f"Error fetching organizations in profile: {str(e)}")
+            user_pledge_orgs = []
+
+        context = {
+            'userInfo': userInfo,
+            'causes': causes,
+            'user_causes': user_causes,
+            'user_skills': user_skills,
+            'pledge_organizations': user_pledge_orgs,
+            'user_organizations': user_organizations,
+            'is_profile': True,
+            'index': True,
+            'page_title': f"{userInfo.first_name} {userInfo.last_name} | MasterGiver Profile | Showcase Your Impact",
+            'page_description': f"Discover {userInfo.first_name} {userInfo.last_name}'s MasterGiver profile showcasing my charitable giving, volunteer work, and community impact."
+        }
+        return render(request, 'givers/profile.html', context)
+
+    except User.DoesNotExist:
+        return render(request, 'givers/404.html', status=404)
+    except Exception as e:
+        logger.error(f"Profile error: {str(e)}")
+        return render(request, 'givers/500.html', status=500)
+
+@login_required
+def edit_profile(request):
+    try:
+        user = request.user
+        userInfo = User.objects.get(username=user.username)
+
+        if request.method != 'POST':
+            causes = Causes.objects.all()
+            user_causes = UserCauses.objects.get(user=userInfo).cause.all()
+            skills = Skill.objects.all()
+            user_skills = UserSkills.objects.get(user=userInfo).skill.all()
+            pledge_organizations = UsersPledgeOrganizations.objects.get(
+                user=userInfo).pledge_organization.all()
+            user_organizations = UsersCharityOwnEvent.objects.filter(user=userInfo)
+
+            user_pledge_orgs = fetch_user_organization(pledge_organizations)
+
+            context = {
+                'page': 'edit_profile',  # Keeping your original context structure
+                'user': userInfo,
+                'causes': causes,
+                'user_causes': user_causes,
+                'skills': skills,
+                'user_skills': user_skills,
+                'pledge_organizations': user_pledge_orgs,
+                'user_organizations': user_organizations,
+                'index': False,
+            }
+            return render(request, 'givers/edit_profile.html', context)
+
         userData = request.POST
         userFile = request.FILES
 
@@ -249,12 +568,12 @@ def preview_profile(request):
             user_skills = UserSkills.objects.get(user=userInfo).skill.all()
             pledge_organizations = UsersPledgeOrganizations.objects.get(
                 user=userInfo).pledge_organization.all()
-            user_organizations = UsersCharityOwnEvent.objects.filter(
-                user=userInfo)
+            user_organizations = UsersCharityOwnEvent.objects.filter(user=userInfo)
 
             user_pledge_orgs = fetch_user_organization(pledge_organizations)
 
             context = {
+                'page': 'edit_profile',  # Added back here too
                 'user': userInfo,
                 'causes': causes,
                 'user_causes': user_causes,
@@ -262,257 +581,21 @@ def preview_profile(request):
                 'user_skills': user_skills,
                 'pledge_organizations': user_pledge_orgs,
                 'user_organizations': user_organizations,
-                'error': error
+                'error': error,
+                'index': False,
             }
 
-            return render(request, 'givers/preview_profile.html', context)
-
-        return redirect('confirmation')
-
-    causes = Causes.objects.all()
-    skills = Skill.objects.all()
-
-    # Use filter().first() instead of get()
-    user_causes_obj = UserCauses.objects.filter(user=userInfo).first()
-    user_skills_obj = UserSkills.objects.filter(user=userInfo).first()
-
-    # If the objects exist, get all causes/skills, otherwise use an empty queryset
-    user_causes = user_causes_obj.cause.all(
-    ) if user_causes_obj else Causes.objects.none()
-    user_skills = user_skills_obj.skill.all(
-    ) if user_skills_obj else Skill.objects.none()
-
-    # Handle potential ObjectDoesNotExist exception
-    try:
-        pledge_organizations = UsersPledgeOrganizations.objects.get(
-            user=userInfo).pledge_organization.all()
-    except ObjectDoesNotExist:
-        pledge_organizations = []
-
-    user_organizations = UsersCharityOwnEvent.objects.filter(user=userInfo)
-
-    # Handle potential exception in fetch_user_organization function
-    try:
-        user_pledge_orgs = fetch_user_organization(pledge_organizations, False)
-    except Exception:
-        redirect('what_care_about')
-
-    context = {
-        'user': userInfo,
-        'causes': causes,
-        'user_causes': user_causes,
-        'skills': skills,
-        'user_skills': user_skills,
-        'pledge_organizations': user_pledge_orgs,
-        'user_organizations': user_organizations,
-        'is_signup_flow': True
-    }
-
-    return render(request, 'givers/preview_profile.html', context)
-
-
-@login_required
-def confirmation(request):
-    if request.method == 'POST':
-        userData = request.POST
-        userInfo = request.user
-        giving_style = userData.get('giving_style')
-        userInfo.giving_style = GivingStyle.objects.get(name=giving_style)
-        userInfo.save()
-        print(userInfo.giving_style)
+            return render(request, 'givers/edit_profile.html', context)
 
         return redirect('dashboard')
 
-    giving_styles = GivingStyle.objects.all()
-    context = {
-        'giving_styles': giving_styles,
-        'login_flow': True,
-    }
-    return render(request, 'givers/confirmation.html', context)
-
-
-def login_view(request):
-    if request.user.is_authenticated:
-        return redirect('dashboard')
-
-    context = {}
-    if request.method != 'POST':
-        return render(request, 'givers/login.html')
-
-    userData = request.POST
-    email = userData.get('email')
-    password = userData.get('password')
-
-    if not all([email, password]):
-        context['error'] = 'All fields are required!'
-        return render(request, 'givers/login.html', context)
-
-    try:
-        user = authenticate(request, email=email, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('dashboard')
-        else:
-            context['error'] = 'Invalid email or password!'
-            return render(request, 'givers/login.html', context)
     except Exception as e:
-        context['error'] = str(e)
-        return render(request, 'givers/login.html', context)
-
-
-def logout_view(request):
-    logout(request)
-    return redirect('home')
-
-
-@login_required
-def dashboard(request):
-    userInfo = request.user
-    causes = Causes.objects.all()
-    
-    # Check if this is the first visit
-    first_visit = not request.session.get('has_visited', False)
-    
-    # Mark as visited
-    request.session['has_visited'] = True
-
-    # Use filter().first() instead of get()
-    user_causes_obj = UserCauses.objects.filter(user=userInfo).first()
-    user_skills_obj = UserSkills.objects.filter(user=userInfo).first()
-
-    # If the objects exist, get all causes/skills, otherwise use an empty queryset
-    user_causes = user_causes_obj.cause.all(
-    ) if user_causes_obj else Causes.objects.none()
-    user_skills = user_skills_obj.skill.all(
-    ) if user_skills_obj else Skill.objects.none()
-
-    # Handle potential ObjectDoesNotExist exception
-    try:
-        pledge_organizations = UsersPledgeOrganizations.objects.get(
-            user=userInfo).pledge_organization.all()
-    except ObjectDoesNotExist:
-        pledge_organizations = []
-
-    user_organizations = UsersCharityOwnEvent.objects.filter(user=userInfo)
-
-    # Handle potential exception in fetch_user_organization function
-    try:
-        user_pledge_orgs = fetch_user_organization(pledge_organizations, False)
-    except Exception:
-        user_pledge_orgs = []
-
-    context = {
-        'userInfo': userInfo,
-        'causes': causes,
-        'user_causes': user_causes,
-        'user_skills': user_skills,
-        'pledge_organizations': user_pledge_orgs,
-        'user_organizations': user_organizations,
-        'is_profile': False,
-        'is_dashboard': True,
-        'index': False,
-        'show_welcome': first_visit,
-    }
-    return render(request, 'givers/dashboard.html', context)
-
-
-def profile(request, username):
-    userInfo = User.objects.get(username=username)
-    causes = Causes.objects.all()
-
-    # Use filter().first() instead of get()
-    user_causes_obj = UserCauses.objects.filter(user=userInfo).first()
-    user_skills_obj = UserSkills.objects.filter(user=userInfo).first()
-
-    # If the objects exist, get all causes/skills, otherwise use an empty queryset
-    user_causes = user_causes_obj.cause.all(
-    ) if user_causes_obj else Causes.objects.none()
-    user_skills = user_skills_obj.skill.all(
-    ) if user_skills_obj else Skill.objects.none()
-
-    pledge_organizations = UsersPledgeOrganizations.objects.get(
-        user=userInfo).pledge_organization.all()
-    user_organizations = UsersCharityOwnEvent.objects.filter(user=userInfo)
-
-    user_pledge_orgs = fetch_user_organization(pledge_organizations, False)
-
-    context = {
-        'userInfo': userInfo,
-        'causes': causes,
-        'user_causes': user_causes,
-        'user_skills': user_skills,
-        'pledge_organizations': user_pledge_orgs,
-        'user_organizations': user_organizations,
-        'is_profile': True,
-        'index': True,
-        'page_title': f"{userInfo.first_name} {userInfo.last_name} | MasterGiver Profile | Showcase Your Impact",
-        'page_description': f"Discover {userInfo.first_name} {userInfo.last_name}'s MasterGiver profile showcasing my charitable giving, volunteer work, and community impact."
-    }
-
-    return render(request, 'givers/profile.html', context)
-
-
-@login_required
-def edit_profile(request):
-    user = request.user
-    userInfo = User.objects.get(username=user.username)
-
-    if request.method != 'POST':
-        causes = Causes.objects.all()
-        user_causes = UserCauses.objects.get(user=userInfo).cause.all()
-        skills = Skill.objects.all()
-        user_skills = UserSkills.objects.get(user=userInfo).skill.all()
-        pledge_organizations = UsersPledgeOrganizations.objects.get(
-            user=userInfo).pledge_organization.all()
-        user_organizations = UsersCharityOwnEvent.objects.filter(user=userInfo)
-
-        user_pledge_orgs = fetch_user_organization(pledge_organizations)
-
-        context = {
-            'page': 'edit_profile',
-            'user': userInfo,
-            'causes': causes,
-            'user_causes': user_causes,
-            'skills': skills,
-            'user_skills': user_skills,
-            'pledge_organizations': user_pledge_orgs,
-            'user_organizations': user_organizations,
+        logger.error(f"Edit profile error: {str(e)}")
+        return render(request, 'givers/edit_profile.html', {
+            'error': 'Error loading or saving profile',
             'index': False,
-        }
-        return render(request, 'givers/edit_profile.html', context)
-
-    userData = request.POST
-    userFile = request.FILES
-
-    error = saveAllUserData(userInfo, userData, userFile)
-
-    if error:
-        causes = Causes.objects.all()
-        user_causes = UserCauses.objects.get(user=userInfo).cause.all()
-        skills = Skill.objects.all()
-        user_skills = UserSkills.objects.get(user=userInfo).skill.all()
-        pledge_organizations = UsersPledgeOrganizations.objects.get(
-            user=userInfo).pledge_organization.all()
-        user_organizations = UsersCharityOwnEvent.objects.filter(user=userInfo)
-
-        user_pledge_orgs = fetch_user_organization(pledge_organizations)
-
-        context = {
-            'user': userInfo,
-            'causes': causes,
-            'user_causes': user_causes,
-            'skills': skills,
-            'user_skills': user_skills,
-            'pledge_organizations': user_pledge_orgs,
-            'user_organizations': user_organizations,
-            'index': False,
-            'error': error
-        }
-
-        return render(request, 'givers/preview_profile.html', context)
-
-    return redirect('dashboard')
-
+            'page': 'edit_profile'  # Added here as well
+        })
 
 @login_required
 def change_password(request):
@@ -523,29 +606,42 @@ def change_password(request):
         }
         return render(request, 'givers/change_password.html', context)
 
-    userData = request.POST
-    userInfo = request.user
+    try:
+        userData = request.POST
+        userInfo = request.user
+        error = updatePassword(request, userData, userInfo)
 
-    context = {
-        'page': 'change_password',
-        'index': False,
-        'error': updatePassword(request, userData, userInfo)
-    }
+        if error:
+            context = {
+                'page': 'change_password',
+                'index': False,
+                'error': error
+            }
+            return render(request, 'givers/change_password.html', context)
+            
+        return redirect('dashboard')
 
-    return render(request, 'givers/change_password.html', context)
-
+    except Exception as e:
+        logger.error(f"Change password error: {str(e)}")
+        context = {
+            'page': 'change_password',
+            'index': False,
+            'error': 'An error occurred while changing your password'
+        }
+        return render(request, 'givers/change_password.html', context)
 
 @login_required
 @require_POST
 def clear_profile_picture(request):
-    user = request.user
-    userInfo = User.objects.get(username=user.username)
-    if userInfo.profile_photo:
-        userInfo.profile_photo.delete(save=True)
-    return JsonResponse({'status': 'success'})
-
-
-# FETCH ORGANIZATION
+    try:
+        user = request.user
+        userInfo = User.objects.get(username=user.username)
+        if userInfo.profile_photo:
+            userInfo.profile_photo.delete(save=True)
+        return JsonResponse({'status': 'success'})
+    except Exception as e:
+        logger.error(f"Clear profile picture error: {str(e)}")
+        return JsonResponse({'error': 'Failed to clear profile picture'}, status=500)
 
 def fetch_organizations(request):
     if not settings.PLEDGE_API_TOKEN:
@@ -558,121 +654,135 @@ def fetch_organizations(request):
         "Accept": "application/json"
     }
 
-    # Get the query parameter from the request
-    query = request.GET.get('q')
-
-    # Add the query parameter to the API request if it's not empty
+    query = request.GET.get('q', '').strip()
     params = {'q': query} if query else {}
 
     try:
-        response = requests.get(api_url, headers=headers, params=params)
-        response.raise_for_status()  # Raises an HTTPError for bad responses
+        response = requests.get(api_url, headers=headers, params=params, timeout=10)
+        response.raise_for_status()
         return JsonResponse(response.json(), safe=False)
     except requests.RequestException as e:
-        return JsonResponse({"error": str(e)}, status=500)
-
+        logger.error(f"Pledge API error: {str(e)}")
+        return JsonResponse({"error": "Failed to fetch organizations"}, status=500)
+    except Exception as e:
+        logger.error(f"Unexpected error in fetch_organizations: {str(e)}")
+        return JsonResponse({"error": "An unexpected error occurred"}, status=500)
 
 def fetch_user_organization(pledge_organizations, dashboard=True):
     user_pledge_orgs = []
-    for org in pledge_organizations:
-        api_url = f'https://api.pledge.to/v1/organizations/{org.id}'
-        headers = {
-            "Authorization": f"Bearer {settings.PLEDGE_API_TOKEN}",
-            "Accept": "application/json"
-        }
+    
+    if not settings.PLEDGE_API_TOKEN:
+        logger.error("PLEDGE_API_TOKEN is not set")
+        return user_pledge_orgs
 
+    for org in pledge_organizations:
         try:
-            response = requests.get(api_url, headers=headers)
-            response.raise_for_status()  # Raises an HTTPError for bad responses
+            api_url = f'https://api.pledge.to/v1/organizations/{org.id}'
+            headers = {
+                "Authorization": f"Bearer {settings.PLEDGE_API_TOKEN}",
+                "Accept": "application/json"
+            }
+
+            response = requests.get(api_url, headers=headers, timeout=10)
+            response.raise_for_status()
+            
             org_data = response.json()
             org.name = org_data['name'][:20] + '...' if (
                 len(org_data['name']) > 20 and dashboard) else org_data['name']
-            org.website = org_data['website_url']
-            org.logo = org_data['logo_url']
+            org.website = org_data.get('website_url', '')
+            org.logo = org_data.get('logo_url', '')
             org.save()
             user_pledge_orgs.append(org)
+            
         except requests.RequestException as e:
-            logger.error(
-                f"Failed to fetch organization data for {org.id}: {e}")
-
+            logger.error(f"Failed to fetch organization data for {org.id}: {str(e)}")
+            continue
+            
     return user_pledge_orgs
 
-
-# HELPER FUNCTIONS
-
-def generateSpareUsername(username):
-    newUsername = username + str(random.randint(0, 100))
-
-    if User.objects.filter(username=newUsername):
-        generateSpareUsername(username)
-    return newUsername
-
-
-# SAVE ALL USER DATA
 def saveAllUserData(userInfo, userData, userFile):
-    # Reset users custom organizations
-    UsersCharityOwnEvent.objects.filter(user=userInfo).delete()
+    try:
+        # Reset users custom organizations
+        UsersCharityOwnEvent.objects.filter(user=userInfo).delete()
 
-    userInfo.profile_photo = userFile.get(
-        'profile_photo', userInfo.profile_photo)
-    fullName = userData.get('fullname').split(' ')
-    userInfo.first_name = fullName[0]
-    userInfo.last_name = fullName[1]
-    userInfo.state = userData.get('state')
-    userInfo.city = userData.get('city')
-    userInfo.about_me = userData.get('about_me')
-    userInfo.giving_motivation = userData.get('why_i_give')
-    userInfo.save()
+        # Handle profile photo
+        if 'profile_photo' in userFile:
+            userInfo.profile_photo = userFile['profile_photo']
 
-    causes = userData.getlist('causes')
-    skills = userData.getlist('skills')
-    pledge_organizations = userData.getlist('pledge_organizations[]')
+        # Update user info
+        fullname = userData.get('fullname', '').strip().split(' ', 1)
+        if len(fullname) >= 2:
+            userInfo.first_name = fullname[0]
+            userInfo.last_name = fullname[1]
 
-    user_organizations = userData.getlist('user_organizations[]')
+        userInfo.state = userData.get('state', '').strip()
+        userInfo.city = userData.get('city', '').strip()
+        userInfo.about_me = userData.get('about_me', '').strip()
+        userInfo.giving_motivation = userData.get('why_i_give', '').strip()
+        userInfo.save()
 
-    for organization in pledge_organizations:
-        if not PledgeOrganizations.objects.filter(id=organization).exists():
-            PledgeOrganizations.objects.create(id=organization)
+        # Process organizations
+        causes = userData.getlist('causes', [])
+        skills = userData.getlist('skills', [])
+        pledge_organizations = userData.getlist('pledge_organizations[]', [])
+        user_organizations = userData.getlist('user_organizations[]', [])
 
-    for organization in user_organizations:
-        UsersCharityOwnEvent.objects.create(
-            user=userInfo, name=organization)
+        for org_id in pledge_organizations:
+            if org_id.strip():
+                PledgeOrganizations.objects.get_or_create(id=org_id.strip())
 
-    new_causes = Causes.objects.filter(id__in=causes)
-    new_skills = Skill.objects.filter(id__in=skills)
-    new_pledge_orgs = PledgeOrganizations.objects.filter(
-        id__in=pledge_organizations)
+        for org_name in user_organizations:
+            if org_name.strip():
+                UsersCharityOwnEvent.objects.create(
+                    user=userInfo,
+                    name=org_name.strip()
+                )
 
-    user_causes = UserCauses.objects.get(user=userInfo)
-    user_skills = UserSkills.objects.get(user=userInfo)
-    user_pledge_orgs = UsersPledgeOrganizations.objects.get(user=userInfo)
+        # Update relations
+        new_causes = Causes.objects.filter(id__in=causes)
+        new_skills = Skill.objects.filter(id__in=skills)
+        new_pledge_orgs = PledgeOrganizations.objects.filter(
+            id__in=pledge_organizations
+        )
 
-    user_skills.skill.set(new_skills)
-    user_causes.cause.set(new_causes)
-    user_pledge_orgs.pledge_organization.set(new_pledge_orgs)
+        user_causes = UserCauses.objects.get(user=userInfo)
+        user_skills = UserSkills.objects.get(user=userInfo)
+        user_pledge_orgs = UsersPledgeOrganizations.objects.get(user=userInfo)
 
-    return False  # No error
+        user_skills.skill.set(new_skills)
+        user_causes.cause.set(new_causes)
+        user_pledge_orgs.pledge_organization.set(new_pledge_orgs)
 
+        return False  # No error
 
-# UPDATE PASSWORDS
+    except Exception as e:
+        logger.error(f"Save user data error: {str(e)}")
+        return str(e)
+
 def updatePassword(request, userData, userInfo):
-    password = userData.get('password')
-    new_password = userData.get('new_password')
-    confirm_new_password = userData.get('confirm_new_password')
+    try:
+        password = userData.get('password', '')
+        new_password = userData.get('new_password', '')
+        confirm_new_password = userData.get('confirm_new_password', '')
 
-    if not userInfo.check_password(password):
-        return 'Your old password was entered incorrectly. Please enter it again.'
+        if not userInfo.check_password(password):
+            return 'Your old password was entered incorrectly. Please enter it again.'
 
-    if new_password != confirm_new_password:
-        return 'Passwords do not match!'
+        if new_password != confirm_new_password:
+            return 'Passwords do not match!'
 
-    # Validate password strength
-    if len(new_password) < 8 or not re.search(r'[A-Z]', new_password) or not re.search(r'[a-z]', new_password) or not re.search(r'\d', new_password):
-        return 'Password must be at least 8 characters long and contain uppercase, lowercase, and numbers.'
+        if len(new_password) < 8 or not all([
+            re.search(r'[A-Z]', new_password),
+            re.search(r'[a-z]', new_password),
+            re.search(r'\d', new_password)
+        ]):
+            return 'Password must be at least 8 characters long and contain uppercase, lowercase, and numbers.'
 
-    userInfo.set_password(new_password)
+        userInfo.set_password(new_password)
+        userInfo.save()
+        update_session_auth_hash(request, userInfo)
+        return False  # No error
 
-    # Update the session to prevent the user from being logged out
-    update_session_auth_hash(request, userInfo)
-
-    return False  # No error
+    except Exception as e:
+        logger.error(f"Update password error: {str(e)}")
+        return 'An error occurred while updating your password'
