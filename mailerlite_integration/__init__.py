@@ -1,0 +1,1 @@
+default_app_config = 'mailerlite_integration.apps.MailerliteIntegrationConfig'

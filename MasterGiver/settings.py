@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'corsheaders',
     'givers',
+    'mailerlite_integration',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -265,7 +266,8 @@ CLOUDINARY_STORAGE = {
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 if not all(CLOUDINARY_STORAGE.values()):
-    raise ValueError("CLOUDINARY_CLOUD_NAME, API_KEY and API_SECRET must be set")
+    raise ValueError(
+        "CLOUDINARY_CLOUD_NAME, API_KEY and API_SECRET must be set")
 
 
 # PRODUCTION SETTINGS
@@ -287,3 +289,11 @@ ADMINS = [('Admin', os.environ.get('ADMIN_EMAIL', 'admin@mastergiver.com'))]
 
 # API Tokens
 PLEDGE_API_TOKEN = os.getenv('PLEDGE_API_TOKEN')
+
+
+# Mailerlite Integration
+MAILERLITE_API_KEY = os.environ.get('MAILERLITE_API_KEY')
+if not MAILERLITE_API_KEY:
+    raise ValueError("MAILERLITE_API_KEY not found in environment variables")
+
+MAILERLITE_DEFAULT_GROUP_ID = os.environ.get('MAILERLITE_DEFAULT_GROUP_ID')

@@ -118,7 +118,6 @@ def signup(request):
         # Create and save user
         user = User.objects.create_user(username, email, password)
         user = authenticate(request, username=username, email=email, password=password)
-        
         if user is not None:
             user.first_name = first_name
             user.last_name = last_name
