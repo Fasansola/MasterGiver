@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'corsheaders',
     'givers',
+    'django.contrib.sitemaps',
     'mailerlite_integration',
     'django.contrib.admin',
     'django.contrib.auth',

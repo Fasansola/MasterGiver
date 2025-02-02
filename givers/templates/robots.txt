@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Sitemap: https://mastergiver.com/sitemap.xml
+
+# Add view for robots.txt in views.py
+from django.views.generic.base import TemplateView
+
+class RobotsView(TemplateView):
+    template_name = "robots.txt"
+    content_type = "text/plain"
+
+# Add robots.txt URL pattern in urls.py
+path('robots.txt', RobotsView.as_view(), name='robots'),
