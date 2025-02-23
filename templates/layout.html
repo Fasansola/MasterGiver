@@ -84,6 +84,14 @@
 
     <!-- Dynamic title: "MasterGiver - [Page Title]" -->
     <title>{% block title %}{% endblock %}</title>
+    <meta property="description" content="
+    {% block description %}
+      {% if page_description %}
+        {{ page_description }}
+      {% else %}
+        Join the world's largest community of intentional givers, showcase your good works, and boost your online reputation.
+      {% endif %}
+    {% endblock %}">
   </head>
   <body class="relative">
       {% comment %} MOBILE MENU {% endcomment %}
