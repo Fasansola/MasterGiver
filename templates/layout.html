@@ -25,10 +25,7 @@
     {% endif %}
 
     <!-- Reset stylesheet to normalize browser styles -->
-    {% comment %}
     <link href="{% static 'styles/reset.css' %}" rel="stylesheet" />
-    {% endcomment %}
-
     <!-- Google Fonts: Poppins (various weights) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -101,16 +98,15 @@
     <meta property="og:locale" content="en_US" />
 
     <!-- Custom stylesheets -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="{% static 'styles/font.css' %}" rel="stylesheet" />
     <link href="{% static 'styles/variables.css' %}" rel="stylesheet" />
     <link href="{% static 'styles/style.css' %}" rel="stylesheet" />
     <link href="{% static 'styles/dashboard-pages.css' %}" rel="stylesheet" />
-    <link href="{% static 'styles/font.css' %}" rel="stylesheet" />
     <link href="{% static 'styles/display.css' %}" rel="stylesheet" />
     <link href="{% static 'styles/header.css' %}" rel="stylesheet" />
     <link href="{% static 'styles/footer.css' %}" rel="stylesheet" />
     <link href="{% static 'styles/components.css' %}" rel="stylesheet" />
-
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     <!-- Placeholder for page-specific styles -->
     {% block styles %}{% endblock %}
