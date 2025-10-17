@@ -4,7 +4,8 @@
 
 /* DESTOP VIEWPORT */
 
-:root, * {
+:root,
+* {
     font-family: poppins, 'san-serif' !important;
     font-size: 16px;
 }
@@ -24,6 +25,11 @@ label,
 .mid-text,
 .big-heading {
     line-height: 160%;
+}
+
+
+.line-height-120 {
+    line-height: 120% !important;
 }
 
 
@@ -206,28 +212,33 @@ label,
     list-style: none;
     margin: 0;
     padding: 0;
-  }
-  
-  .lists li {
+}
+
+.lists li {
     position: relative;
     padding-left: 1.5em;
     margin-bottom: 1rem;
     line-height: 1.6;
-  }
-  
-  /* Custom bullet points */
-  .lists li:before {
-    content: "•";  /* You can change this to other symbols */
+}
+
+/* Custom bullet points */
+.lists li:before {
+    content: "•";
+    /* You can change this to other symbols */
     position: absolute;
     left: 0;
-    color: #333;  /* Bullet point color */
-  }
+    color: #333;
+    /* Bullet point color */
+}
 
 
 
-  a, a:hover, a *, a *:hover {
+a,
+a:hover,
+a *,
+a *:hover {
     cursor: pointer !important;
-  }
+}
 
 
 @media only screen and (max-width: 1280px) {
@@ -261,5 +272,3 @@ label,
         line-height: 150%;
     }
 }
-
-

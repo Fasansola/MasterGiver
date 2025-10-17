@@ -3,25 +3,31 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    {% if index %}
-      <!-- Google tag (gtag.js) -->
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-R600HF8HQK"></script>
-      <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        gtag('config', 'G-R600HF8HQK');
-        console.log('Google Tag Manager is active');
-      </script>
+    {% if index %}
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-R600HF8HQK"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-R600HF8HQK");
+      console.log("Google Tag Manager is active");
+    </script>
     {% endif %}
 
-    
     <!-- Reset stylesheet to normalize browser styles -->
+    {% comment %}
     <link href="{% static 'styles/reset.css' %}" rel="stylesheet" />
+    {% endcomment %}
 
     <!-- Google Fonts: Poppins (various weights) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -34,40 +40,65 @@
     <!-- Site branding images -->
 
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/png" href="{% static 'brand elements/master-giver-icon.png' %}"/>
-        
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="{% static 'brand elements/master-giver-icon.png' %}"
+    />
+
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}">
-    <meta property="og:title" content="{% block og_title %}
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ request.path }}"
+    />
+    <meta
+      property="og:title"
+      content="{% block og_title %}
       {% if page_title %}
         {{ page_title }}
       {% else %}
         Master Giver | Show Off Your Good Side
       {% endif %}
-    {% endblock %}">
-    <meta property="og:description" content="
+    {% endblock %}"
+    />
+    <meta
+      property="og:description"
+      content="
     {% block og_description %}
       {% if page_description %}
         {{ page_description }}
       {% else %}
         Join the world's largest community of intentional givers, showcase your good works, and boost your online reputation.
       {% endif %}
-    {% endblock %}">
-    <meta property="og:image" content="{% block og_image %}{% static 'images/hero-image-1200x630.png' %}{% endblock %}">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
+    {% endblock %}"
+    />
+    <meta
+      property="og:image"
+      content="{% block og_image %}{% static 'images/hero-image-1200x630.png' %}{% endblock %}"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
 
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@FasanolusolaX">
-    <meta name="twitter:title" content="{% block twitter_title %}{{ og_title }}{% endblock %}">
-    <meta name="twitter:description" content="{% block twitter_description %}{{ og_description }}{% endblock %}">
-    <meta name="twitter:image" content="{% block twitter_image %}{{ og_image }}{% endblock %}">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@FasanolusolaX" />
+    <meta
+      name="twitter:title"
+      content="{% block twitter_title %}{{ og_title }}{% endblock %}"
+    />
+    <meta
+      name="twitter:description"
+      content="{% block twitter_description %}{{ og_description }}{% endblock %}"
+    />
+    <meta
+      name="twitter:image"
+      content="{% block twitter_image %}{{ og_image }}{% endblock %}"
+    />
 
     <!-- WhatsApp specific (optional, for better control) -->
-    <meta property="og:site_name" content="Master Giver">
-    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Master Giver" />
+    <meta property="og:locale" content="en_US" />
 
     <!-- Custom stylesheets -->
     <link href="{% static 'styles/variables.css' %}" rel="stylesheet" />
@@ -78,32 +109,40 @@
     <link href="{% static 'styles/header.css' %}" rel="stylesheet" />
     <link href="{% static 'styles/footer.css' %}" rel="stylesheet" />
     <link href="{% static 'styles/components.css' %}" rel="stylesheet" />
-    
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
     <!-- Placeholder for page-specific styles -->
     {% block styles %}{% endblock %}
 
     <!-- Dynamic title: "MasterGiver - [Page Title]" -->
     <title>{% block title %}{% endblock %}</title>
-    <meta property="description" content="
+    <meta
+      property="description"
+      content="
     {% block description %}
       {% if page_description %}
         {{ page_description }}
       {% else %}
         Join the world's largest community of intentional givers, showcase your good works, and boost your online reputation.
       {% endif %}
-    {% endblock %}">
+    {% endblock %}"
+    />
   </head>
   <body class="relative">
-      {% comment %} MOBILE MENU {% endcomment %}
-      <div class="d-none d-xl-flex flex-column dashboard-menu menu-not-is-visible gap-32" id="mobile-menu">
-          {% include 'dashboard-menu.html' %}
-      </div>
+    {% comment %} MOBILE MENU {% endcomment %}
+    <div
+      class="d-none d-xl-flex flex-column dashboard-menu menu-not-is-visible gap-32"
+      id="mobile-menu"
+    >
+      {% include 'dashboard-menu.html' %}
+    </div>
     <!-- Main content block -->
     {% block body %}{% endblock %}
-    
+
     <!-- Placeholder for page-specific scripts -->
     <script src="{% static 'scripts/hamburger-menu.js' %}"></script>
-    {% block scripts %}
-    {% endblock %}
+
+    {% block scripts %} {% endblock %}
   </body>
 </html>

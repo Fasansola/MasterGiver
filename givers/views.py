@@ -63,6 +63,17 @@ def faq(request):
     return render(request, 'givers/faq.html', context)
 
 
+def business(request):
+    context = {
+        'page_id': 'business',
+        "page_type": 'static',
+        "page_title": 'Business | MasterGiver - Empowering Givers to Make an Impact',
+        "page_description": "Discover how MasterGiver can help businesses showcase their giving, track their impact, and connect with meaningful causes.",
+        'index': True,
+    }
+    return render(request, 'givers/business.html', context)
+
+
 def terms(request):
     return render(request, 'givers/terms.html', context={'page_id': 'terms', "page_type": 'static'})
 

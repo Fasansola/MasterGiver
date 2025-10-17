@@ -1,0 +1,416 @@
+{% extends "layout.html" %} {% load static %} {% block title %} {{ page_title }}
+{% endblock title %} {% block styles %}
+<!-- Include custom CSS for this page -->
+<link rel="stylesheet" href="{% static 'styles/index.css' %}" />
+{% endblock %} {% block body %}
+
+<!-- Main Content Section -->
+
+<style>
+  .business-hero {
+    padding: 0px;
+    {% comment %} margin-inline: auto !important; {% endcomment %}
+  }
+
+  .business-hero > div {
+    padding: 0px;
+    margin-inline: auto !important;
+  }
+
+  .footer-hero {
+    padding: 0px 40px;
+  }
+
+  .text-24px {
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 600;
+  }
+
+  .business-hero-left {
+    margin-top: 140px;
+    margin-left: 40px;
+    margin-bottom: 64px;
+    width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .business-hero-left button {
+    margin-top: 12px;
+  }
+
+  #position-top {
+    position: absolute;
+    top: 20px;
+  }
+
+  .business-footer-right {
+    background-color: white;
+    padding: 40px 32px;
+    border-radius: 16px;
+  }
+
+  .footer-cta-text {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 40px;
+  }
+
+  form button {
+    margin-top: 16px;
+  }
+
+  .tip-cta {
+    padding: 12px 20px;
+    background-color: #e3e9fc;
+    border-radius: 100px;
+    align-self: start;
+  }
+
+  @media (max-width: 1440px) {
+    .footer-hero {
+      width: 100%;
+      padding: 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .business-hero-left {
+      padding: 140px 20px 64px 20px;
+      margin: 0px;
+      width: 100%;
+    }
+  }
+</style>
+
+<main class="d-flex flex-column align-items-center white-bg">
+  <!-- Hero Section -->
+  <section
+    class="d-flex business-hero flex-lg-column justify-content-between mx-auto"
+  >
+    <div
+      class="d-flex container justify-content-between align-items-center gap-32 flex-lg-column"
+    >
+      <div class="business-hero-left">
+        <div id="position-top">
+          <img class="logo" src="{% static "images/Master Giver Logo.svg" %}"
+          width="144" alt="Master Giver Logo" />
+        </div>
+
+        <div class="d-flex flex-column gap-24">
+          <h1 class="big-heading line-height-120">
+            Get Discovered for the
+            <span class="accent-text big-heading line-height-120"
+              >Good Your Business Does</span
+            >.
+          </h1>
+          <p class="hero-text">
+            MasterGiver helps businesses create a reputation profile in minutes
+            that showcases your social and community impact, builds trust with
+            buyers, and ensures you get discovered in the new AI-powered search
+            era.
+          </p>
+          <div class="button-div">
+            <form
+              class="d-flex flex-column align-items-start forms gap-[4px]"
+              id="signup-form"
+              aria-label="Signup form"
+            >
+              {% csrf_token %}
+
+              <div class="col-6 col-12-sm d-flex flex-column forms-div">
+                <label for="name" class="small-text hidden">Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  class="input bg-[#F5F5F5]"
+                  placeholder="Name"
+                  required
+                  aria-required="true"
+                  minlength="2"
+                  maxlength="50"
+                />
+                <span
+                  id="name-error"
+                  class="error-message"
+                  aria-live="polite"
+                ></span>
+              </div>
+
+              <div class="col-6 col-12-sm d-flex flex-column forms-div">
+                <label for="business-name" class="small-text hidden"
+                  >Business Name</label
+                >
+                <input
+                  type="text"
+                  id="business-name"
+                  name="business-name"
+                  class="input bg-[#F5F5F5]"
+                  placeholder="Business Name"
+                  required
+                  aria-required="true"
+                  minlength="2"
+                  maxlength="50"
+                />
+                <span
+                  id="name-error"
+                  class="error-message"
+                  aria-live="polite"
+                ></span>
+              </div>
+
+              <!-- Email input field -->
+              <div class="forms-div">
+                <label for="email" class="hidden small-text">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="input bg-[#F5F5F5]"
+                  placeholder="Email Address"
+                  required
+                  aria-required="true"
+                />
+              </div>
+              <!-- Error message display -->
+              <div
+                class="d-none forms-warning"
+                id="form-error"
+                role="alert"
+                aria-live="assertive"
+              >
+                <img src="{% static "icons/error.svg" %}" alt="Error icon">
+                <span id="error-text" class="danger-text">{{ error }}</span>
+              </div>
+              <!-- Submit button -->
+              <button type="submit" class="button dark-button w-full">
+                Join the Waitlist
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="hidden sm:block col-6 h-[100%]">
+        <img src="{% static "images/Business-image.png" %}" alt="Master Giver
+        users Dashboard on Desktop and Mobile" width="100%" height="100%" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Section -->
+  <section class="flex w-full flex-col items-center secondary-bg gap-[64px]">
+    <div class="container flex flex-col gap-[14px] max-w-[1140px]">
+      <h2 class="md:text-center big-heading">
+        Your Impact Needs to Be Searchable
+      </h2>
+      <p class="md:text-center">
+        Today's buyers, clients, and AI algorithms actively seek companies that
+        do good and can prove it. But if your social impact isn't structured and
+        visible online, you're invisible to the algorithms driving search
+        rankings, customer discovery, and digital reputation.
+      </p>
+    </div>
+
+    <div
+      class="flex flex-col md:flex-row align-items-center container text-sm-center gap-[32px] sm:gap-[64px]"
+    >
+      <div class="flex sm:items-center flex-col gap-[16px]">
+        <img src="{% static '/images/Icon (8).svg' %}" alt="" width="32" />
+        <div
+          class="d-flex flex-column gap-[8px] sm:items-center justify-center"
+        >
+          <span class="accent-text text-start sm:text-center text-24px">
+            Showcase Your Impact
+          </span>
+          <p class="big-text text-start sm:text-center">
+            Showcase your giving and impact in a professional, AI-searchable
+            format
+          </p>
+        </div>
+      </div>
+
+      <div class="flex sm:items-center flex-col gap-[16px]">
+        <img src="{% static '/images/Icon (9).svg' %}" alt="" width="32" />
+        <div
+          class="d-flex flex-column gap-[8px] sm:items-center justify-center"
+        >
+          <span class="accent-text text-start sm:text-center text-24px">
+            Boost Your Discoverability
+          </span>
+          <p class="big-text text-start sm:text-center">
+            Boost discoverability with structured trust signals that algorithms
+            recognize.
+          </p>
+        </div>
+      </div>
+
+      <div class="flex sm:items-center flex-col gap-[16px]">
+        <img src="{% static '/images/Icon (10).svg' %}" alt="" width="32" />
+        <div
+          class="d-flex flex-column gap-[8px] items-start sm:items-center justify-center"
+        >
+          <span class="accent-text text-start sm:text-center text-24px">
+            Always-On Reputation
+          </span>
+          <p class="big-text text-start sm:text-center">
+            Build an always-on reputation profile that works for you 24/7
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="flex flex-lg-column justify-content-between">
+    <div
+      class="flex footer-hero w-[1440px] container justify-content-between align-items-center gap-32 flex-lg-column"
+    >
+      <div class="max-w-[640px] flex grow">
+        <div class="d-flex flex-column gap-[32px]">
+          <div class="accent-text text-24px tip-cta">Be First & Save 50%</div>
+          <h1 class="text-24px">
+            MasterGiver Business Profiles launch soon and early adopters get
+            exclusive benefits.
+          </h1>
+          <div class="flex flex-col gap-[16px]">
+            <div class="flex gap-2 items-center">
+              <image
+                src="static/images/check-svg.svg"
+                alt=""
+                width="24"
+                height="24"
+              />
+              <p class="text-start text-[#000000]">
+                Lock in 50% off your first year — just $29.50 (regular $59)
+              </p>
+            </div>
+            <div class="flex gap-2 items-center">
+              <image
+                src="static/images/check-svg.svg"
+                alt=""
+                width="24"
+                height="24"
+              />
+              <p class="text-start text-[#000000]">
+                Get early access to our reputation profile builder tools
+              </p>
+            </div>
+            <div class="flex gap-2 items-center">
+              <image
+                src="static/images/check-svg.svg"
+                alt=""
+                width="24"
+                height="24"
+              />
+              <p class="text-start text-[#000000]">
+                Help shape the platform and how values-driven businesses get
+                discovered
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="max-w-[512px] flex grow border-12 sm:border-30 border-[#e3e9fc00] bg-[#e3e9fc] rounded-[32px]"
+      >
+        <div class="w-full flex business-footer-right flex-col gap-[32px]">
+          <div class="d-flex flex-column gap-[12px]">
+            <h1 class="text-center footer-cta-text">
+              Get Early Access. <br />
+              <span class="accent-text footer-cta-text"
+                >Join The Waitlist.</span
+              >
+            </h1>
+            <p class="text-center">
+              We’re launching soon.<br />You’ll be the first to know.
+            </p>
+          </div>
+          <div class="button-div">
+            <form
+              class="d-flex flex-column align-items-start forms gap-[4px]"
+              id="signup-form"
+              aria-label="Signup form"
+            >
+              {% csrf_token %}
+
+              <div class="col-6 col-12-sm d-flex flex-column forms-div">
+                <label for="name" class="small-text hidden">Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  class="input bg-[#F5F5F5]"
+                  placeholder="Name"
+                  required
+                  aria-required="true"
+                  minlength="2"
+                  maxlength="50"
+                />
+                <span
+                  id="name-error"
+                  class="error-message"
+                  aria-live="polite"
+                ></span>
+              </div>
+
+              <div class="col-6 col-12-sm d-flex flex-column forms-div">
+                <label for="business-name" class="small-text hidden"
+                  >Business Name</label
+                >
+                <input
+                  type="text"
+                  id="business-name"
+                  name="business-name"
+                  class="input bg-[#F5F5F5]"
+                  placeholder="Business Name"
+                  required
+                  aria-required="true"
+                  minlength="2"
+                  maxlength="50"
+                />
+                <span
+                  id="name-error"
+                  class="error-message"
+                  aria-live="polite"
+                ></span>
+              </div>
+
+              <!-- Email input field -->
+              <div class="forms-div">
+                <label for="email" class="hidden small-text">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="input bg-[#F5F5F5]"
+                  placeholder="Email Address"
+                  required
+                  aria-required="true"
+                />
+              </div>
+              <!-- Error message display -->
+              <div
+                class="d-none forms-warning"
+                id="form-error"
+                role="alert"
+                aria-live="assertive"
+              >
+                <img src="{% static "icons/error.svg" %}" alt="Error icon">
+                <span id="error-text" class="danger-text">{{ error }}</span>
+              </div>
+              <!-- Submit button -->
+              <button type="submit" class="button dark-button w-full">
+                Join the Waitlist
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock body %}
