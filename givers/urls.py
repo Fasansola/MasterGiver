@@ -17,6 +17,7 @@ urlpatterns = [
     path('about', views.about, name="about"),
     path('faq', views.faq, name="faq"),
     path('business', views.business, name="business"),
+    path('business-waitlist-signup/', views.business_waitlist_signup, name='business_waitlist_signup'),
     path('terms', views.terms, name="terms"),
     path('privacy', views.privacy, name="privacy"),
     path('signup/', views.signup, name='signup'),

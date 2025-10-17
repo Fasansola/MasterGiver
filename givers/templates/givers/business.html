@@ -82,6 +82,11 @@
       margin: 0px;
       width: 100%;
     }
+
+    .business-footer-right {
+        width: 100%;
+        padding: 28px 20px;
+    }
   }
 </style>
 
@@ -115,16 +120,16 @@
           <div class="button-div">
             <form
               class="d-flex flex-column align-items-start forms gap-[4px]"
-              id="signup-form"
+              id="signup-form-hero"
               aria-label="Signup form"
             >
               {% csrf_token %}
 
               <div class="col-6 col-12-sm d-flex flex-column forms-div">
-                <label for="name" class="small-text hidden">Name</label>
+                <label for="name-hero" class="small-text hidden">Name</label>
                 <input
                   type="text"
-                  id="name"
+                  id="name-hero"
                   name="name"
                   class="input bg-[#F5F5F5]"
                   placeholder="Name"
@@ -134,19 +139,19 @@
                   maxlength="50"
                 />
                 <span
-                  id="name-error"
+                  id="name-error-hero"
                   class="error-message"
                   aria-live="polite"
                 ></span>
               </div>
 
               <div class="col-6 col-12-sm d-flex flex-column forms-div">
-                <label for="business-name" class="small-text hidden"
+                <label for="business-name-hero" class="small-text hidden"
                   >Business Name</label
                 >
                 <input
                   type="text"
-                  id="business-name"
+                  id="business-name-hero"
                   name="business-name"
                   class="input bg-[#F5F5F5]"
                   placeholder="Business Name"
@@ -156,7 +161,7 @@
                   maxlength="50"
                 />
                 <span
-                  id="name-error"
+                  id="business-name-error-hero"
                   class="error-message"
                   aria-live="polite"
                 ></span>
@@ -164,29 +169,52 @@
 
               <!-- Email input field -->
               <div class="forms-div">
-                <label for="email" class="hidden small-text">Email</label>
+                <label for="email-hero" class="hidden small-text">Email</label>
                 <input
                   type="email"
-                  id="email"
+                  id="email-hero"
                   name="email"
                   class="input bg-[#F5F5F5]"
                   placeholder="Email Address"
                   required
                   aria-required="true"
                 />
+                <span
+                  id="email-error-hero"
+                  class="error-message"
+                  aria-live="polite"
+                ></span>
               </div>
+
               <!-- Error message display -->
               <div
                 class="d-none forms-warning"
-                id="form-error"
+                id="form-error-hero"
                 role="alert"
                 aria-live="assertive"
               >
                 <img src="{% static "icons/error.svg" %}" alt="Error icon">
-                <span id="error-text" class="danger-text">{{ error }}</span>
+                <span id="error-text-hero" class="danger-text"
+                  >{{ error }}</span
+                >
               </div>
+
+              <!-- Success message -->
+              <div
+                class="form-success d-none"
+                id="form-success-hero"
+                role="alert"
+                aria-live="polite"
+              >
+                Thank you! You've been added to the waitlist.
+              </div>
+
               <!-- Submit button -->
-              <button type="submit" class="button dark-button w-full">
+              <button
+                type="submit"
+                class="button dark-button w-full"
+                id="submit-btn-hero"
+              >
                 Join the Waitlist
               </button>
             </form>
@@ -315,7 +343,7 @@
       </div>
 
       <div
-        class="max-w-[512px] flex grow border-12 sm:border-30 border-[#e3e9fc00] bg-[#e3e9fc] rounded-[32px]"
+        class="w-full max-w-[512px] flex grow border-12 sm:border-30 border-[#e3e9fc00] bg-[#e3e9fc] rounded-[32px]"
       >
         <div class="w-full flex business-footer-right flex-col gap-[32px]">
           <div class="d-flex flex-column gap-[12px]">
@@ -332,16 +360,16 @@
           <div class="button-div">
             <form
               class="d-flex flex-column align-items-start forms gap-[4px]"
-              id="signup-form"
+              id="signup-form-footer"
               aria-label="Signup form"
             >
               {% csrf_token %}
 
               <div class="col-6 col-12-sm d-flex flex-column forms-div">
-                <label for="name" class="small-text hidden">Name</label>
+                <label for="name-footer" class="small-text hidden">Name</label>
                 <input
                   type="text"
-                  id="name"
+                  id="name-footer"
                   name="name"
                   class="input bg-[#F5F5F5]"
                   placeholder="Name"
@@ -351,19 +379,19 @@
                   maxlength="50"
                 />
                 <span
-                  id="name-error"
+                  id="name-error-footer"
                   class="error-message"
                   aria-live="polite"
                 ></span>
               </div>
 
               <div class="col-6 col-12-sm d-flex flex-column forms-div">
-                <label for="business-name" class="small-text hidden"
+                <label for="business-name-footer" class="small-text hidden"
                   >Business Name</label
                 >
                 <input
                   type="text"
-                  id="business-name"
+                  id="business-name-footer"
                   name="business-name"
                   class="input bg-[#F5F5F5]"
                   placeholder="Business Name"
@@ -373,7 +401,7 @@
                   maxlength="50"
                 />
                 <span
-                  id="name-error"
+                  id="business-name-error-footer"
                   class="error-message"
                   aria-live="polite"
                 ></span>
@@ -381,29 +409,54 @@
 
               <!-- Email input field -->
               <div class="forms-div">
-                <label for="email" class="hidden small-text">Email</label>
+                <label for="email-footer" class="hidden small-text"
+                  >Email</label
+                >
                 <input
                   type="email"
-                  id="email"
+                  id="email-footer"
                   name="email"
                   class="input bg-[#F5F5F5]"
                   placeholder="Email Address"
                   required
                   aria-required="true"
                 />
+                <span
+                  id="email-error-footer"
+                  class="error-message"
+                  aria-live="polite"
+                ></span>
               </div>
+
               <!-- Error message display -->
               <div
                 class="d-none forms-warning"
-                id="form-error"
+                id="form-error-footer"
                 role="alert"
                 aria-live="assertive"
               >
                 <img src="{% static "icons/error.svg" %}" alt="Error icon">
-                <span id="error-text" class="danger-text">{{ error }}</span>
+                <span id="error-text-footer" class="danger-text"
+                  >{{ error }}</span
+                >
               </div>
+
+              <!-- Success message -->
+              <div
+                class="form-success d-none"
+                id="form-success-footer"
+                role="alert"
+                aria-live="polite"
+              >
+                Thank you! You've been added to the waitlist.
+              </div>
+
               <!-- Submit button -->
-              <button type="submit" class="button dark-button w-full">
+              <button
+                type="submit"
+                class="button dark-button w-full"
+                id="submit-btn-footer"
+              >
                 Join the Waitlist
               </button>
             </form>
@@ -413,4 +466,119 @@
     </div>
   </section>
 </main>
+
+<script>
+  // Function to handle form submission
+  async function handleFormSubmit(formId, successId, errorId, buttonId) {
+    const form = document.getElementById(formId);
+    const successMessage = document.getElementById(successId);
+    const errorMessage = document.getElementById(errorId);
+    const submitButton = document.getElementById(buttonId);
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // Get form data
+      const formData = new FormData(form);
+      const name = formData.get("name");
+      const businessName = formData.get("business-name");
+      const email = formData.get("email");
+
+      // Basic validation
+      if (!name || !businessName || !email) {
+        showError(errorMessage, "Please fill in all fields");
+        return;
+      }
+
+      if (!isValidEmail(email)) {
+        showError(errorMessage, "Please enter a valid email address");
+        return;
+      }
+
+      // Disable submit button and show loading state
+      submitButton.disabled = true;
+      submitButton.textContent = "Submitting...";
+
+      try {
+        // Send to Django backend which will handle MailerLite integration
+        const response = await fetch('{% url "business_waitlist_signup" %}', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}",
+          },
+          body: JSON.stringify({
+            name: name,
+            business_name: businessName,
+            email: email,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          // Success
+          showSuccess(successMessage);
+          form.reset();
+          hideError(errorMessage);
+        } else {
+          throw new Error(data.error || "Failed to subscribe");
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        showError(errorMessage, "Failed to subscribe. Please try again.");
+      } finally {
+        // Re-enable submit button
+        submitButton.disabled = false;
+        submitButton.textContent = "Join the Waitlist";
+      }
+    });
+  }
+
+  // Helper functions
+  function showError(errorElement, message) {
+    const errorText = errorElement.querySelector('[id^="error-text-"]');
+    if (errorText) {
+      errorText.textContent = message;
+    }
+    errorElement.classList.remove("d-none");
+    errorElement.classList.add("d-flex");
+  }
+
+  function hideError(errorElement) {
+    errorElement.classList.add("d-none");
+    errorElement.classList.remove("d-flex");
+  }
+
+  function showSuccess(successElement) {
+    successElement.style.display = "block";
+    setTimeout(() => {
+      successElement.style.display = "none";
+    }, 5000);
+  }
+
+  function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  // Initialize form handlers when DOM is loaded
+  document.addEventListener("DOMContentLoaded", function () {
+    // Hero form
+    handleFormSubmit(
+      "signup-form-hero",
+      "form-success-hero",
+      "form-error-hero",
+      "submit-btn-hero"
+    );
+
+    // Footer form
+    handleFormSubmit(
+      "signup-form-footer",
+      "form-success-footer",
+      "form-error-footer",
+      "submit-btn-footer"
+    );
+  });
+</script>
 {% endblock body %}

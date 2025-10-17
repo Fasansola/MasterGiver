@@ -1,13 +1,21 @@
-const mobileHamburger = document.getElementById('hamburger-menu') 
-const mobileClose = document.getElementById('close-menu')
-const mobileMenu = document.getElementById('mobile-menu')
+const mobileHamburger = document.getElementById('hamburger-menu');
+const mobileClose = document.getElementById('close-menu');
+const mobileMenu = document.getElementById('mobile-menu');
 
+// Only add event listeners if elements exist
+if (mobileHamburger && mobileMenu) {
+    mobileHamburger.addEventListener('click', toggleMenu);
+    mobileMenu.addEventListener('click', toggleMenu);
+}
 
-mobileHamburger.addEventListener('click', closeMenu)
-mobileMenu.addEventListener('click', closeMenu)
+// If close button exists, add its event listener
+if (mobileClose) {
+    mobileClose.addEventListener('click', toggleMenu);
+}
 
-
-function closeMenu() {
-    mobileMenu.classList.toggle('menu-not-is-visible')
-    mobileMenu.classList.toggle('menu-is-visible')
+function toggleMenu() {
+    if (mobileMenu) {
+        mobileMenu.classList.toggle('menu-not-is-visible');
+        mobileMenu.classList.toggle('menu-is-visible');
+    }
 }

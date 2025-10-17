@@ -1,3 +1,4 @@
+import os
 from django.conf import settings
 import re
 import requests
@@ -17,6 +18,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.contenttypes.models import ContentType
 
 from .models import User, Skill, UserSkills, UserCauses, UsersPledgeOrganizations, UsersCharityOwnEvent, GivingStyle
@@ -73,6 +75,85 @@ def business(request):
     }
     return render(request, 'givers/business.html', context)
 
+
+@require_POST
+@csrf_exempt
+def business_waitlist_signup(request):
+    try:
+        data = json.loads(request.body)
+        name = data.get('name')
+        business_name = data.get('business_name')
+        email = data.get('email')
+        
+        print(f"DEBUG: Received data - name: {name}, business: {business_name}, email: {email}")
+        
+        # Validate required fields
+        if not all([name, business_name, email]):
+            print("DEBUG: Missing required fields")
+            return JsonResponse({'error': 'All fields are required'}, status=400)
+        
+        # MailerLite API configuration from environment variables
+        MAILERLITE_API_KEY = os.getenv('MAILERLITE_API_KEY')
+        MAILERLITE_GROUP_ID = os.getenv('MAILERLITE_DEFAULT_GROUP_ID')
+        
+        print(f"DEBUG: API Key exists: {bool(MAILERLITE_API_KEY)}")
+        print(f"DEBUG: Group ID exists: {bool(MAILERLITE_GROUP_ID)}")
+        print(f"DEBUG: API Key: {MAILERLITE_API_KEY}")
+        print(f"DEBUG: Group ID: {MAILERLITE_GROUP_ID}")
+        
+        if not MAILERLITE_API_KEY or not MAILERLITE_GROUP_ID:
+            print("DEBUG: MailerLite configuration missing")
+            return JsonResponse({'error': 'MailerLite configuration missing'}, status=500)
+        
+        # Prepare data for MailerLite
+        subscriber_data = {
+            'email': email,
+            'fields': {
+                'name': name,
+                'company': business_name
+            },
+            'groups': [MAILERLITE_GROUP_ID]
+        }
+        
+        print(f"DEBUG: Sending to MailerLite: {subscriber_data}")
+        
+        # Send to MailerLite
+        response = requests.post(
+            'https://api.mailerlite.com/api/v2/subscribers',
+            headers={
+                'Content-Type': 'application/json',
+                'X-MailerLite-ApiKey': MAILERLITE_API_KEY
+            },
+            json=subscriber_data,
+            timeout=10
+        )
+        
+        print(f"DEBUG: MailerLite response status: {response.status_code}")
+        print(f"DEBUG: MailerLite response: {response.text}")
+        
+        if response.status_code in [200, 201]:
+            print("DEBUG: Successfully subscribed to MailerLite")
+            return JsonResponse({'success': True, 'message': 'Successfully subscribed to waitlist'})
+        else:
+            error_message = 'Failed to subscribe to newsletter'
+            try:
+                error_data = response.json()
+                error_message = error_data.get('error', {}).get('message', error_message)
+            except:
+                pass
+            
+            print(f"DEBUG: MailerLite error: {error_message}")
+            return JsonResponse({'error': error_message}, status=400)
+            
+    except requests.exceptions.Timeout:
+        print("DEBUG: Request timeout")
+        return JsonResponse({'error': 'Request timeout. Please try again.'}, status=408)
+    except requests.exceptions.RequestException as e:
+        print(f"DEBUG: Request exception: {str(e)}")
+        return JsonResponse({'error': 'Network error. Please try again.'}, status=500)
+    except Exception as e:
+        print(f"DEBUG: General exception: {str(e)}")
+        return JsonResponse({'error': 'Server error. Please try again.'}, status=500)
 
 def terms(request):
     return render(request, 'givers/terms.html', context={'page_id': 'terms', "page_type": 'static'})
