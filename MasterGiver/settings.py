@@ -29,7 +29,8 @@ ALLOWED_HOSTS = [
     'localhost',
     'mastergiver-e5f12f89fc67.herokuapp.com',
     'www.mastergiver.com',
-    'mastergiver.com'
+    'mastergiver.com',
+    '.mastergiver.com', 
 ]
 
 # Application definition
@@ -56,6 +57,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     # Make sure it's right after SecurityMiddleware
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'MasterGiver.middleware.WWWRedirectMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.common.CommonMiddleware',
