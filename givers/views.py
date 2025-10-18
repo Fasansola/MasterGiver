@@ -94,7 +94,7 @@ def business_waitlist_signup(request):
         
         # MailerLite API configuration from environment variables
         MAILERLITE_API_KEY = os.getenv('MAILERLITE_API_KEY')
-        MAILERLITE_GROUP_ID = os.getenv('MAILERLITE_DEFAULT_GROUP_ID')
+        MAILERLITE_GROUP_ID = os.getenv('MAILERLITE_BUSINESS_WAITLIST_GROUP_ID')
         
         print(f"DEBUG: API Key exists: {bool(MAILERLITE_API_KEY)}")
         print(f"DEBUG: Group ID exists: {bool(MAILERLITE_GROUP_ID)}")
@@ -154,6 +154,7 @@ def business_waitlist_signup(request):
     except Exception as e:
         print(f"DEBUG: General exception: {str(e)}")
         return JsonResponse({'error': 'Server error. Please try again.'}, status=500)
+
 
 def terms(request):
     return render(request, 'givers/terms.html', context={'page_id': 'terms', "page_type": 'static'})
